@@ -12,6 +12,7 @@ namespace Keboola\StorageApi\Cli\Command;
 use Symfony\Component\Console\Command\Command as BaseCommand;
 use Keboola\StorageApi\Client;
 use Keboola\StorageApi\Cli\Console\Application;
+use Symfony\Component\Filesystem\Filesystem;
 
 
 abstract class Command extends BaseCommand
@@ -21,6 +22,11 @@ abstract class Command extends BaseCommand
 	 * @var Client
 	 */
 	private $sapiClient;
+
+	/**
+	 * @var string
+	 */
+	private $tmpDir = "";
 
 	/**
 	 * @param Client $client
@@ -47,5 +53,34 @@ abstract class Command extends BaseCommand
 		}
 
 		return $this->sapiClient;
+	}
+
+	/**
+	 *
+	 * Get or create temporary folder
+	 *
+	 * @return string
+	 */
+	public function getTmpDir()
+	{
+		if ($this->tmpDir == "") {
+			$fs = new Filesystem();
+			$dir = "/tmp/sapi-cli-" . uniqid();
+			$fs->mkdir($dir);
+			$this->tmpDir = $dir;
+		}
+		return $this->tmpDir;
+	}
+
+	/**
+	 * Deletes temporary dir and all its contents
+	 */
+	public function destroyTmpDir()
+	{
+		if ($this->tmpDir != "") {
+			$fs = new Filesystem();
+			$fs->remove($this->tmpDir);
+		}
+		$this->tmpDir = "";
 	}
 }

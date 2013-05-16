@@ -1,7 +1,7 @@
 <?php
 /**
  * Created by JetBrains PhpStorm.
- * User: martinhalamicek
+ * User: ondrej hlavacek
  * Date: 5/16/13
  * Time: 3:19 PM
  * To change this template use File | Settings | File Templates.
@@ -16,17 +16,15 @@ use Symfony\Component\Console\Input\InputInterface,
 use Symfony\Component\Console\Input\InputOption;
 
 
-class WriteTable extends Command {
+class TruncateTable extends Command {
 
 	public function configure()
 	{
 		$this
-			->setName('write-table')
-			->setDescription('Write data into table')
+			->setName('truncate-table')
+			->setDescription('Remove all data from table')
 			->setDefinition(array(
-				new InputArgument('tableId', InputArgument::REQUIRED, "target table"),
-				new InputArgument('filePath', InputArgument::REQUIRED, "import csv file"),
-				new InputOption('incremental', 'i', InputOption::VALUE_NONE, "incremental load"),
+				new InputArgument('tableId', InputArgument::REQUIRED, "target table")
 			));
 	}
 
@@ -39,31 +37,31 @@ class WriteTable extends Command {
 
 		$output->writeln("Table found ok");
 
-		$filePath = $input->getArgument('filePath');
-		if (!is_file($filePath)) {
-			throw new Exception("File $filePath does not exist.");
-		}
-
-		$output->writeln("Import start");
+		$output->writeln("Truncate start");
 		$startTime = time();
 
-		$result = $sapiClient->writeTable(
+		$tmpFile = $this->getTmpDir() . "/" . $input->getArgument('tableId') . ".csv";
+
+		$sapiClient->exportTable(
 			$input->getArgument('tableId'),
-			new CsvFile($filePath),
-			array(
-				'incremental' => $input->getOption('incremental'),
-			)
+			$tmpFile,
+			array("limit" => 1)
 		);
+
+		$csvFile = new CsvFile($tmpFile);
+		$headFile = new CsvFile($tmpFile . ".head");
+		$headFile->writeRow($csvFile->getHeader());
+
+		$sapiClient->writeTable(
+			$input->getArgument('tableId'),
+			$headFile
+		);
+
+		$this->destroyTmpDir();
 
 		$duration = time() - $startTime;
 
-		$output->writeln("Import done in $duration secs.");
-		$output->writeln("Results:");
-		foreach ($result as $key => $value) {
-			$output->writeln("$key: $value");
-		}
-		
-
+		$output->writeln("Truncate done in $duration secs.");
 	}
 
 

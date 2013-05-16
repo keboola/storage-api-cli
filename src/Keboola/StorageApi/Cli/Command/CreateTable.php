@@ -34,14 +34,14 @@ class CreateTable extends Command {
 	{
 		$sapiClient = $this->getSapiClient();
 		if (!$sapiClient->bucketExists($input->getArgument('bucketId'))) {
-			throw new \Exception("Bucket {$input->getArgument('bucketId')} not exists.");
+			throw new \Exception("Bucket {$input->getArgument('bucketId')} does not exist or is not accessible.");
 		}
 
 		$output->writeln("Bucket found ok");
 
 		$filePath = $input->getArgument('filePath');
 		if (!is_file($filePath)) {
-			throw new Exception("File $filePath not exists.");
+			throw new Exception("File $filePath does not exist.");
 		}
 
 		$output->writeln("Table created start");

@@ -86,6 +86,7 @@ class Application extends BaseApplication
 			new Command\ListBuckets(),
 			new Command\CreateTable(),
 			new Command\WriteTable(),
+			new Command\TruncateTable(),
 		), parent::getDefaultCommands());
 
 	}
