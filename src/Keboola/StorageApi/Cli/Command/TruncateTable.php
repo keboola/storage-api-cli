@@ -52,9 +52,6 @@ class TruncateTable extends Command {
 		$headFile = new CsvFile($tmpFile . ".head");
 		$headFile->writeRow($csvFile->getHeader());
 
-
-		exec("head -n 1 $tmpFile > $tmpFile.head");
-
 		$sapiClient->writeTable(
 			$input->getArgument('tableId'),
 			$headFile
