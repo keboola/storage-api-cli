@@ -34,14 +34,14 @@ class WriteTable extends Command {
 	{
 		$sapiClient = $this->getSapiClient();
 		if (!$sapiClient->tableExists($input->getArgument('tableId'))) {
-			throw new \Exception("Bucket {$input->getArgument('tableId')} not exists.");
+			throw new \Exception("Table {$input->getArgument('tableId')} does not exist or is not accessible.");
 		}
 
 		$output->writeln("Table found ok");
 
 		$filePath = $input->getArgument('filePath');
 		if (!is_file($filePath)) {
-			throw new Exception("File $filePath not exists.");
+			throw new Exception("File $filePath does not exist.");
 		}
 
 		$output->writeln("Import start");
