@@ -1,0 +1,19 @@
+{
+    "name": "keboola/storage-api-cli",
+    "description": "Keboola Storage API command line interface",
+    "authors": [
+        {
+            "name": "Martin Halamicek",
+            "email": "martin@halamicek.cz"
+        }
+    ],
+	"license": "MIT",
+    "require": {
+		"symfony/console": "~2.2.1",
+		"keboola/storage-api-client": "~2.7.1"
+    },
+	"autoload": {
+		"psr-0": {"Keboola\\StorageApi\\Cli": "src/"}
+	},
+	"bin": ["bin/sapi-client"]
+}
