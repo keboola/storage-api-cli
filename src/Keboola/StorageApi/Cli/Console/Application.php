@@ -41,7 +41,7 @@ class Application extends BaseApplication
 
 	public function __construct()
 	{
-		parent::__construct('Keboola Storage API Client', '@package_version@');
+		parent::__construct('Keboola Storage API CLI', '@package_version@');
 
 		$this->getDefinition()
 			->addOption(new InputOption('token', null, InputOption::VALUE_REQUIRED, "Storage API Token"));
@@ -78,13 +78,21 @@ class Application extends BaseApplication
 			if (!$this->sapiToken) {
 				throw new \RuntimeException('Token --token must be set');
 			}
-			$this->sapiClient = new Client($this->sapiToken);
+			$this->sapiClient = new Client(
+				$this->sapiToken,
+				null,
+				$this->userAgent()
+			);
 			$logData = $this->sapiClient->getLogData();
 			$this->output->writeln("Authorized as: {$logData['description']} ({$logData['owner']['name']})");
 		}
 		return $this->sapiClient;
 	}
 
+	private function userAgent()
+	{
+		return "{$this->getName()}/{$this->getVersion()}";
+	}
 
 	public function getDefaultCommands()
 	{
