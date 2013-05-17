@@ -58,6 +58,17 @@ Keboola Storage API Client >
 ```
 
 
+### Build
+Tool is distributed as PHAR package, follow these steps to create package of current version:
+
+```bash
+curl -s http://box-project.org/installer.php | php
+./box.phar build -v
+```
+
+`sapi-client.phar` archive will be created, you can execute it `./sapi-client.phar`
+
+
 
 
 

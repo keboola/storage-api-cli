@@ -28,10 +28,20 @@ class Application extends BaseApplication
 	 */
 	private $sapiClient;
 
+	/**
+	 * @var string Token
+	 */
+	private $sapiToken;
+
+	/**
+	 * @var OutputInterface
+	 */
+	private $output;
+
 
 	public function __construct()
 	{
-		parent::__construct('Keboola Storage API Client');
+		parent::__construct('Keboola Storage API Client', '@package_version@');
 
 		$this->getDefinition()
 			->addOption(new InputOption('token', null, InputOption::VALUE_REQUIRED, "Storage API Token"));
@@ -42,16 +52,11 @@ class Application extends BaseApplication
 
 	public function doRun(InputInterface $input, OutputInterface $output)
 	{
-
-		if (!$this->sapiClient) {
-			if (!($token = $input->getParameterOption('--token'))) {
-				throw new \RuntimeException('Token --token must be set');
-			}
-
-			$this->initSapiClient($token);
-			$logData = $this->sapiClient->getLogData();
-			$output->writeln("Authorized as: {$logData['description']} ({$logData['owner']['name']})");
+		if ($input->getParameterOption('--token')) {
+			$this->sapiToken = $input->getParameterOption('--token');
+			$this->sapiClient = null;
 		}
+		$this->output = $output;
 
 		if (true === $input->hasParameterOption(array('--shell'))) {
 			$shell = new Shell($this);
@@ -65,20 +70,21 @@ class Application extends BaseApplication
 	}
 
 	/**
-	 * @param $token
-	 */
-	private function initSapiClient($token)
-	{
-		$this->sapiClient = new Client($token);
-	}
-
-	/**
 	 * @return Client
 	 */
 	public function getStorageApiClient()
 	{
+		if (!$this->sapiClient) {
+			if (!$this->sapiToken) {
+				throw new \RuntimeException('Token --token must be set');
+			}
+			$this->sapiClient = new Client($this->sapiToken);
+			$logData = $this->sapiClient->getLogData();
+			$this->output->writeln("Authorized as: {$logData['description']} ({$logData['owner']['name']})");
+		}
 		return $this->sapiClient;
 	}
+
 
 	public function getDefaultCommands()
 	{

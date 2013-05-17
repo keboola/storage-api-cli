@@ -13,6 +13,8 @@ use Symfony\Component\Console\Command\Command as BaseCommand;
 use Keboola\StorageApi\Client;
 use Keboola\StorageApi\Cli\Console\Application;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 
 abstract class Command extends BaseCommand
@@ -37,6 +39,7 @@ abstract class Command extends BaseCommand
 		$this->sapiClient = $client;
 		return $this;
 	}
+
 
 	/**
 	 * @return Client
@@ -83,4 +86,12 @@ abstract class Command extends BaseCommand
 		}
 		$this->tmpDir = "";
 	}
+
+	protected function initialize(InputInterface $input, OutputInterface $output)
+	{
+		// require sapi client
+		$this->getSapiClient();
+	}
+
+
 }

@@ -12,7 +12,10 @@ if (!file_exists($autoloadPath)) {
 require_once $autoloadPath;
 
 use Keboola\StorageApi\Cli\Console\Application;
+use Symfony\Component\Console\Input\ArgvInput;
 
 $app = new Application();
-$app->run();
+
+$input = new ArgvInput(array_merge($_SERVER['argv'], array('--ansi')));
+$app->run($input);
 
