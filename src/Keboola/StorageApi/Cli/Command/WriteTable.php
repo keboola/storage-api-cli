@@ -27,6 +27,7 @@ class WriteTable extends Command {
 				new InputArgument('tableId', InputArgument::REQUIRED, "target table"),
 				new InputArgument('filePath', InputArgument::REQUIRED, "import csv file"),
 				new InputOption('incremental', 'i', InputOption::VALUE_NONE, "incremental load"),
+				new InputOption('partial', 'p', InputOption::VALUE_NONE, "partial load"),
 			));
 	}
 
@@ -41,7 +42,7 @@ class WriteTable extends Command {
 
 		$filePath = $input->getArgument('filePath');
 		if (!is_file($filePath)) {
-			throw new Exception("File $filePath does not exist.");
+			throw new \Exception("File $filePath does not exist.");
 		}
 
 		$output->writeln("Import start");
@@ -52,6 +53,7 @@ class WriteTable extends Command {
 			new CsvFile($filePath),
 			array(
 				'incremental' => $input->getOption('incremental'),
+				'partial' => $input->getOption('partial'),
 			)
 		);
 

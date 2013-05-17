@@ -1,4 +1,6 @@
 .idea
 cache.properties
 composer.lock
+box.phar
+sapi-client.phar
 test.csv

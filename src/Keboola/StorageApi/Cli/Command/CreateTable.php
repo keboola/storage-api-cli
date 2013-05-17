@@ -41,7 +41,7 @@ class CreateTable extends Command {
 
 		$filePath = $input->getArgument('filePath');
 		if (!is_file($filePath)) {
-			throw new Exception("File $filePath does not exist.");
+			throw new \Exception("File $filePath does not exist.");
 		}
 
 		$output->writeln("Table created start");
