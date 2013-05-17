@@ -12,6 +12,7 @@ namespace Keboola\StorageApi\Cli\Console;
 use Keboola\StorageApi\Client;
 use Keboola\StorageApi\Cli\Command;
 use Symfony\Component\Console\Application as BaseApplication;
+use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -52,6 +53,12 @@ class Application extends BaseApplication
 
 	public function doRun(InputInterface $input, OutputInterface $output)
 	{
+		$output->getFormatter()
+			->setStyle('success', new OutputFormatterStyle('green'));
+
+		$output->getFormatter()
+			->setStyle('warning', new OutputFormatterStyle('yellow'));
+
 		if ($input->getParameterOption('--token')) {
 			$this->sapiToken = $input->getParameterOption('--token');
 			$this->sapiClient = null;
@@ -101,6 +108,7 @@ class Application extends BaseApplication
 			new Command\CreateTable(),
 			new Command\WriteTable(),
 			new Command\TruncateTable(),
+			new Command\ListEvents(),
 		), parent::getDefaultCommands());
 
 	}
