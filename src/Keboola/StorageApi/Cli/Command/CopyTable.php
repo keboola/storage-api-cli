@@ -86,7 +86,7 @@ class CopyTable extends Command {
 		}
 
 		// Set attributes
-		if ($tableInfo["indexedColumns"] && count($tableInfo["indexedColumns"])) {
+		if ($tableInfo["attributes"] && count($tableInfo["attributes"])) {
 			foreach($tableInfo["attributes"] as $attribute) {
 				$sapiClient->setTableAttribute($destinationTable, $attribute["name"], $attribute["value"], $attribute["protected"]);
 			}
