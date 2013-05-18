@@ -33,9 +33,12 @@ Options:
 
 Available commands:
   create-table   Create table in bucket
+  delete-table   Delete table
+  copy-table     Copy table including content, primary keys, indexes and attributes
   help           Displays help for a command
   list           Lists commands
-  list-buckets   list all available buckets
+  list-buckets   List all available buckets
+  delete-bucket  Delete bucket
   write-table    Write data into table
 ```
 
