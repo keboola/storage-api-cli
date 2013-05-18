@@ -54,7 +54,7 @@ class CopyTable extends Command {
 		$tableInfo = $sapiClient->getTable($input->getArgument('sourceTableId'));
 
 		$createOptions = array();
-		if (isset($tableInfo["primaryKey"])) {
+		if (isset($tableInfo["primaryKey"]) && count($tableInfo["primaryKey"])) {
 			$createOptions["primaryKey"] = $tableInfo["primaryKey"][0];
 		}
 
