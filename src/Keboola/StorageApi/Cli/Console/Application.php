@@ -106,7 +106,9 @@ class Application extends BaseApplication
 		return array_merge(array(
 			new Command\ListBuckets(),
 			new Command\CreateTable(),
+			new Command\DeleteTable(),
 			new Command\WriteTable(),
+			new Command\CopyTable(),
 			new Command\TruncateTable(),
 			new Command\ListEvents(),
 		), parent::getDefaultCommands());
