@@ -105,6 +105,7 @@ class Application extends BaseApplication
 	{
 		return array_merge(array(
 			new Command\ListBuckets(),
+			new Command\DeleteBucket(),
 			new Command\CreateTable(),
 			new Command\DeleteTable(),
 			new Command\WriteTable(),
