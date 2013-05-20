@@ -10,7 +10,7 @@ script:
 - "php ./box.phar build --verbose"
 - "php ./sapi-client.phar"
 after_success:
-  - "travis-artifacts upload --path sapi-client.phar --target-path=''"
+  - "test ${TRAVIS_BRANCH} = master && travis-artifacts upload --path sapi-client.phar --target-path='builds'"
 env:
  global:
    - "ARTIFACTS_AWS_REGION=us-east-1"
