@@ -12,6 +12,7 @@ namespace Keboola\StorageApi\Cli\Command;
 use Symfony\Component\Console\Command\Command as BaseCommand;
 use Keboola\StorageApi\Client;
 use Keboola\StorageApi\Cli\Console\Application;
+use Symfony\Component\Console\Helper\DialogHelper;
 use Symfony\Component\Console\Helper\FormatterHelper;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Console\Input\InputInterface;
@@ -100,6 +101,14 @@ abstract class Command extends BaseCommand
 	public function getFormatterHelper()
 	{
 		return $this->getHelper('formatter');
+	}
+
+	/**
+	 * @return DialogHelper
+	 */
+	public function getDialogHelper()
+	{
+		return $this->getHelper('dialog');
 	}
 
 }

@@ -27,30 +27,45 @@ class ListEvents extends Command {
 				new InputOption('component', null, InputOption::VALUE_REQUIRED, 'Component name'),
 				new InputOption('runId', null, InputOption::VALUE_REQUIRED, 'Run id'),
 				new InputOption('configurationId', null, InputOption::VALUE_REQUIRED, 'Configuration id'),
+				new InputOption('limit', null, InputOption::VALUE_REQUIRED, 'pagination - count per page', 100),
+				new InputOption('offset', null, InputOption::VALUE_REQUIRED, 'pagination - offset', 0),
 			));
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
 		$sapiClient = $this->getSapiClient();
-		$events = $sapiClient->listEvents(array(
-			'limit' => 100,
-			'offset' => 0,
+
+
+		$options = array(
+			'limit' => $input->getOption('limit'),
+			'offset' => $input->getOption('offset'),
 			'component' => $input->getOption('component'),
 			'runId' => $input->getOption('runId'),
 			'configurationId' => $input->getOption('configurationId'),
-		));
+		);
 
-		$formatter = $this->getFormatterHelper();
-		foreach ($events as $event) {
-			$output->write($event['created']);
-			$output->write(" ");
-			$output->write($event['id']);
-			$output->write(" ");
-			$output->write($event['component'] . (isset($event['configurationId']) ? "($event[configurationId])" : ""));
-			$output->write($formatter->formatSection($event['event'], '', $event['type']));
-			$output->writeln($event['message']);
-		}
+		do {
+			$events = $sapiClient->listEvents($options);
+
+			$formatter = $this->getFormatterHelper();
+			$maxId = null;
+			foreach ($events as $event) {
+				$output->write($event['created']);
+				$output->write(" ");
+				$output->write($event['id']);
+				$output->write(" ");
+				$output->write($event['component'] . (isset($event['configurationId']) ? "($event[configurationId])" : ""));
+				$output->write($formatter->formatSection($event['event'], '', $event['type']));
+				$output->writeln($event['message']);
+
+				$maxId = $event['id'];
+			}
+			$options['maxId'] = $maxId; // older events
+		} while (
+			$input->isInteractive() &&
+			$this->getDialogHelper()->askConfirmation($output, '<question>Load older events?</question>')
+		);
 	}
 
 
