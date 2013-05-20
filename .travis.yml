@@ -5,6 +5,7 @@ php:
 before_script:
 - "curl -s http://box-project.org/installer.php | php"
 - "gem install travis-artifacts"
+- "composer install"
 script:
 - "php ./box.phar build --verbose"
 - "php ./sapi-client.phar"
