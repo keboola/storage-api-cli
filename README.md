@@ -1,14 +1,12 @@
-# Keboola Storage API Command Line Interface
+# Keboola Storage API Command Line Interface [![Build Status](https://travis-ci.org/keboola/storage-api-cli.png?branch=master)](https://travis-ci.org/keboola/storage-api-cli)
 
 Simple command line wrapper for [Keboola Storage REST API](http://docs.keboola.apiary.io/)
 
 ## Installation
 
-```bash
-git clone git@github.com:keboola/storage-api-cli.git
-cd storage-api-cli
-composer install
-```
+Download the latest version from [https://s3.amazonaws.com/keboola-storage-api-cli/builds/sapi-client.phar]
+From there, you may place it anywhere that will make it easier for you to access (such as /usr/local/bin) and chmod it to 755.
+You can even rename it to just sapi-client to avoid having to type the .phar extension every time.
 
 ## Usage
 
@@ -60,8 +58,15 @@ To exit the shell, type ^D.
 Keboola Storage API Client >
 ```
 
+## Development
 
-### Build
+```bash
+git clone git@github.com:keboola/storage-api-cli.git
+cd storage-api-cli
+composer install
+```
+
+## Build
 Tool is distributed as PHAR package, follow these steps to create package of current version:
 
 ```bash
