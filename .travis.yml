@@ -7,7 +7,7 @@ before_script:
 - "gem install travis-artifacts"
 script: "php ./box.phar build --verbose"
 after_success:
-  - "travis-artifacts upload --path sapi-client.phar"
+  - "travis-artifacts upload --path sapi-client.phar --target-path=''"
 env:
  global:
    - "ARTIFACTS_AWS_REGION=us-east-1"
