@@ -13,4 +13,4 @@ env:
    - "ARTIFACTS_AWS_REGION=us-east-1"
    - "ARTIFACTS_S3_BUCKET=keboola-storage-api-cli"
    - secure: "Heq2XGSw+BPQS8Q7NUsGuf4HQ/4IMoUfxE+Rt+oCi9IRc/27RFgNcBUkueuA\nDET7MGVkMMzyDKcvxEucYWDCC3jyCxAS1zgJq/kdosBc4wxMgt5v0aBYQokR\nUOK9zBe5X2fhnSbaIrVXDOj16pO6nGpKoIFozTPdVPTltbnBNU8="
-   - secure: "GTH9WDYTf9sL6jbx1hbw4SpoMMiQdubjcjZCGDdOvIS5LjI6+FdagKaCjF/w\nDFcq34INtIIxMGsxQmMwVIxrjZzZv9xpY/H1m3kyk1C47Dj2iDkxRVo5UyuD\n9saRm5Gu8MFfSuI4KM50/rl8aluJUC1G5/BjiAyc3qwoFHbjXw0="
+   - secure: "AU9XR8b1g7YZGbWvl6UuaaTCaW8NQq9ycVV1fH/lrlq367Vj19tiYH6F+txH\nFkeyGduwoQtH6pP/uHF03F5dBy/9kFAywFxzNbh+Q+OK7s/oo5Lem9yWGTmv\ni2F9T0loE0kOoLellRNd7lijkK9MpP65u0fQDdi+hf1wHGuFDDw="
