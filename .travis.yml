@@ -1,0 +1,16 @@
+---
+language: php
+php:
+- 5.4
+before_script:
+- "curl -s http://box-project.org/installer.php | php"
+- "gem install travis-artifacts"
+script: "box.phar build"
+after_success:
+  - "travis-artifacts upload --path sapi-client.phar"
+env:
+ global:
+   - "ARTIFACTS_AWS_REGION=us-east-1"
+   - "ARTIFACTS_S3_BUCKET=keboola-storage-api-cli"
+   - secure: "Heq2XGSw+BPQS8Q7NUsGuf4HQ/4IMoUfxE+Rt+oCi9IRc/27RFgNcBUkueuA\nDET7MGVkMMzyDKcvxEucYWDCC3jyCxAS1zgJq/kdosBc4wxMgt5v0aBYQokR\nUOK9zBe5X2fhnSbaIrVXDOj16pO6nGpKoIFozTPdVPTltbnBNU8="
+   - secure: "GTH9WDYTf9sL6jbx1hbw4SpoMMiQdubjcjZCGDdOvIS5LjI6+FdagKaCjF/w\nDFcq34INtIIxMGsxQmMwVIxrjZzZv9xpY/H1m3kyk1C47Dj2iDkxRVo5UyuD\n9saRm5Gu8MFfSuI4KM50/rl8aluJUC1G5/BjiAyc3qwoFHbjXw0="
