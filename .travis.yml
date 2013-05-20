@@ -10,7 +10,11 @@ script:
 - "php ./box.phar build --verbose"
 - "php ./sapi-client.phar"
 after_success:
+  - "CURRENT_TAG=`git describe --tags HEAD`"
+  - "echo $CURRENT_TAG"
+  - "cp ./sapi-client.phar ./sapi-client.$CURRENT_TAG.phar"
   - "test ${TRAVIS_BRANCH} = master && travis-artifacts upload --path sapi-client.phar --target-path='builds'"
+  - "test ${TRAVIS_BRANCH} = master && travis-artifacts upload --path sapi-client.$CURRENT_TAG.phar --target-path='builds'"
 env:
  global:
    - "ARTIFACTS_AWS_REGION=us-east-1"
