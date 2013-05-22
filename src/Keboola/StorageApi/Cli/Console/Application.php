@@ -112,6 +112,7 @@ class Application extends BaseApplication
 			new Command\CopyTable(),
 			new Command\TruncateTable(),
 			new Command\ListEvents(),
+			new Command\ExportTable(),
 		), parent::getDefaultCommands());
 
 	}
