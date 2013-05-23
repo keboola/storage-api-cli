@@ -26,6 +26,7 @@ class ExportTable extends Command {
 			->setDefinition(array(
 				new InputArgument('tableId', InputArgument::REQUIRED, "target table"),
 				new InputArgument('filePath', InputArgument::REQUIRED, "export csv file"),
+				new InputOption('format', 'f', InputOption::VALUE_REQUIRED, "output format", "rfc"),
 			));
 	}
 
@@ -39,7 +40,9 @@ class ExportTable extends Command {
 		$output->writeln("Table found ok");
 
 		$startTime = time();
-		$sapiClient->exportTable($input-> getArgument('tableId'), $input->getArgument('filePath'));
+		$sapiClient->exportTable($input-> getArgument('tableId'), $input->getArgument('filePath'), array(
+			'format' => $input->getOption('format'),
+		));
 		$duration = time() - $startTime;
 
 		$output->writeln("Export done in $duration secs.");
