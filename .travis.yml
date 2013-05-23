@@ -7,7 +7,7 @@ before_script:
 - "gem install travis-artifacts"
 - "composer install --prefer-source --dev --no-interaction"
 script:
-- "php ./box.phar build --verbose"
+- "php ./box.phar build"
 - "php ./sapi-client.phar"
 after_success:
   - "CURRENT_TAG=`git describe --tags HEAD`"
