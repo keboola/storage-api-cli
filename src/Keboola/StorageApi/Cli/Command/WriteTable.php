@@ -28,7 +28,11 @@ class WriteTable extends Command {
 				new InputArgument('filePath', InputArgument::REQUIRED, "import csv file"),
 				new InputOption('incremental', 'i', InputOption::VALUE_NONE, "incremental load"),
 				new InputOption('partial', 'p', InputOption::VALUE_NONE, "partial load"),
+				new InputOption('delimiter', null, InputOption::VALUE_REQUIRED, "csv delimiter", CsvFile::DEFAULT_DELIMITER),
+				new InputOption('enclosure', null, InputOption::VALUE_OPTIONAL, "csv enclosure", CsvFile::DEFAULT_ENCLOSURE),
+				new InputOption('escapedBy', null, InputOption::VALUE_OPTIONAL, "csv escape character", ''),
 			));
+
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output)
@@ -48,9 +52,16 @@ class WriteTable extends Command {
 		$output->writeln("Import start");
 		$startTime = time();
 
+		$csvFile = new CsvFile(
+			$filePath,
+			stripcslashes($input->getOption('delimiter')),
+			$input->getOption('enclosure'),
+			$input->getOption('escapedBy')
+		);
+
 		$result = $sapiClient->writeTableAsync(
 			$input->getArgument('tableId'),
-			new CsvFile($filePath),
+			$csvFile,
 			array(
 				'incremental' => $input->getOption('incremental'),
 				'partial' => $input->getOption('partial'),

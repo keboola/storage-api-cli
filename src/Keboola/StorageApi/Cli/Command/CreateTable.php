@@ -27,6 +27,9 @@ class CreateTable extends Command {
 				new InputArgument('bucketId', InputArgument::REQUIRED, "destination bucket"),
 				new InputArgument('name', InputArgument::REQUIRED, "table name"),
 				new InputArgument('filePath', InputArgument::REQUIRED, "source csv file path, table will be created from file"),
+				new InputOption('delimiter', null, InputOption::VALUE_REQUIRED, "csv delimiter", CsvFile::DEFAULT_DELIMITER),
+				new InputOption('enclosure', null, InputOption::VALUE_OPTIONAL, "csv enclosure", CsvFile::DEFAULT_ENCLOSURE),
+				new InputOption('escapedBy', null, InputOption::VALUE_OPTIONAL, "csv escape character", ''),
 			));
 	}
 
@@ -44,12 +47,19 @@ class CreateTable extends Command {
 			throw new \Exception("File $filePath does not exist.");
 		}
 
-		$output->writeln("Table created start");
+		$output->writeln("Table create start");
+
+		$csvFile = new CsvFile(
+			$filePath,
+			stripcslashes($input->getOption('delimiter')),
+			$input->getOption('enclosure'),
+			$input->getOption('escapedBy')
+		);
 
 		$tableId = $sapiClient->createTableAsync(
 			$input->getArgument('bucketId'),
 			$input->getArgument('name'),
-			new CsvFile($filePath)
+			$csvFile
 		);
 
 		$output->writeln("Table create end");
