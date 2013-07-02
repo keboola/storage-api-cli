@@ -48,7 +48,7 @@ class WriteTable extends Command {
 		$output->writeln("Import start");
 		$startTime = time();
 
-		$result = $sapiClient->writeTable(
+		$result = $sapiClient->writeTableAsync(
 			$input->getArgument('tableId'),
 			new CsvFile($filePath),
 			array(

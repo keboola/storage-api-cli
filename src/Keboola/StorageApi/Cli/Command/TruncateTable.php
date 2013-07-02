@@ -52,7 +52,7 @@ class TruncateTable extends Command {
 		$headFile = new CsvFile($tmpFile . ".head");
 		$headFile->writeRow($csvFile->getHeader());
 
-		$sapiClient->writeTable(
+		$sapiClient->writeTableAsync(
 			$input->getArgument('tableId'),
 			$headFile
 		);

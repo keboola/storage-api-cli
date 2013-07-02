@@ -46,7 +46,7 @@ class CreateTable extends Command {
 
 		$output->writeln("Table created start");
 
-		$tableId = $sapiClient->createTable(
+		$tableId = $sapiClient->createTableAsync(
 			$input->getArgument('bucketId'),
 			$input->getArgument('name'),
 			new CsvFile($filePath)

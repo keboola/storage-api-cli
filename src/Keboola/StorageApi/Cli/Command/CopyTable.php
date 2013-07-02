@@ -68,7 +68,7 @@ class CopyTable extends Command {
 
 		// Upload the table
 		$csvFile = new CsvFile($tmpFile);
-		$sapiClient->createTable(
+		$sapiClient->createTableAsync(
 			$dStage . "." . $dBucket,
 			$dTable,
 			$csvFile,

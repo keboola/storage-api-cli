@@ -11,7 +11,7 @@
     "require": {
 		"symfony/console": "~2.2.1",
 		"symfony/filesystem": "~2.2.1",
-		"keboola/storage-api-client": "~2.7.2"
+		"keboola/storage-api-client": "~2.8.9"
     },
 	"autoload": {
 		"psr-0": {"Keboola\\StorageApi\\Cli": "src/"}
