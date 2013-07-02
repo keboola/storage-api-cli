@@ -71,12 +71,9 @@ class WriteTable extends Command {
 		$duration = time() - $startTime;
 
 		$output->writeln("Import done in $duration secs.");
-		$output->writeln("Results:");
-		foreach ($result as $key => $value) {
-			$output->writeln("$key: $value");
-		}
-		
-
+		$output->writeln("");
+		$output->writeln($this->getFormatterHelper()->formatBlock("Results:", "info"));
+		$output->write($this->getNestedFormatterHelper()->format($result, 1));
 	}
 
 

@@ -11,6 +11,7 @@ namespace Keboola\StorageApi\Cli\Console;
 
 use Keboola\StorageApi\Client;
 use Keboola\StorageApi\Cli\Command;
+use Keboola\Symfony\Console\Helper\NestedFormatterHelper\NestedFormatterHelper;
 use Symfony\Component\Console\Application as BaseApplication;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Input\InputArgument;
@@ -114,7 +115,13 @@ class Application extends BaseApplication
 			new Command\ListEvents(),
 			new Command\ExportTable(),
 		), parent::getDefaultCommands());
+	}
 
+	protected function getDefaultHelperSet()
+	{
+		$helperSet = parent::getDefaultHelperSet();
+		$helperSet->set(new NestedFormatterHelper());
+		return $helperSet;
 	}
 
 }

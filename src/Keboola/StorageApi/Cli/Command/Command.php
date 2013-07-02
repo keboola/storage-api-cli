@@ -9,6 +9,7 @@
 
 namespace Keboola\StorageApi\Cli\Command;
 
+use Keboola\Symfony\Console\Helper\NestedFormatterHelper\NestedFormatterHelper;
 use Symfony\Component\Console\Command\Command as BaseCommand;
 use Keboola\StorageApi\Client;
 use Keboola\StorageApi\Cli\Console\Application;
@@ -109,6 +110,14 @@ abstract class Command extends BaseCommand
 	public function getDialogHelper()
 	{
 		return $this->getHelper('dialog');
+	}
+
+	/**
+	 * @return NestedFormatterHelper
+	 */
+	public function getNestedFormatterHelper()
+	{
+		return $this->getHelper('nestedFormatter');
 	}
 
 }
