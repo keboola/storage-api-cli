@@ -111,6 +111,7 @@ class Application extends BaseApplication
 			new Command\DeleteTable(),
 			new Command\WriteTable(),
 			new Command\CopyTable(),
+			new Command\RestoreTableFromImports(),
 			new Command\TruncateTable(),
 			new Command\ListEvents(),
 			new Command\ExportTable(),
