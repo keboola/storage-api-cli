@@ -10,6 +10,7 @@
 namespace Keboola\StorageApi\Cli\Command;
 
 use Keboola\Csv\CsvFile;
+use Keboola\StorageApi\Client;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface,
 	Symfony\Component\Console\Output\OutputInterface;
@@ -25,7 +26,8 @@ class CopyTable extends Command {
 			->setDescription('Copy table with PK, indexes and attributes (transferring nongzipped data)')
 			->setDefinition(array(
 				new InputArgument('sourceTableId', InputArgument::REQUIRED, "source table"),
-				new InputArgument('destinationTableId', InputArgument::REQUIRED, "destination table")
+				new InputArgument('destinationTableId', InputArgument::REQUIRED, "destination table"),
+				new InputOption('dstToken', null, InputOption::VALUE_OPTIONAL, "Destination Storage API Token")
 			));
 	}
 
@@ -35,17 +37,8 @@ class CopyTable extends Command {
 		if (!$sapiClient->tableExists($input->getArgument('sourceTableId'))) {
 			throw new \Exception("Table {$input->getArgument('sourceTableId')} does not exist or is not accessible.");
 		}
-		if ($sapiClient->tableExists($input->getArgument('destinationTableId'))) {
-			throw new \Exception("Table {$input->getArgument('destinationTableId')} cannot be overwritten.");
-		}
 
-		$destinationTable = $input->getArgument('destinationTableId');
-		list($dStage, $dBucket, $dTable) = explode(".", $destinationTable);
-		if (!$sapiClient->bucketExists($dStage . "." . $dBucket)) {
-			throw new \Exception("Bucket {$dStage}.{$dBucket} does not exist or is not accessible.");
-		}
-
-		$output->writeln("Table found ok");
+		$output->writeln("Source table found ok");
 
 		$output->writeln("Copying {$input->getArgument('sourceTableId')} to {$input->getArgument('destinationTableId')}");
 		$startTime = time();
@@ -65,6 +58,30 @@ class CopyTable extends Command {
 			$input->getArgument('sourceTableId'),
 			$tmpFile
 		);
+
+		// Destination table
+		if ($input->hasParameterOption('--dstToken')) {
+
+			echo "Setting destination token";
+
+			$sapiClient = new Client(
+				$input->getParameterOption('--dstToken'),
+				null,
+				$this->getApplication()->userAgent()
+			);
+		}
+
+		if ($sapiClient->tableExists($input->getArgument('destinationTableId'))) {
+			throw new \Exception("Table {$input->getArgument('destinationTableId')} cannot be overwritten.");
+		}
+
+		$destinationTable = $input->getArgument('destinationTableId');
+		list($dStage, $dBucket, $dTable) = explode(".", $destinationTable);
+		if (!$sapiClient->bucketExists($dStage . "." . $dBucket)) {
+			throw new \Exception("Bucket {$dStage}.{$dBucket} does not exist or is not accessible.");
+		}
+
+		$output->writeln("Destination table found ok");
 
 		// Upload the table
 		$csvFile = new CsvFile($tmpFile);

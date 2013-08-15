@@ -97,7 +97,7 @@ class Application extends BaseApplication
 		return $this->sapiClient;
 	}
 
-	private function userAgent()
+	public function userAgent()
 	{
 		return "{$this->getName()}/{$this->getVersion()}";
 	}
@@ -106,6 +106,7 @@ class Application extends BaseApplication
 	{
 		return array_merge(array(
 			new Command\ListBuckets(),
+			new Command\CopyBucket(),
 			new Command\DeleteBucket(),
 			new Command\CreateTable(),
 			new Command\DeleteTable(),
