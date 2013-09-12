@@ -27,7 +27,7 @@ class CopyTable extends Command {
 			->setDefinition(array(
 				new InputArgument('sourceTableId', InputArgument::REQUIRED, "source table"),
 				new InputArgument('destinationTableId', InputArgument::REQUIRED, "destination table"),
-				new InputOption('dstToken', null, InputOption::VALUE_OPTIONAL, "Destination Storage API Token")
+				new InputArgument('dstToken', InputArgument::OPTIONAL, "Destination Storage API Token")
 			));
 	}
 
@@ -59,25 +59,26 @@ class CopyTable extends Command {
 			$tmpFile
 		);
 
-		// Destination table
-		if ($input->hasParameterOption('--dstToken')) {
+		$sapiClientDst = $sapiClient;
+		// Destination token
+		if ($input->getArgument('dstToken')) {
 
-			echo "Setting destination token";
+			$output->writeln("Setting destination token");
 
-			$sapiClient = new Client(
-				$input->getParameterOption('--dstToken'),
+			$sapiClientDst = new Client(
+				$input->getArgument('dstToken'),
 				null,
 				$this->getApplication()->userAgent()
 			);
 		}
 
-		if ($sapiClient->tableExists($input->getArgument('destinationTableId'))) {
+		if ($sapiClientDst ->tableExists($input->getArgument('destinationTableId'))) {
 			throw new \Exception("Table {$input->getArgument('destinationTableId')} cannot be overwritten.");
 		}
 
 		$destinationTable = $input->getArgument('destinationTableId');
 		list($dStage, $dBucket, $dTable) = explode(".", $destinationTable);
-		if (!$sapiClient->bucketExists($dStage . "." . $dBucket)) {
+		if (!$sapiClientDst ->bucketExists($dStage . "." . $dBucket)) {
 			throw new \Exception("Bucket {$dStage}.{$dBucket} does not exist or is not accessible.");
 		}
 
@@ -85,7 +86,7 @@ class CopyTable extends Command {
 
 		// Upload the table
 		$csvFile = new CsvFile($tmpFile);
-		$sapiClient->createTableAsync(
+		$sapiClientDst ->createTableAsync(
 			$dStage . "." . $dBucket,
 			$dTable,
 			$csvFile,
@@ -98,14 +99,14 @@ class CopyTable extends Command {
 				if (in_array($index, $tableInfo["primaryKey"])) {
 					continue;
 				}
-				$sapiClient->markTableColumnAsIndexed($destinationTable, $index);
+				$sapiClientDst->markTableColumnAsIndexed($destinationTable, $index);
 			}
 		}
 
 		// Set attributes
 		if ($tableInfo["attributes"] && count($tableInfo["attributes"])) {
 			foreach($tableInfo["attributes"] as $attribute) {
-				$sapiClient->setTableAttribute($destinationTable, $attribute["name"], $attribute["value"], $attribute["protected"]);
+				$sapiClientDst->setTableAttribute($destinationTable, $attribute["name"], $attribute["value"], $attribute["protected"]);
 			}
 
 		}
