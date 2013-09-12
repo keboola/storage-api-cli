@@ -27,7 +27,7 @@ class CopyTable extends Command {
 			->setDefinition(array(
 				new InputArgument('sourceTableId', InputArgument::REQUIRED, "source table"),
 				new InputArgument('destinationTableId', InputArgument::REQUIRED, "destination table"),
-				new InputArgument('dstToken', null, InputArgument::OPTIONAL, "Destination Storage API Token")
+				new InputArgument('dstToken', InputArgument::OPTIONAL, "Destination Storage API Token")
 			));
 	}
 
@@ -60,7 +60,7 @@ class CopyTable extends Command {
 		);
 
 		$sapiClientDst = $sapiClient;
-		// Destination table
+		// Destination token
 		if ($input->getArgument('dstToken')) {
 
 			$output->writeln("Setting destination token");

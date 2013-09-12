@@ -26,7 +26,7 @@ class CopyBucket extends Command
 			->setDefinition(array(
 				new InputArgument('sourceBucketId', InputArgument::REQUIRED, "source bucket"),
 				new InputArgument('destinationBucketId', InputArgument::REQUIRED, "destination bucket"),
-				new InputArgument('dstToken', null, InputArgument::OPTIONAL, "Destination Storage API Token")
+				new InputArgument('dstToken', InputArgument::OPTIONAL, "Destination Storage API Token")
 			));
 	}
 
