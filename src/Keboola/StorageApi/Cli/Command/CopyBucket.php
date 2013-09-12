@@ -41,23 +41,23 @@ class CopyBucket extends Command
 			throw new \Exception("Source bucket {$srcBucketId} does not exist or is not accessible.");
 		}
 
-		if ($sapiClient->bucketExists($dstBucketId)) {
-			throw new \Exception("Destination bucket {$dstBucketId} already exists.");
-		}
-
 		$output->writeln("Source bucket found ok");
 
-
 		// Different token
-		if ($input->hasParameterOption('--dstToken')) {
+		if ($input->getArgument('dstToken')) {
 			$sapiClientDst = new Client(
-				$input->getParameterOption('--dstToken'),
+				$input->getArgument('dstToken'),
 				null,
 				$this->getApplication()->userAgent()
 			);
 		} else {
 			$sapiClientDst = $sapiClient;
 		}
+
+		if ($sapiClientDst->bucketExists($dstBucketId)) {
+			throw new \Exception("Destination bucket {$dstBucketId} already exists.");
+		}
+
 
 		$srcBucketInfo = $sapiClient->getBucket($srcBucketId);
 		list($dstBucketStage, $dstBucketName) = explode(".", $dstBucketId);
@@ -89,8 +89,8 @@ class CopyBucket extends Command
 				'destinationTableId'    => $dstBucketId . '.' . $sTable
 			);
 
-			if ($input->hasParameterOption('--dstToken')) {
-				$arguments['--dstToken'] = $input->getParameterOption('--dstToken');
+			if ($input->getArgument('dstToken')) {
+				$arguments['dstToken'] = $input->getArgument('dstToken');
 			}
 
 			$cmdInput = new ArrayInput($arguments);
