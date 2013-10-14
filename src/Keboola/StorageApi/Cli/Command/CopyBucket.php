@@ -26,7 +26,7 @@ class CopyBucket extends Command
 			->setDefinition(array(
 				new InputArgument('sourceBucketId', InputArgument::REQUIRED, "source bucket"),
 				new InputArgument('destinationBucketId', InputArgument::REQUIRED, "destination bucket"),
-				new InputOption('dstToken', null, InputOption::VALUE_OPTIONAL, "Destination Storage API Token")
+				new InputArgument('dstToken', InputArgument::OPTIONAL, "Destination Storage API Token")
 			));
 	}
 
@@ -38,25 +38,46 @@ class CopyBucket extends Command
 		$dstBucketId = $input->getArgument('destinationBucketId');
 
 		if (!$sapiClient->bucketExists($srcBucketId)) {
-			throw new \Exception("Bucket {$srcBucketId} does not exist or is not accessible.");
+			throw new \Exception("Source bucket {$srcBucketId} does not exist or is not accessible.");
 		}
 
 		$output->writeln("Source bucket found ok");
-		$srcTables = $sapiClient->listTables($srcBucketId);
 
-		if ($input->hasParameterOption('--dstToken')) {
-			$sapiClient = new Client(
-				$input->getParameterOption('--dstToken'),
+		// Different token
+		if ($input->getArgument('dstToken')) {
+			$sapiClientDst = new Client(
+				$input->getArgument('dstToken'),
 				null,
 				$this->getApplication()->userAgent()
 			);
+		} else {
+			$sapiClientDst = $sapiClient;
 		}
 
-		if (!$sapiClient->bucketExists($dstBucketId)) {
-			throw new \Exception("Bucket {$dstBucketId} does not exist or is not accessible.");
+		if ($sapiClientDst->bucketExists($dstBucketId)) {
+			throw new \Exception("Destination bucket {$dstBucketId} already exists.");
 		}
 
-		foreach ($srcTables as $srcTable) {
+
+		$srcBucketInfo = $sapiClient->getBucket($srcBucketId);
+		list($dstBucketStage, $dstBucketName) = explode(".", $dstBucketId);
+		$dstBucketDesc = "Copy of $srcBucketId\n" . $srcBucketInfo["description"];
+
+		// Remove c- prefix
+		if (substr($dstBucketName, 0, 2) == "c-") {
+			$dstBucketName = substr($dstBucketName, 2);
+		}
+
+		// Create bucket
+		$sapiClientDst->createBucket($dstBucketName, $dstBucketStage, $dstBucketDesc);
+
+		// Copy attributes
+		foreach($srcBucketInfo["attributes"] as $attribute) {
+			$sapiClientDst->setBucketAttribute($dstBucketId, $attribute["name"], $attribute["value"], $attribute["protected"]);
+		}
+
+		// Copy tables
+		foreach ($srcBucketInfo["tables"] as $srcTable) {
 			$command = $this->getApplication()->find('copy-table');
 
 			list($sStage, $sBucket, $sTable) = explode('.', $srcTable['id']);
@@ -68,8 +89,8 @@ class CopyBucket extends Command
 				'destinationTableId'    => $dstBucketId . '.' . $sTable
 			);
 
-			if ($input->hasParameterOption('--dstToken')) {
-				$arguments['--dstToken'] = $input->getParameterOption('--dstToken');
+			if ($input->getArgument('dstToken')) {
+				$arguments['dstToken'] = $input->getArgument('dstToken');
 			}
 
 			$cmdInput = new ArrayInput($arguments);
