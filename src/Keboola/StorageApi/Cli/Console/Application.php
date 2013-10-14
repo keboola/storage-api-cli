@@ -36,6 +36,11 @@ class Application extends BaseApplication
 	private $sapiToken;
 
 	/**
+	 * @var SAPI url
+	 */
+	private $sapiUrl;
+
+	/**
 	 * @var OutputInterface
 	 */
 	private $output;
@@ -47,6 +52,9 @@ class Application extends BaseApplication
 
 		$this->getDefinition()
 			->addOption(new InputOption('token', null, InputOption::VALUE_REQUIRED, "Storage API Token"));
+
+		$this->getDefinition()
+			->addOption(new InputOption('url', null, InputOption::VALUE_REQUIRED, "Storage API URL"));
 
 		$this->getDefinition()
 			->addOption(new InputOption('--shell', null, InputOption::VALUE_NONE, 'Launch the shell.'));
@@ -64,6 +72,11 @@ class Application extends BaseApplication
 			$this->sapiToken = $input->getParameterOption('--token');
 			$this->sapiClient = null;
 		}
+
+		if ($input->getParameterOption('--url')) {
+			$this->sapiUrl = $input->getParameterOption('--url');
+		}
+
 		$this->output = $output;
 
 		if (true === $input->hasParameterOption(array('--shell'))) {
@@ -88,7 +101,7 @@ class Application extends BaseApplication
 			}
 			$this->sapiClient = new Client(
 				$this->sapiToken,
-				null,
+				$this->sapiUrl,
 				$this->userAgent()
 			);
 			$logData = $this->sapiClient->getLogData();
