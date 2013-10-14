@@ -1,3 +1,7 @@
+## 0.1.7
+ * [Feature] Storage API URL as optional parameter
+ * [Bugfix] Copying tables/buckets between projects
+
 ## 0.1.6
  * [Feature] Command copy-table is now able to copy tables to another project. Added copy-bucket command.
 
