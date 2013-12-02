@@ -1,3 +1,6 @@
+## 0.1.8
+ * [Refactoring] Storage API client minor version auto update allowed
+
 ## 0.1.7
  * [Feature] Storage API URL as optional parameter
  * [Bugfix] Copying tables/buckets between projects
