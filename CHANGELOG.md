@@ -1,3 +1,6 @@
+## 0.2.1
+ * [Bugfix] phar build fix
+
 ## 0.2.0
  * [Feat] copy bucket - set backed for destination bucket
 
