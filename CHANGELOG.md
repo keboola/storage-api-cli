@@ -1,3 +1,6 @@
+## 0.2.0
+ * [Feat] copy bucket - set backed for destination bucket
+
 ## 0.1.9
  * [Bugfix] Dependencies versions
 
