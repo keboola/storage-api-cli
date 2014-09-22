@@ -14,7 +14,7 @@ You can even rename it to just sapi-client to avoid having to type the .phar ext
 ## Usage
 
 ```bash
-➜  storage-api-cli git:(master) php bin/sapi-client --token=your_sapi_token
+➜  storage-api-cli git:(master) php sapi-client.phar --token=your_sapi_token
 Authorized as: martin@keboola.com (Demo Project)
 Console Tool
 
