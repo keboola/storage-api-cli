@@ -99,11 +99,11 @@ class Application extends BaseApplication
 			if (!$this->sapiToken) {
 				throw new \RuntimeException('Token --token must be set');
 			}
-			$this->sapiClient = new Client(
-				$this->sapiToken,
-				$this->sapiUrl,
-				$this->userAgent()
-			);
+			$this->sapiClient = new Client([
+				'token' => $this->sapiToken,
+				'url' => $this->sapiUrl,
+				'userAgent' => $this->userAgent(),
+			]);
 			$logData = $this->sapiClient->getLogData();
 			$this->output->writeln("Authorized as: {$logData['description']} ({$logData['owner']['name']})");
 		}

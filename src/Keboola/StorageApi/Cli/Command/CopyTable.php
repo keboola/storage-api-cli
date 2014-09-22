@@ -65,11 +65,10 @@ class CopyTable extends Command {
 
 			$output->writeln("Setting destination token");
 
-			$sapiClientDst = new Client(
-				$input->getArgument('dstToken'),
-				null,
-				$this->getApplication()->userAgent()
-			);
+			$sapiClientDst = new Client([
+				'token' => $input->getArgument('dstToken'),
+				'userAgent' => $this->getApplication()->userAgent(),
+			]);
 		}
 
 		if ($sapiClientDst ->tableExists($input->getArgument('destinationTableId'))) {

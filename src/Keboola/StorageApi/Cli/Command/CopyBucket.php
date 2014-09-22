@@ -26,6 +26,7 @@ class CopyBucket extends Command
 			->setDefinition(array(
 				new InputArgument('sourceBucketId', InputArgument::REQUIRED, "source bucket"),
 				new InputArgument('destinationBucketId', InputArgument::REQUIRED, "destination bucket"),
+				new InputArgument('destinationBucketBackend', InputArgument::OPTIONAL, "destination bucket backend", "mysql"),
 				new InputArgument('dstToken', InputArgument::OPTIONAL, "Destination Storage API Token")
 			));
 	}
@@ -45,11 +46,10 @@ class CopyBucket extends Command
 
 		// Different token
 		if ($input->getArgument('dstToken')) {
-			$sapiClientDst = new Client(
-				$input->getArgument('dstToken'),
-				null,
-				$this->getApplication()->userAgent()
-			);
+			$sapiClientDst = new Client([
+				'token' => $input->getArgument('dstToken'),
+				'userAgent' => $this->getApplication()->userAgent(),
+			]);
 		} else {
 			$sapiClientDst = $sapiClient;
 		}
@@ -69,7 +69,7 @@ class CopyBucket extends Command
 		}
 
 		// Create bucket
-		$sapiClientDst->createBucket($dstBucketName, $dstBucketStage, $dstBucketDesc);
+		$sapiClientDst->createBucket($dstBucketName, $dstBucketStage, $dstBucketDesc, $input->getArgument('destinationBucketBackend'));
 
 		// Copy attributes
 		foreach($srcBucketInfo["attributes"] as $attribute) {
