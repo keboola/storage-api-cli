@@ -2,7 +2,7 @@
  * [Bugfix] phar build fix
 
 ## 0.2.0
- * [Feat] copy bucket - set backed for destination bucket
+ * [Feat] copy bucket - set backend for destination bucket
 
 ## 0.1.9
  * [Bugfix] Dependencies versions
