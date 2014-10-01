@@ -11,6 +11,8 @@ Download the latest version from https://s3.amazonaws.com/keboola-storage-api-cl
 From there, you may place it anywhere that will make it easier for you to access (such as /usr/local/bin) and chmod it to 755.
 You can even rename it to just sapi-client to avoid having to type the .phar extension every time.
 
+Storage API cli requires PHP 5.4 or newer, for PHP 5.3 you can use https://s3.amazonaws.com/keboola-storage-api-cli/builds/sapi-client.0.1.9.phar (5.3 version is no longer supported)
+
 ## Usage
 
 ```bash
