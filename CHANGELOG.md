@@ -1,3 +1,6 @@
+## 0.2.2
+ * [Feat] export async and allow gzip
+
 ## 0.2.1
  * [Bugfix] phar build fix
 
