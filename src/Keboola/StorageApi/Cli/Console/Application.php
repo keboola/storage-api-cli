@@ -129,6 +129,7 @@ class Application extends BaseApplication
 			new Command\TruncateTable(),
 			new Command\ListEvents(),
 			new Command\ExportTable(),
+			new Command\BackupProject(),
 		), parent::getDefaultCommands());
 	}
 
