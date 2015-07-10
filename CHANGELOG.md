@@ -1,3 +1,7 @@
+## 0.2.6
+ * [Feat] `backup-project` command added. Allows backup whole project to AWS S3.
+ * [Feat] `KBC_RUN_ID` env variable support. Assigns RUN ID to all API calls.
+
 ## 0.2.2
  * [Feat] export async and allow gzip
 

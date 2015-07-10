@@ -99,15 +99,24 @@ class Application extends BaseApplication
 			if (!$this->sapiToken) {
 				throw new \RuntimeException('Token --token must be set');
 			}
+			$runId = $this->getRunId();
 			$this->sapiClient = new Client([
 				'token' => $this->sapiToken,
 				'url' => $this->sapiUrl,
 				'userAgent' => $this->userAgent(),
 			]);
+			if ($runId) {
+				$this->sapiClient->setRunId($runId);
+			}
 			$logData = $this->sapiClient->getLogData();
 			$this->output->writeln("Authorized as: {$logData['description']} ({$logData['owner']['name']})");
 		}
 		return $this->sapiClient;
+	}
+
+	private function getRunId()
+	{
+		return getenv('KBC_RUN_ID') ? getenv('KBC_RUN_ID') : getenv('KBC_RUNID');
 	}
 
 	public function userAgent()
