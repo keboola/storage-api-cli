@@ -16,6 +16,10 @@ use Symfony\Component\Console\Input\ArgvInput;
 
 $app = new Application();
 
-$input = new ArgvInput(array_merge($_SERVER['argv'], array('--ansi')));
+$newOptions = [];
+if (!in_array('--no-ansi', $_SERVER['argv'])) {
+	$newOptions[] = '--ansi';
+}
+$input = new ArgvInput(array_merge($_SERVER['argv'], $newOptions));
 $app->run($input);
 
