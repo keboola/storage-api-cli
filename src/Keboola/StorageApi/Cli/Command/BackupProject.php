@@ -78,16 +78,20 @@ class BackupProject extends Command {
 		foreach (array_values($tables) as $i => $table) {
 			$output->write($this->format("Table $i/$tablesCount - {$table['id']}"));
 			$tmpFile = $this->getTmpDir() . "/" . uniqid('table');
-			$tableExporter->exportTable($table['id'], $tmpFile, [
-				'gzip' => true,
-			]);
-			$s3->putObject([
-				'Bucket' => $bucket,
-				'Key' => $basePath . str_replace('.', '/', $table['id']) . '.csv.gz',
-				'Body' => fopen($tmpFile, 'r'),
-			]);
-			unlink($tmpFile);
-			$output->writeln($this->check());
+			if (!$table['isAlias']) {
+				$tableExporter->exportTable($table['id'], $tmpFile, [
+					'gzip' => true,
+				]);
+				$s3->putObject([
+					'Bucket' => $bucket,
+					'Key' => $basePath . str_replace('.', '/', $table['id']) . '.csv.gz',
+					'Body' => fopen($tmpFile, 'r'),
+				]);
+				unlink($tmpFile);
+				$output->writeln($this->check());
+			} else {
+				$output->writeln('<comment>Skipped (alias table)</comment>');
+			}
 		}
 	}
 
