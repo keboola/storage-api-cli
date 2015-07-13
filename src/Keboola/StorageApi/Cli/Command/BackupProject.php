@@ -53,7 +53,7 @@ class BackupProject extends Command {
 		$s3->putObject([
 			'Bucket' => $bucket,
 			'Key' => $basePath . 'tables.json',
-			'Body' => $tables,
+			'Body' => json_encode($tables),
 		]);
 		$output->writeln($this->check());
 
@@ -61,7 +61,7 @@ class BackupProject extends Command {
 		$s3->putObject([
 			'Bucket' => $bucket,
 			'Key' => $basePath . 'buckets.json',
-			'Body' => $sapiClient->listBuckets(),
+			'Body' => json_encode($sapiClient->listBuckets()),
 		]);
 		$output->writeln($this->check());
 
@@ -69,8 +69,8 @@ class BackupProject extends Command {
 		$s3->putObject([
 			'Bucket' => $bucket,
 			'Key' => $basePath . 'configurations.json',
-			'Body' => $components->listComponents((new ListConfigurationsOptions())
-				->setInclude(['configuration', 'state'])),
+			'Body' => json_encode($components->listComponents((new ListConfigurationsOptions())
+				->setInclude(['configuration', 'state']))),
 		]);
 		$output->writeln($this->check());
 
