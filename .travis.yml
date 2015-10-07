@@ -22,5 +22,5 @@ deploy:
   acl: public_read
   skip_cleanup: true
   detect_encoding: true
-  access_key_id: $AWS_ACCESS_KEY
+  access_key_id: $AWS_ACCESS_KEY_ID
   secret_access_key: $AWS_SECRET_KEY
