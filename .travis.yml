@@ -1,26 +1,28 @@
----
 language: php
 php:
 - 5.4
 sudo: false
 before_script:
-- "curl -LSs http://box-project.github.io/box2/installer.php | php"
-- "composer install --prefer-source --dev --no-interaction"
+- curl -LSs http://box-project.github.io/box2/installer.php | php
+- composer install --prefer-source --dev --no-interaction
 script:
-- "php ./box.phar build"
-- "php ./sapi-client.phar"
+- php ./box.phar build
+- php ./sapi-client.phar
 after_success:
-  - "CURRENT_TAG=`git describe --tags HEAD`"
-  - "echo $CURRENT_TAG"
-  - "mkdir builds"
-  - "cp ./sapi-client.phar ./builds/sapi-client.$CURRENT_TAG.phar"
-  - "cp ./sapi-client.phar ./builds/sapi-client.phar"
+- CURRENT_TAG=`git describe --tags HEAD`
+- echo $CURRENT_TAG
+- mkdir builds
+- cp ./sapi-client.phar ./builds/sapi-client.$CURRENT_TAG.phar
+- cp ./sapi-client.phar ./builds/sapi-client.phar
 deploy:
-- provider: s3
-  bucket: keboola-storage-api-cli
-  local-dir: builds
-  upload-dir: builds
-  acl: public_read
-  skip_cleanup: true
-  cache_control: max-age=31536000
-  detect_encoding: true
+  matrix:
+  - provider: s3
+    bucket: keboola-storage-api-cli
+    local-dir: builds
+    upload-dir: builds
+    acl: public_read
+    skip_cleanup: true
+    detect_encoding: true
+    access_key_id: AKIAJQCQNNN53PSNCVVA
+    secret_access_key:
+      secure: j7W4MlMZoZZVd9HZWxnQhC9iZOrgTlhKsc0jlGYTsQmM2cTTlLydiuGjU/ifhWIUyt+lqa4TVnS774Q2S1mA0Kki0KTaVlakoIdrel/1xsd+8XiqH0iQutAW2JjSUclH/KdUPhCtfGwjg8XJWGni8D9JV4zzABWvpA62KO3e9U4=
