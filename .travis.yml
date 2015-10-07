@@ -5,7 +5,6 @@ php:
 sudo: false
 before_script:
 - "curl -LSs http://box-project.org/installer.php | php"
-- "gem install travis-artifacts"
 - "composer install --prefer-source --dev --no-interaction"
 script:
 - "php ./box.phar build"
