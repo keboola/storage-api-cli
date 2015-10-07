@@ -13,12 +13,16 @@ script:
 after_success:
   - "CURRENT_TAG=`git describe --tags HEAD`"
   - "echo $CURRENT_TAG"
-  - "cp ./sapi-client.phar ./sapi-client.$CURRENT_TAG.phar"
-  - "test ${TRAVIS_BRANCH} = master && travis-artifacts upload --path sapi-client.phar --target-path='builds'"
-  - "test ${TRAVIS_BRANCH} = master && travis-artifacts upload --path sapi-client.$CURRENT_TAG.phar --target-path='builds'"
+  - "mkdir builds"
+  - "cp ./sapi-client.phar ./builds/sapi-client.$CURRENT_TAG.phar"
+  - "cp ./sapi-client.phar ./builds/sapi-client.phar"
+addons:
+  artifacts: true
+  s3_region: "us-east-1"
+  paths:
+    - "builds"
 env:
  global:
-   - "ARTIFACTS_AWS_REGION=us-east-1"
-   - "ARTIFACTS_S3_BUCKET=keboola-storage-api-cli"
+   - "ARTIFACTS_BUCKET=keboola-storage-api-cli"
    - secure: "Heq2XGSw+BPQS8Q7NUsGuf4HQ/4IMoUfxE+Rt+oCi9IRc/27RFgNcBUkueuA\nDET7MGVkMMzyDKcvxEucYWDCC3jyCxAS1zgJq/kdosBc4wxMgt5v0aBYQokR\nUOK9zBe5X2fhnSbaIrVXDOj16pO6nGpKoIFozTPdVPTltbnBNU8="
    - secure: "AU9XR8b1g7YZGbWvl6UuaaTCaW8NQq9ycVV1fH/lrlq367Vj19tiYH6F+txH\nFkeyGduwoQtH6pP/uHF03F5dBy/9kFAywFxzNbh+Q+OK7s/oo5Lem9yWGTmv\ni2F9T0loE0kOoLellRNd7lijkK9MpP65u0fQDdi+hf1wHGuFDDw="
