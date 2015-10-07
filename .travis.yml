@@ -15,14 +15,13 @@ after_success:
 - cp ./sapi-client.phar ./builds/sapi-client.$CURRENT_TAG.phar
 - cp ./sapi-client.phar ./builds/sapi-client.phar
 deploy:
-  matrix:
-  - provider: s3
-    bucket: keboola-storage-api-cli
-    local-dir: builds
-    upload-dir: builds
-    acl: public_read
-    skip_cleanup: true
-    detect_encoding: true
-    access_key_id: AKIAJQCQNNN53PSNCVVA
-    secret_access_key:
-      secure: j7W4MlMZoZZVd9HZWxnQhC9iZOrgTlhKsc0jlGYTsQmM2cTTlLydiuGjU/ifhWIUyt+lqa4TVnS774Q2S1mA0Kki0KTaVlakoIdrel/1xsd+8XiqH0iQutAW2JjSUclH/KdUPhCtfGwjg8XJWGni8D9JV4zzABWvpA62KO3e9U4=
+- provider: s3
+  bucket: keboola-storage-api-cli
+  local-dir: builds
+  upload-dir: builds
+  acl: public_read
+  skip_cleanup: true
+  detect_encoding: true
+  access_key_id: AKIAJQCQNNN53PSNCVVA
+  secret_access_key:
+    secure: j7W4MlMZoZZVd9HZWxnQhC9iZOrgTlhKsc0jlGYTsQmM2cTTlLydiuGjU/ifhWIUyt+lqa4TVnS774Q2S1mA0Kki0KTaVlakoIdrel/1xsd+8XiqH0iQutAW2JjSUclH/KdUPhCtfGwjg8XJWGni8D9JV4zzABWvpA62KO3e9U4=
