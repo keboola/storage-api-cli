@@ -4,7 +4,7 @@ php:
 - 5.4
 sudo: false
 before_script:
-- "curl -LSs http://box-project.org/installer.php | php"
+- "curl -LSs http://box-project.github.io/box2/installer.php | php"
 - "composer install --prefer-source --dev --no-interaction"
 script:
 - "php ./box.phar build"

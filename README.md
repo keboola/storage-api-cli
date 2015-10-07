@@ -163,7 +163,7 @@ composer install
 Tool is distributed as PHAR package, follow these steps to create package of current version:
 
 ```
-curl -s http://box-project.org/installer.php | php
+curl -LSs http://box-project.github.io/box2/installer.php | php
 ./box.phar build -v
 ```
 
