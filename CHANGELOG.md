@@ -1,3 +1,6 @@
+## 0.2.8
+ * [Feat] `backup-project` backup only project structure flag added
+
 ## 0.2.7
  * [Fix] `backup-project` json format fixed
 

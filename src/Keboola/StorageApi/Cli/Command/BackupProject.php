@@ -31,6 +31,7 @@ class BackupProject extends Command {
 			->setDefinition([
 				new InputArgument('bucket', InputArgument::REQUIRED, 'S3 bucket name'),
 				new InputArgument('path', InputArgument::OPTIONAL, 'path in S3', '/'),
+				new InputOption('structure-only', '-s', InputOption::VALUE_NONE, 'Backup only structure')
 			]);
 
 	}
@@ -75,10 +76,13 @@ class BackupProject extends Command {
 		$output->writeln($this->check());
 
 		$tablesCount = count($tables);
+		$onlyStructure = $input->getOption('structure-only');
 		foreach (array_values($tables) as $i => $table) {
 			$output->write($this->format("Table $i/$tablesCount - {$table['id']}"));
 			$tmpFile = $this->getTmpDir() . "/" . uniqid('table');
-			if (!$table['isAlias']) {
+			if ($onlyStructure && $table['bucket']['stage'] !== 'sys') {
+				$output->writeln('<comment>Skipped (not sys table)</comment>');
+			} else if (!$table['isAlias']) {
 				$tableExporter->exportTable($table['id'], $tmpFile, [
 					'gzip' => true,
 				]);
