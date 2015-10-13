@@ -1,3 +1,6 @@
+## 0.2.9
+ * [Feat] `backup-project` don't merge sliced files
+
 ## 0.2.8
  * [Feat] `backup-project` backup only project structure flag added
 
