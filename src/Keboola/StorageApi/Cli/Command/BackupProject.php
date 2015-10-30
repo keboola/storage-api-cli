@@ -33,6 +33,7 @@ class BackupProject extends Command {
 			->setDefinition([
 				new InputArgument('bucket', InputArgument::REQUIRED, 'S3 bucket name'),
 				new InputArgument('path', InputArgument::OPTIONAL, 'path in S3', '/'),
+                new InputArgument('region', InputArgument::OPTIONAL, 'region', 'us-east-1'),
 				new InputOption('structure-only', '-s', InputOption::VALUE_NONE, 'Backup only structure')
 			]);
 
@@ -40,7 +41,9 @@ class BackupProject extends Command {
 
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
-		$s3 = S3Client::factory();
+		$s3 = S3Client::factory([
+            'region' => $input->getArgument('region'),
+        ]);
 		$bucket = $input->getArgument('bucket');
 		$basePath = $input->getArgument('path');
 		$basePath = rtrim($basePath, '/') . '/';
