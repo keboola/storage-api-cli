@@ -106,9 +106,11 @@ class BackupProject extends Command
         $s3Client = new S3Client([
             "version" => "latest",
             "region" => $fileInfo["region"],
-            "key" => $fileInfo["credentials"]["AccessKeyId"],
-            "secret" => $fileInfo["credentials"]["SecretAccessKey"],
-            "token" => $fileInfo["credentials"]["SessionToken"]
+            "credentials" => [
+                "key" => $fileInfo["credentials"]["AccessKeyId"],
+                "secret" => $fileInfo["credentials"]["SecretAccessKey"],
+                "token" => $fileInfo["credentials"]["SessionToken"],
+            ]
         ]);
 
         $fs = new Filesystem();
