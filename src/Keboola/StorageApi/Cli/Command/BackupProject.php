@@ -128,12 +128,14 @@ class BackupProject extends Command
                     'Key' => $fileKey,
                     'SaveAs' => $filePath
                 ));
+                $fh = fopen($filePath, 'r');
                 $targetS3->putObject([
                     'Bucket' => $targetBucket,
                     'Key' => $targetBasePath . str_replace('.', '/', $tableId) . '.part_' . $i . '.csv.gz',
-                    'Body' => fopen($filePath, 'r'),
+                    'Body' => $fh,
                 ]);
-                $fs->remove($tmpFilePath);
+                fclose($fh);
+                $fs->remove($filePath);
             }
         } else {
             $tmpFilePath = $this->getTmpDir() . "/" . uniqid('table');
@@ -143,11 +145,13 @@ class BackupProject extends Command
                 'SaveAs' => $tmpFilePath
             ));
 
+            $fh = fopen($tmpFilePath, 'r');
             $targetS3->putObject([
                 'Bucket' => $targetBucket,
                 'Key' => $targetBasePath . str_replace('.', '/', $tableId) . '.csv.gz',
-                'Body' => fopen($tmpFilePath, 'r'),
+                'Body' => $fh,
             ]);
+            fclose($fh);
             $fs->remove($tmpFilePath);
         }
     }
