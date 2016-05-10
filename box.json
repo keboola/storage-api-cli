@@ -2,10 +2,6 @@
     "alias": "sapi-client.phar",
     "chmod": "0755",
     "directories": ["src"],
-	"files": [
-		"vendor/guzzle/guzzle/src/Guzzle/Http/Resources/cacert.pem",
-		"vendor/guzzlehttp/guzzle/src/cacert.pem"   
-	],
     "finder": [
         {
             "name": "*.php",

@@ -11,58 +11,55 @@ namespace Keboola\StorageApi\Cli\Command;
 
 use Keboola\Csv\CsvFile;
 use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputInterface,
-	Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
+class TruncateTable extends Command
+{
 
-class TruncateTable extends Command {
+    public function configure()
+    {
+        $this
+            ->setName('truncate-table')
+            ->setDescription('Remove all data from table')
+            ->setDefinition(array(
+                new InputArgument('tableId', InputArgument::REQUIRED, "target table")
+            ));
+    }
 
-	public function configure()
-	{
-		$this
-			->setName('truncate-table')
-			->setDescription('Remove all data from table')
-			->setDefinition(array(
-				new InputArgument('tableId', InputArgument::REQUIRED, "target table")
-			));
-	}
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
+        $sapiClient = $this->getSapiClient();
+        if (!$sapiClient->tableExists($input->getArgument('tableId'))) {
+            throw new \Exception("Table {$input->getArgument('tableId')} does not exist or is not accessible.");
+        }
 
-	protected function execute(InputInterface $input, OutputInterface $output)
-	{
-		$sapiClient = $this->getSapiClient();
-		if (!$sapiClient->tableExists($input->getArgument('tableId'))) {
-			throw new \Exception("Table {$input->getArgument('tableId')} does not exist or is not accessible.");
-		}
+        $output->writeln("Table found ok");
 
-		$output->writeln("Table found ok");
+        $output->writeln("Truncate start");
+        $startTime = time();
 
-		$output->writeln("Truncate start");
-		$startTime = time();
+        $tmpFile = $this->getTmpDir() . "/" . $input->getArgument('tableId') . ".csv";
 
-		$tmpFile = $this->getTmpDir() . "/" . $input->getArgument('tableId') . ".csv";
+        $sapiClient->exportTable(
+            $input->getArgument('tableId'),
+            $tmpFile,
+            array("limit" => 1)
+        );
 
-		$sapiClient->exportTable(
-			$input->getArgument('tableId'),
-			$tmpFile,
-			array("limit" => 1)
-		);
+        $csvFile = new CsvFile($tmpFile);
+        $headFile = new CsvFile($tmpFile . ".head");
+        $headFile->writeRow($csvFile->getHeader());
 
-		$csvFile = new CsvFile($tmpFile);
-		$headFile = new CsvFile($tmpFile . ".head");
-		$headFile->writeRow($csvFile->getHeader());
+        $sapiClient->writeTableAsync(
+            $input->getArgument('tableId'),
+            $headFile
+        );
 
-		$sapiClient->writeTableAsync(
-			$input->getArgument('tableId'),
-			$headFile
-		);
+        $this->destroyTmpDir();
 
-		$this->destroyTmpDir();
+        $duration = time() - $startTime;
 
-		$duration = time() - $startTime;
-
-		$output->writeln("Truncate done in $duration secs.");
-	}
-
-
+        $output->writeln("Truncate done in $duration secs.");
+    }
 }

@@ -9,26 +9,24 @@
 
 namespace Keboola\StorageApi\Cli\Command;
 
-use Keboola\Csv\CsvFile;
 use Keboola\StorageApi\TableExporter;
 use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputInterface,
-	Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputOption;
 
-
-class ExportTable extends Command {
-
-	public function configure()
-	{
-		$this
-			->setName('export-table')
-			->setDescription('Export data from table to file')
-			->setDefinition(array(
-				new InputArgument('tableId', InputArgument::REQUIRED, "table to export"),
-				new InputArgument('filePath', InputArgument::REQUIRED, "CSV file"),
-				new InputOption('format', 'f', InputOption::VALUE_REQUIRED, "output format (raw, rfc or escaped)", "rfc"),
-				new InputOption('gzip', 'g', InputOption::VALUE_NONE, "gzip file"),
+class ExportTable extends Command
+{
+    public function configure()
+    {
+        $this
+            ->setName('export-table')
+            ->setDescription('Export data from table to file')
+            ->setDefinition(array(
+                new InputArgument('tableId', InputArgument::REQUIRED, "table to export"),
+                new InputArgument('filePath', InputArgument::REQUIRED, "CSV file"),
+                new InputOption('format', 'f', InputOption::VALUE_REQUIRED, "output format (raw, rfc or escaped)", "rfc"),
+                new InputOption('gzip', 'g', InputOption::VALUE_NONE, "gzip file"),
                 new InputOption('columns', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, "comma separated list of columns"),
                 new InputOption('limit', null, InputOption::VALUE_REQUIRED, "number of rows to export"),
                 new InputOption('changedSince', null, InputOption::VALUE_REQUIRED, "start of time range"),
@@ -36,21 +34,21 @@ class ExportTable extends Command {
                 new InputOption('whereColumn', null, InputOption::VALUE_REQUIRED, "filter by column"),
                 new InputOption('whereOperator', null, InputOption::VALUE_REQUIRED, "filtering operator (eq, ne)", "eq"),
                 new InputOption('whereValues', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, "filter value"),
-			));
-	}
+            ));
+    }
 
-	protected function execute(InputInterface $input, OutputInterface $output)
-	{
-		$sapiClient = $this->getSapiClient();
-		if (!$sapiClient->tableExists($input->getArgument('tableId'))) {
-			throw new \Exception("Table {$input->getArgument('tableId')} does not exist or is not accessible.");
-		}
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
+        $sapiClient = $this->getSapiClient();
+        if (!$sapiClient->tableExists($input->getArgument('tableId'))) {
+            throw new \Exception("Table {$input->getArgument('tableId')} does not exist or is not accessible.");
+        }
 
-		$output->writeln("Table found ok");
+        $output->writeln("Table found ok");
 
-		$startTime = time();
+        $startTime = time();
 
-		$exporter = new TableExporter($sapiClient);
+        $exporter = new TableExporter($sapiClient);
 
         $exportOptions = array(
             'format' => $input->getOption('format'),
@@ -74,17 +72,14 @@ class ExportTable extends Command {
             $exportOptions["changedUntil"] = $input->getOption("changedUntil");
         }
 
-		$exporter->exportTable(
-			$input->getArgument('tableId'),
-			$input->getArgument('filePath'),
+        $exporter->exportTable(
+            $input->getArgument('tableId'),
+            $input->getArgument('filePath'),
             $exportOptions
+        );
 
-		);
+        $duration = time() - $startTime;
 
-		$duration = time() - $startTime;
-
-		$output->writeln("Export done in $duration secs.");
-	}
-
-
+        $output->writeln("Export done in $duration secs.");
+    }
 }
