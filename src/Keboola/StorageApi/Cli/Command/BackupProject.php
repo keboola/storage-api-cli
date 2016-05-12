@@ -72,7 +72,7 @@ class BackupProject extends Command
             'Bucket' => $bucket,
             'Key' => $basePath . 'configurations.json',
             'Body' => json_encode($components->listComponents((new ListConfigurationsOptions())
-                ->setInclude(['configuration', 'state']))),
+                ->setInclude(['configuration', 'state', 'rows']))),
         ]);
         $output->writeln($this->check());
 
