@@ -12,6 +12,7 @@ namespace Keboola\StorageApi\Cli\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 class ListEvents extends Command
 {
@@ -34,7 +35,6 @@ class ListEvents extends Command
     {
         $sapiClient = $this->getSapiClient();
 
-
         $options = array(
             'limit' => $input->getOption('limit'),
             'offset' => $input->getOption('offset'),
@@ -53,16 +53,21 @@ class ListEvents extends Command
                 $output->write(" ");
                 $output->write($event['id']);
                 $output->write(" ");
-                $output->write($event['component'] . (isset($event['configurationId']) ? "($event[configurationId])" : ""));
+                $output->write(
+                    $event['component'] . (isset($event['configurationId']) ? "($event[configurationId])" : "")
+                );
                 $output->write($formatter->formatSection($event['event'], '', $event['type']));
                 $output->writeln($event['message']);
 
                 $maxId = $event['id'];
             }
             $options['maxId'] = $maxId; // older events
-        } while (
-            $input->isInteractive() &&
-            $this->getDialogHelper()->askConfirmation($output, '<question>Load older events?</question>')
+        } while ($input->isInteractive() &&
+            $this->getQuestionHelper()->ask(
+                $input,
+                $output,
+                new ConfirmationQuestion('<question>Load older events?</question>', false)
+            )
         );
     }
 }

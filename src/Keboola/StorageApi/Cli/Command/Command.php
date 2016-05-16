@@ -13,8 +13,8 @@ use Keboola\Symfony\Console\Helper\NestedFormatterHelper\NestedFormatterHelper;
 use Symfony\Component\Console\Command\Command as BaseCommand;
 use Keboola\StorageApi\Client;
 use Keboola\StorageApi\Cli\Console\Application;
-use Symfony\Component\Console\Helper\DialogHelper;
 use Symfony\Component\Console\Helper\FormatterHelper;
+use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -104,11 +104,11 @@ abstract class Command extends BaseCommand
     }
 
     /**
-     * @return DialogHelper
+     * @return QuestionHelper
      */
-    public function getDialogHelper()
+    public function getQuestionHelper()
     {
-        return $this->getHelper('dialog');
+        return $this->getHelper('question');
     }
 
     /**

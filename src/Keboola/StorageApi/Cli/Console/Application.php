@@ -17,7 +17,6 @@ use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Shell;
 
 class Application extends BaseApplication
 {
@@ -51,9 +50,6 @@ class Application extends BaseApplication
 
         $this->getDefinition()
             ->addOption(new InputOption('url', null, InputOption::VALUE_REQUIRED, "Storage API URL"));
-
-        $this->getDefinition()
-            ->addOption(new InputOption('--shell', null, InputOption::VALUE_NONE, 'Launch the shell.'));
     }
 
     public function doRun(InputInterface $input, OutputInterface $output)
@@ -74,15 +70,6 @@ class Application extends BaseApplication
         }
 
         $this->output = $output;
-
-        if (true === $input->hasParameterOption(array('--shell'))) {
-            $shell = new Shell($this);
-            $shell->setProcessIsolation($input->hasParameterOption(array('--process-isolation')));
-            $shell->run();
-
-            return 0;
-        }
-
         return parent::doRun($input, $output);
     }
 

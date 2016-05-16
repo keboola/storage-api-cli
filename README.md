@@ -33,9 +33,9 @@ Options:
   --no-interaction -n Do not ask any interactive question
   --token             Storage API Token
   --url               Storage API URL
-  --shell             Launch the shell.
 
 Available commands:
+  backup-project               Backup the whole project to AWS S3
   copy-bucket                  Copy bucket with all tables in it
   copy-table                   Copy table with PK, indexes and attributes (transferring nongzipped data)
   create-table                 Create table in bucket
@@ -133,24 +133,6 @@ php sapi-client.phar --token=your_sapi_token export-table in.c-main.table table.
 --whereColumn=AccountId --changedUntil="-2 days"
 ```
 (note: `changedUntil` accepts any datetime description that can be parsed by [strtotime PHP function](http://php.net/manual/en/function.strtotime.php)) 
-
-### Shell mode
-There is an interactive shell which allows you to enter commands without having to specify php app/console each time, which is useful if you need to run several commands.
-Autocomplete of commands is supported in shell model.
-
-```
-➜  storage-api-cli git:(master) php bin/sapi-client --token=your_sapi_token --shell
-Authorized as: martin@keboola.com (KB Paymo (TAPI UI testing clone))
-
-Welcome to the Keboola Storage API Client shell.
-
-At the prompt, type help for some help,
-or list to get a list of available commands.
-
-To exit the shell, type ^D.
-
-Keboola Storage API Client >
-```
 
 ## Development
 
