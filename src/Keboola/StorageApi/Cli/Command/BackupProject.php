@@ -10,8 +10,11 @@
 namespace Keboola\StorageApi\Cli\Command;
 
 use Aws\S3\S3Client;
+use Keboola\StorageApi\Client;
 use Keboola\StorageApi\Components;
+use Keboola\StorageApi\Options\Components\ListConfigurationRowVersionsOptions;
 use Keboola\StorageApi\Options\Components\ListConfigurationsOptions;
+use Keboola\StorageApi\Options\Components\ListConfigurationVersionsOptions;
 use Keboola\StorageApi\Options\GetFileOptions;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -31,7 +34,8 @@ class BackupProject extends Command
                 new InputArgument('bucket', InputArgument::REQUIRED, 'S3 bucket name'),
                 new InputArgument('path', InputArgument::OPTIONAL, 'path in S3', '/'),
                 new InputArgument('region', InputArgument::OPTIONAL, 'region', 'us-east-1'),
-                new InputOption('structure-only', '-s', InputOption::VALUE_NONE, 'Backup only structure')
+                new InputOption('structure-only', '-s', InputOption::VALUE_NONE, 'Backup only structure'),
+                new InputOption('include-versions', '-i', InputOption::VALUE_NONE, 'Include configuration versions in backup')
             ]);
     }
 
@@ -46,7 +50,6 @@ class BackupProject extends Command
         $basePath = rtrim($basePath, '/') . '/';
 
         $sapiClient = $this->getSapiClient();
-        $components = new Components($sapiClient);
 
         $tables = $sapiClient->listTables(null, [
             'include' => 'attributes,columns,buckets'
@@ -68,19 +71,14 @@ class BackupProject extends Command
         $output->writeln($this->check());
 
         $output->write($this->format('Configurations'));
-        $s3->putObject([
-            'Bucket' => $bucket,
-            'Key' => $basePath . 'configurations.json',
-            'Body' => json_encode($components->listComponents((new ListConfigurationsOptions())
-                ->setInclude(['configuration', 'state', 'rows']))),
-        ]);
+        $this->exportConfigs($sapiClient, $s3, $bucket, $basePath, $input->getOption('include-versions'));
         $output->writeln($this->check());
 
         $tablesCount = count($tables);
-        $onlyStructure = $input->getOption('structure-only');
         usort($tables, function ($a, $b) {
             return strcmp($a["id"], $b["id"]);
         });
+        $onlyStructure = $input->getOption('structure-only');
         foreach (array_values($tables) as $i => $table) {
             $output->write($this->format("Table $i/$tablesCount - {$table['id']}"));
             if ($onlyStructure && $table['bucket']['stage'] !== 'sys') {
@@ -93,6 +91,77 @@ class BackupProject extends Command
             }
         }
     }
+
+    /**
+     * @param Client $sapiClient
+     * @param S3Client $s3
+     * @param string $targetBucket
+     * @param string $targetBasePath
+     * @param bool $saveVersions
+     */
+    private function exportConfigs(Client $sapiClient, S3Client $s3, $targetBucket, $targetBasePath, $saveVersions)
+    {
+        $components = new Components($sapiClient);
+        $limit = 2;
+        $configurations = $components->listComponents(
+            (new ListConfigurationsOptions())->setInclude(['configuration'])
+        );
+        $s3->putObject([
+            'Bucket' => $targetBucket,
+            'Key' => $targetBasePath . 'configurations.json',
+            'Body' => json_encode($configurations),
+        ]);
+
+        $configurations = $components->listComponents(
+            (new ListConfigurationsOptions())->setInclude(['configuration', 'rows'])
+        );
+        foreach ($configurations as $component) {
+            foreach ($component['configurations'] as $configuration) {
+                if ($saveVersions) {
+                    $offset = 0;
+                    $versions = [];
+                    do {
+                        $versionsTmp = $components->listConfigurationVersions(
+                            (new ListConfigurationVersionsOptions())->setComponentId($component['id'])
+                                ->setConfigurationId($configuration['id'])
+                                ->setInclude(['name', 'description', 'configuration', 'state'])
+                                ->setLimit($limit)
+                                ->setOffset($offset)
+                        );
+                        $versions = array_merge($versions, $versionsTmp);
+                        $offset = $offset + $limit;
+                    } while (count($versionsTmp) > 0);
+                    $configuration['_versions'] = $versions;
+                }
+                if ($saveVersions) {
+                    foreach ($configuration['rows'] as &$row) {
+                        $offset = 0;
+                        $versions = [];
+                        do {
+                            $versionsTmp = $components->listConfigurationRowVersions(
+                                (new ListConfigurationRowVersionsOptions())->setComponentId($component['id'])
+                                    ->setConfigurationId($configuration['id'])
+                                    ->setInclude(['configuration'])
+                                    ->setRowId($row['id'])
+                                    ->setLimit($limit)
+                                    ->setOffset($offset)
+                            );
+                            $versions = array_merge($versions, $versionsTmp);
+                            $offset = $offset + $limit;
+                        } while (count($versionsTmp) > 0);
+                        $row['_versions'] = $versions;
+                    }
+                }
+                $s3->putObject([
+                    'Bucket' => $targetBucket,
+                    'Key' => $targetBasePath . 'configurations/' . $component['id'] . '/' .
+                        $configuration['id'] . '.json',
+                    'Body' => json_encode($configuration),
+                ]);
+            }
+        }
+    }
+
 
     private function exportTable($tableId, S3Client $targetS3, $targetBucket, $targetBasePath)
     {
