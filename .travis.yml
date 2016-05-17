@@ -4,7 +4,7 @@ php:
 - 5.6
 sudo: false
 env:
-  matrix:
+  global:
   - secure: gS67348wjMNiqLdGcN+pT0O3gYiTK4KMqRNqQ4h9Igam75FWaXZLm0OwVdKRj7Gu7qJ+GVLeAFsfuoxxjarHVoZgUMf5qNSFCPxs8ZlsHNRZ+ArNMq05GO8e1uAbgM7GJZXDshI9ZY/15sAtAu2eR09e9I1TpflFr3T6MfqnIr4=
   - secure: Joewf9FSUFQFwyZcCYPmTNyrpE3om9WgXuE+tUp4xY+K+B9CLG2k9G5801T7drdoxJASqGuQWrXnBm8QFkwOugcmNf2c4SV9HwJw+Oc+RQIkaldqne52t/AWf3A/DpEfx+SWLdIgG9xOAQw4jpAVkuu6OnlxJWDeTcq4BQXu06Q=
   - secure: b8FyK1ACFyrdSWRH+1NunU/i+++y0MzlcVOKvp94oEkab00MqJD6XcTrB4R/UEAxKicENu4CB4uLZCCxmvxcdQXt1eCREgmwhEY3kFeTIjsA374olpJm5wHR1c5Fh2QypqwpqLObMeUvfFINhNpVRLdRRCdLdjaWcz67hYUeZFA=
