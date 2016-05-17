@@ -12,7 +12,8 @@
 		"symfony/console": "~2.8.0",
 		"symfony/filesystem": "~2.8.0",
 		"keboola/storage-api-client": "~4.7.0",
-		"keboola/symfony-console-nested-formatter-helper": "~0.1.2"
+		"keboola/symfony-console-nested-formatter-helper": "~0.1.2",
+        "phpunit/phpunit": "5.3.4"
     },
 	"autoload": {
 		"psr-0": {"Keboola\\StorageApi\\Cli": "src/"}

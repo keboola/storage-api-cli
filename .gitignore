@@ -4,3 +4,4 @@ box.phar
 sapi-client.phar
 test.csv
 vendor
+/config.php
