@@ -5,7 +5,6 @@
 Simple command line wrapper for [Keboola Storage REST API](http://docs.keboola.apiary.io/)
 
 ## Installation
-
 Download the latest version from https://s3.amazonaws.com/keboola-storage-api-cli/builds/sapi-client.phar .
 
 From there, you may place it anywhere that will make it easier for you to access (such as /usr/local/bin) and chmod it to 755.
