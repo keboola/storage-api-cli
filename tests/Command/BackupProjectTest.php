@@ -50,7 +50,7 @@ class BackupProjectTest extends \PHPUnit_Framework_TestCase
         $applicationTester = new ApplicationTester($application);
         $applicationTester->run([
             'backup-project',
-            '--token' => STORAGE_API_TOKEN,
+            '--token' => TEST_STORAGE_API_TOKEN,
             '--structure-only' => true,
             'bucket' => TEST_S3_BUCKET,
             'region' => self::S3_REGION,
