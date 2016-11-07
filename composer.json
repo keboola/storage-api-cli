@@ -1,22 +1,23 @@
 {
-    "name": "keboola/storage-api-cli",
-    "description": "Keboola Storage API command line interface",
-    "authors": [
-        {
-            "name": "Martin Halamicek",
-            "email": "martin@halamicek.cz"
-        }
-    ],
-	"license": "MIT",
-    "require": {
-		"symfony/console": "~2.8.0",
-		"symfony/filesystem": "~2.8.0",
-		"keboola/storage-api-client": "~4.7.0",
-		"keboola/symfony-console-nested-formatter-helper": "~0.1.2",
-        "phpunit/phpunit": "~4.8.0"
-    },
-	"autoload": {
-		"psr-0": {"Keboola\\StorageApi\\Cli": "src/"}
-	},
-	"bin": ["bin/sapi-client"]
+  "name": "keboola/storage-api-cli",
+  "description": "Keboola Storage API command line interface",
+  "authors": [
+    {
+      "name": "Martin Halamicek",
+      "email": "martin@halamicek.cz"
+    }
+  ],
+  "license": "MIT",
+  "require": {
+    "symfony/console": "~2.8.0",
+    "symfony/filesystem": "~2.8.0",
+    "keboola/storage-api-client": "~4.7.0",
+    "keboola/php-temp": "~0.1.3",
+    "keboola/symfony-console-nested-formatter-helper": "~0.1.2",
+    "phpunit/phpunit": "~4.8.0"
+  },
+  "autoload": {
+    "psr-0": {"Keboola\\StorageApi\\Cli": "src/"}
+  },
+  "bin": ["bin/sapi-client"]
 }
