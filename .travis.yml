@@ -13,6 +13,8 @@ before_script:
 - curl -LSs http://box-project.github.io/box2/installer.php | php
 - composer install --prefer-source --dev --no-interaction
 script:
+- export TEST_PREFIX=$TRAVIS_PHP_VERSION
+- php vendor/bin/phpunit --testsuite storage-api-cli
 - php ./box.phar build
 - php ./sapi-client.phar
 after_success:

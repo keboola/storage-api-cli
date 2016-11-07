@@ -14,7 +14,7 @@
         <server name="KERNEL_DIR" value="vendor/keboola/syrup/app/" />
     </php>
 
-    <testsuite name="Client Test Suite">
+    <testsuite name="storage-api-cli">
         <directory>tests</directory>
     </testsuite>
 
