@@ -1,0 +1,98 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "Cloudformation template for testing storage-api-cli",
+  "Resources": {
+    "BackupBucket": {
+      "Type": "AWS::S3::Bucket",
+      "DeletionPolicy": "Delete",
+      "Properties": {
+        "BucketName": "travis-storage-api-cli-tests"
+      }
+    },
+    "BackupBucketUser": {
+      "Type": "AWS::IAM::User",
+      "DeletionPolicy": "Delete",
+      "Properties": {
+        "Path": "/",
+        "Policies": [
+          {
+            "PolicyName": "Owner",
+            "PolicyDocument": {
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Action": "s3:*",
+                  "Resource": [
+                    {
+                      "Fn::Join": [
+                        "", 
+                        [ "arn:aws:s3:::", 
+                          {
+                            "Ref": "BackupBucket"
+                          },
+                          "/*"
+                        ]
+                      ]
+                    },
+                    {
+                      "Fn::Join": [
+                        "", 
+                        [ "arn:aws:s3:::", 
+                          {
+                            "Ref": "BackupBucket"
+                          }
+                        ]
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }        
+        ]
+      },
+      "DependsOn": [
+        "BackupBucket"
+      ]
+    },
+    "AccessKey": {
+      "Type": "AWS::IAM::AccessKey",
+      "DeletionPolicy": "Delete",
+      "Properties": {
+          "UserName": {
+              "Ref": "BackupBucketUser"
+          }
+      },
+      "DependsOn": [
+        "BackupBucketUser"
+      ]      
+    }
+  },
+  "Outputs": {
+    "BucketName": {
+        "Value": {
+            "Ref": "BackupBucket"
+        }
+    },
+    "Credentials": {
+        "Value": {
+           "Ref": "BackupBucketUser"
+        }
+    },
+    "Region": {
+        "Value": {
+            "Ref": "AWS::Region"
+        }
+    },
+    "AccessKeyId": {
+        "Value": {
+            "Ref": "AccessKey"
+        }
+    },
+    "AccessKeySecret": {
+        "Value": {
+            "Fn::GetAtt": ["AccessKey", "SecretAccessKey"]
+        }
+    }
+  }
+}
