@@ -1,0 +1,826 @@
+[
+  {
+    "uri": "https:\/\/connection.keboola.com\/\/v2\/storage\/tables\/in.c-snowflake.Account",
+    "id": "in.c-snowflake.Account",
+    "name": "Account",
+    "transactional": false,
+    "primaryKey": [
+      "Id",
+      "Name"
+    ],
+    "indexedColumns": [
+      "Id",
+      "Name"
+    ],
+    "created": "2016-11-07T01:58:16+0100",
+    "lastImportDate": "2016-11-07T01:58:30+0100",
+    "lastChangeDate": "2016-11-07T01:58:30+0100",
+    "rowsCount": 1570,
+    "dataSizeBytes": 29696,
+    "isAlias": false,
+    "attributes": [
+      {
+        "name": "myKey",
+        "value": "myValue",
+        "protected": false
+      },
+      {
+        "name": "myProtectedKey",
+        "value": "myProtectedValue",
+        "protected": true
+      }
+    ],
+    "bucket": {
+      "uri": "https:\/\/connection.keboola.com\/\/v2\/storage\/buckets\/in.c-snowflake",
+      "id": "in.c-snowflake",
+      "name": "c-snowflake",
+      "stage": "in",
+      "description": "",
+      "tables": "https:\/\/connection.keboola.com\/\/v2\/storage\/buckets\/in.c-snowflake\/tables",
+      "created": "2016-11-07T01:57:53+0100",
+      "lastChangeDate": "2016-11-07T02:12:16+0100",
+      "isReadOnly": false,
+      "dataSizeBytes": 6247936,
+      "rowsCount": 675727,
+      "isMaintenance": false,
+      "backend": "snowflake"
+    },
+    "columns": [
+      "Id",
+      "Name"
+    ]
+  },
+  {
+    "uri": "https:\/\/connection.keboola.com\/\/v2\/storage\/tables\/in.c-snowflake.ratings",
+    "id": "in.c-snowflake.ratings",
+    "name": "ratings",
+    "transactional": false,
+    "primaryKey": [],
+    "indexedColumns": [],
+    "created": "2016-11-07T02:11:58+0100",
+    "lastImportDate": "2016-11-07T02:12:15+0100",
+    "lastChangeDate": "2016-11-07T02:12:16+0100",
+    "rowsCount": 674157,
+    "dataSizeBytes": 6218240,
+    "isAlias": false,
+    "attributes": [],
+    "bucket": {
+      "uri": "https:\/\/connection.keboola.com\/\/v2\/storage\/buckets\/in.c-snowflake",
+      "id": "in.c-snowflake",
+      "name": "c-snowflake",
+      "stage": "in",
+      "description": "",
+      "tables": "https:\/\/connection.keboola.com\/\/v2\/storage\/buckets\/in.c-snowflake\/tables",
+      "created": "2016-11-07T01:57:53+0100",
+      "lastChangeDate": "2016-11-07T02:12:16+0100",
+      "isReadOnly": false,
+      "dataSizeBytes": 6247936,
+      "rowsCount": 675727,
+      "isMaintenance": false,
+      "backend": "snowflake"
+    },
+    "columns": [
+      "voucher",
+      "user",
+      "rating",
+      "recommend"
+    ]
+  },
+  {
+    "uri": "https:\/\/connection.keboola.com\/\/v2\/storage\/tables\/in.c-redshift.Account",
+    "id": "in.c-redshift.Account",
+    "name": "Account",
+    "transactional": false,
+    "primaryKey": [
+      "Id"
+    ],
+    "indexedColumns": [
+      "Id",
+      "Name"
+    ],
+    "created": "2016-11-07T01:59:53+0100",
+    "lastImportDate": "2016-11-07T01:59:56+0100",
+    "lastChangeDate": "2016-11-07T01:59:57+0100",
+    "rowsCount": 1570,
+    "dataSizeBytes": 12582912,
+    "isAlias": false,
+    "attributes": [],
+    "bucket": {
+      "uri": "https:\/\/connection.keboola.com\/\/v2\/storage\/buckets\/in.c-redshift",
+      "id": "in.c-redshift",
+      "name": "c-redshift",
+      "stage": "in",
+      "description": "",
+      "tables": "https:\/\/connection.keboola.com\/\/v2\/storage\/buckets\/in.c-redshift\/tables",
+      "created": "2016-11-07T01:59:35+0100",
+      "lastChangeDate": "2016-11-07T02:09:58+0100",
+      "isReadOnly": false,
+      "dataSizeBytes": 44040192,
+      "rowsCount": 675727,
+      "isMaintenance": false,
+      "backend": "redshift"
+    },
+    "columns": [
+      "Id",
+      "Name"
+    ]
+  },
+  {
+    "uri": "https:\/\/connection.keboola.com\/\/v2\/storage\/tables\/in.c-redshift.ratings",
+    "id": "in.c-redshift.ratings",
+    "name": "ratings",
+    "transactional": false,
+    "primaryKey": [],
+    "indexedColumns": [],
+    "created": "2016-11-07T02:09:52+0100",
+    "lastImportDate": "2016-11-07T02:09:57+0100",
+    "lastChangeDate": "2016-11-07T02:09:58+0100",
+    "rowsCount": 674157,
+    "dataSizeBytes": 31457280,
+    "isAlias": false,
+    "attributes": [],
+    "bucket": {
+      "uri": "https:\/\/connection.keboola.com\/\/v2\/storage\/buckets\/in.c-redshift",
+      "id": "in.c-redshift",
+      "name": "c-redshift",
+      "stage": "in",
+      "description": "",
+      "tables": "https:\/\/connection.keboola.com\/\/v2\/storage\/buckets\/in.c-redshift\/tables",
+      "created": "2016-11-07T01:59:35+0100",
+      "lastChangeDate": "2016-11-07T02:09:58+0100",
+      "isReadOnly": false,
+      "dataSizeBytes": 44040192,
+      "rowsCount": 675727,
+      "isMaintenance": false,
+      "backend": "redshift"
+    },
+    "columns": [
+      "voucher",
+      "user",
+      "rating",
+      "recommend"
+    ]
+  },
+  {
+    "uri": "https:\/\/connection.keboola.com\/\/v2\/storage\/tables\/in.c-mysql.Account",
+    "id": "in.c-mysql.Account",
+    "name": "Account",
+    "transactional": false,
+    "primaryKey": [
+      "Id"
+    ],
+    "indexedColumns": [
+      "Id",
+      "Name"
+    ],
+    "created": "2016-11-07T02:01:50+0100",
+    "lastImportDate": "2016-11-07T02:01:51+0100",
+    "lastChangeDate": "2016-11-07T02:01:51+0100",
+    "rowsCount": 1570,
+    "dataSizeBytes": 229376,
+    "isAlias": false,
+    "attributes": [],
+    "bucket": {
+      "uri": "https:\/\/connection.keboola.com\/\/v2\/storage\/buckets\/in.c-mysql",
+      "id": "in.c-mysql",
+      "name": "c-mysql",
+      "stage": "in",
+      "description": "",
+      "tables": "https:\/\/connection.keboola.com\/\/v2\/storage\/buckets\/in.c-mysql\/tables",
+      "created": "2016-11-07T02:01:29+0100",
+      "lastChangeDate": "2016-11-07T02:07:42+0100",
+      "isReadOnly": false,
+      "dataSizeBytes": 47497216,
+      "rowsCount": 673785,
+      "isMaintenance": false,
+      "backend": "mysql"
+    },
+    "columns": [
+      "Id",
+      "Name"
+    ]
+  },
+  {
+    "uri": "https:\/\/connection.keboola.com\/\/v2\/storage\/tables\/in.c-mysql.ratings",
+    "id": "in.c-mysql.ratings",
+    "name": "ratings",
+    "transactional": false,
+    "primaryKey": [],
+    "indexedColumns": [],
+    "created": "2016-11-07T02:07:37+0100",
+    "lastImportDate": "2016-11-07T02:07:42+0100",
+    "lastChangeDate": "2016-11-07T02:07:42+0100",
+    "rowsCount": 672215,
+    "dataSizeBytes": 47267840,
+    "isAlias": false,
+    "attributes": [],
+    "bucket": {
+      "uri": "https:\/\/connection.keboola.com\/\/v2\/storage\/buckets\/in.c-mysql",
+      "id": "in.c-mysql",
+      "name": "c-mysql",
+      "stage": "in",
+      "description": "",
+      "tables": "https:\/\/connection.keboola.com\/\/v2\/storage\/buckets\/in.c-mysql\/tables",
+      "created": "2016-11-07T02:01:29+0100",
+      "lastChangeDate": "2016-11-07T02:07:42+0100",
+      "isReadOnly": false,
+      "dataSizeBytes": 47497216,
+      "rowsCount": 673785,
+      "isMaintenance": false,
+      "backend": "mysql"
+    },
+    "columns": [
+      "voucher",
+      "user",
+      "rating",
+      "recommend"
+    ]
+  },
+  {
+    "uri": "https:\/\/connection.keboola.com\/\/v2\/storage\/tables\/out.c-mysql.Account",
+    "id": "out.c-mysql.Account",
+    "name": "Account",
+    "transactional": false,
+    "primaryKey": [
+      "Id"
+    ],
+    "indexedColumns": [
+      "Id"
+    ],
+    "created": "2016-11-07T02:07:22+0100",
+    "lastImportDate": "2016-11-07T02:22:37+0100",
+    "lastChangeDate": "2016-11-07T02:22:37+0100",
+    "rowsCount": 1570,
+    "dataSizeBytes": 29696,
+    "isAlias": false,
+    "attributes": [],
+    "bucket": {
+      "uri": "https:\/\/connection.keboola.com\/\/v2\/storage\/buckets\/out.c-mysql",
+      "id": "out.c-mysql",
+      "name": "c-mysql",
+      "stage": "out",
+      "description": "Bucket created by Transformation API",
+      "tables": "https:\/\/connection.keboola.com\/\/v2\/storage\/buckets\/out.c-mysql\/tables",
+      "created": "2016-11-07T02:07:19+0100",
+      "lastChangeDate": "2016-11-07T02:23:13+0100",
+      "isReadOnly": false,
+      "dataSizeBytes": 6247936,
+      "rowsCount": 675727,
+      "isMaintenance": false,
+      "backend": "snowflake"
+    },
+    "columns": [
+      "Id",
+      "Name"
+    ]
+  },
+  {
+    "uri": "https:\/\/connection.keboola.com\/\/v2\/storage\/tables\/out.c-mysql.ratings",
+    "id": "out.c-mysql.ratings",
+    "name": "ratings",
+    "transactional": false,
+    "primaryKey": [],
+    "indexedColumns": [],
+    "created": "2016-11-07T02:09:20+0100",
+    "lastImportDate": "2016-11-07T02:23:13+0100",
+    "lastChangeDate": "2016-11-07T02:23:13+0100",
+    "rowsCount": 674157,
+    "dataSizeBytes": 6218240,
+    "isAlias": false,
+    "attributes": [],
+    "bucket": {
+      "uri": "https:\/\/connection.keboola.com\/\/v2\/storage\/buckets\/out.c-mysql",
+      "id": "out.c-mysql",
+      "name": "c-mysql",
+      "stage": "out",
+      "description": "Bucket created by Transformation API",
+      "tables": "https:\/\/connection.keboola.com\/\/v2\/storage\/buckets\/out.c-mysql\/tables",
+      "created": "2016-11-07T02:07:19+0100",
+      "lastChangeDate": "2016-11-07T02:23:13+0100",
+      "isReadOnly": false,
+      "dataSizeBytes": 6247936,
+      "rowsCount": 675727,
+      "isMaintenance": false,
+      "backend": "snowflake"
+    },
+    "columns": [
+      "voucher",
+      "user",
+      "rating",
+      "recommend"
+    ]
+  },
+  {
+    "uri": "https:\/\/connection.keboola.com\/\/v2\/storage\/tables\/out.c-redshift.Account",
+    "id": "out.c-redshift.Account",
+    "name": "Account",
+    "transactional": false,
+    "primaryKey": [],
+    "indexedColumns": [],
+    "created": "2016-11-07T02:11:54+0100",
+    "lastImportDate": "2016-11-07T02:25:48+0100",
+    "lastChangeDate": "2016-11-07T02:25:49+0100",
+    "rowsCount": 1570,
+    "dataSizeBytes": 29696,
+    "isAlias": false,
+    "attributes": [],
+    "bucket": {
+      "uri": "https:\/\/connection.keboola.com\/\/v2\/storage\/buckets\/out.c-redshift",
+      "id": "out.c-redshift",
+      "name": "c-redshift",
+      "stage": "out",
+      "description": "Bucket created by Transformation API",
+      "tables": "https:\/\/connection.keboola.com\/\/v2\/storage\/buckets\/out.c-redshift\/tables",
+      "created": "2016-11-07T02:11:48+0100",
+      "lastChangeDate": "2016-11-07T02:27:10+0100",
+      "isReadOnly": false,
+      "dataSizeBytes": 6576128,
+      "rowsCount": 675727,
+      "isMaintenance": false,
+      "backend": "snowflake"
+    },
+    "columns": [
+      "id",
+      "name"
+    ]
+  },
+  {
+    "uri": "https:\/\/connection.keboola.com\/\/v2\/storage\/tables\/out.c-redshift.ratings",
+    "id": "out.c-redshift.ratings",
+    "name": "ratings",
+    "transactional": false,
+    "primaryKey": [],
+    "indexedColumns": [],
+    "created": "2016-11-07T02:12:44+0100",
+    "lastImportDate": "2016-11-07T02:27:10+0100",
+    "lastChangeDate": "2016-11-07T02:27:10+0100",
+    "rowsCount": 674157,
+    "dataSizeBytes": 6546432,
+    "isAlias": false,
+    "attributes": [],
+    "bucket": {
+      "uri": "https:\/\/connection.keboola.com\/\/v2\/storage\/buckets\/out.c-redshift",
+      "id": "out.c-redshift",
+      "name": "c-redshift",
+      "stage": "out",
+      "description": "Bucket created by Transformation API",
+      "tables": "https:\/\/connection.keboola.com\/\/v2\/storage\/buckets\/out.c-redshift\/tables",
+      "created": "2016-11-07T02:11:48+0100",
+      "lastChangeDate": "2016-11-07T02:27:10+0100",
+      "isReadOnly": false,
+      "dataSizeBytes": 6576128,
+      "rowsCount": 675727,
+      "isMaintenance": false,
+      "backend": "snowflake"
+    },
+    "columns": [
+      "voucher",
+      "user",
+      "rating",
+      "recommend"
+    ]
+  },
+  {
+    "uri": "https:\/\/connection.keboola.com\/\/v2\/storage\/tables\/out.c-snowflake.Account",
+    "id": "out.c-snowflake.Account",
+    "name": "Account",
+    "transactional": false,
+    "primaryKey": [],
+    "indexedColumns": [],
+    "created": "2016-11-07T02:15:53+0100",
+    "lastImportDate": "2016-11-07T02:28:49+0100",
+    "lastChangeDate": "2016-11-07T02:28:49+0100",
+    "rowsCount": 1570,
+    "dataSizeBytes": 29696,
+    "isAlias": false,
+    "attributes": [],
+    "bucket": {
+      "uri": "https:\/\/connection.keboola.com\/\/v2\/storage\/buckets\/out.c-snowflake",
+      "id": "out.c-snowflake",
+      "name": "c-snowflake",
+      "stage": "out",
+      "description": "Bucket created by Transformation API",
+      "tables": "https:\/\/connection.keboola.com\/\/v2\/storage\/buckets\/out.c-snowflake\/tables",
+      "created": "2016-11-07T02:15:49+0100",
+      "lastChangeDate": "2016-11-07T02:29:06+0100",
+      "isReadOnly": false,
+      "dataSizeBytes": 6247936,
+      "rowsCount": 675727,
+      "isMaintenance": false,
+      "backend": "snowflake"
+    },
+    "columns": [
+      "Id",
+      "Name"
+    ]
+  },
+  {
+    "uri": "https:\/\/connection.keboola.com\/\/v2\/storage\/tables\/out.c-snowflake.ratings",
+    "id": "out.c-snowflake.ratings",
+    "name": "ratings",
+    "transactional": false,
+    "primaryKey": [],
+    "indexedColumns": [],
+    "created": "2016-11-07T02:16:08+0100",
+    "lastImportDate": "2016-11-07T02:29:05+0100",
+    "lastChangeDate": "2016-11-07T02:29:06+0100",
+    "rowsCount": 674157,
+    "dataSizeBytes": 6218240,
+    "isAlias": false,
+    "attributes": [],
+    "bucket": {
+      "uri": "https:\/\/connection.keboola.com\/\/v2\/storage\/buckets\/out.c-snowflake",
+      "id": "out.c-snowflake",
+      "name": "c-snowflake",
+      "stage": "out",
+      "description": "Bucket created by Transformation API",
+      "tables": "https:\/\/connection.keboola.com\/\/v2\/storage\/buckets\/out.c-snowflake\/tables",
+      "created": "2016-11-07T02:15:49+0100",
+      "lastChangeDate": "2016-11-07T02:29:06+0100",
+      "isReadOnly": false,
+      "dataSizeBytes": 6247936,
+      "rowsCount": 675727,
+      "isMaintenance": false,
+      "backend": "snowflake"
+    },
+    "columns": [
+      "voucher",
+      "user",
+      "rating",
+      "recommend"
+    ]
+  },
+  {
+    "uri": "https:\/\/connection.keboola.com\/\/v2\/storage\/tables\/in.c-csv-import.213957449",
+    "id": "in.c-csv-import.213957449",
+    "name": "213957449",
+    "transactional": false,
+    "primaryKey": [],
+    "indexedColumns": [],
+    "created": "2016-11-07T02:16:50+0100",
+    "lastImportDate": "2016-11-07T02:17:01+0100",
+    "lastChangeDate": "2016-11-07T02:17:01+0100",
+    "rowsCount": 1570,
+    "dataSizeBytes": 29696,
+    "isAlias": false,
+    "attributes": [],
+    "bucket": {
+      "uri": "https:\/\/connection.keboola.com\/\/v2\/storage\/buckets\/in.c-csv-import",
+      "id": "in.c-csv-import",
+      "name": "c-csv-import",
+      "stage": "in",
+      "description": "",
+      "tables": "https:\/\/connection.keboola.com\/\/v2\/storage\/buckets\/in.c-csv-import\/tables",
+      "created": "2016-11-07T02:16:47+0100",
+      "lastChangeDate": "2016-11-07T02:17:01+0100",
+      "isReadOnly": false,
+      "dataSizeBytes": 29696,
+      "rowsCount": 1570,
+      "isMaintenance": false,
+      "backend": "snowflake"
+    },
+    "columns": [
+      "Id",
+      "Name"
+    ]
+  },
+  {
+    "uri": "https:\/\/connection.keboola.com\/\/v2\/storage\/tables\/out.c-openrefine.copy",
+    "id": "out.c-openrefine.copy",
+    "name": "copy",
+    "transactional": false,
+    "primaryKey": [],
+    "indexedColumns": [],
+    "created": "2016-11-07T02:18:00+0100",
+    "lastImportDate": "2016-11-07T02:24:39+0100",
+    "lastChangeDate": "2016-11-07T02:24:39+0100",
+    "rowsCount": 1570,
+    "dataSizeBytes": 28672,
+    "isAlias": false,
+    "attributes": [],
+    "bucket": {
+      "uri": "https:\/\/connection.keboola.com\/\/v2\/storage\/buckets\/out.c-openrefine",
+      "id": "out.c-openrefine",
+      "name": "c-openrefine",
+      "stage": "out",
+      "description": "Created by Docker Runner",
+      "tables": "https:\/\/connection.keboola.com\/\/v2\/storage\/buckets\/out.c-openrefine\/tables",
+      "created": "2016-11-07T02:17:57+0100",
+      "lastChangeDate": "2016-11-07T02:24:39+0100",
+      "isReadOnly": false,
+      "dataSizeBytes": 28672,
+      "rowsCount": 1570,
+      "isMaintenance": false,
+      "backend": "snowflake"
+    },
+    "columns": [
+      "Id",
+      "Name"
+    ]
+  },
+  {
+    "uri": "https:\/\/connection.keboola.com\/\/v2\/storage\/tables\/in.c-keboola-ex-slack-213957518.channels",
+    "id": "in.c-keboola-ex-slack-213957518.channels",
+    "name": "channels",
+    "transactional": false,
+    "primaryKey": [
+      "id"
+    ],
+    "indexedColumns": [
+      "id"
+    ],
+    "created": "2016-11-07T02:19:13+0100",
+    "lastImportDate": "2016-11-07T02:21:20+0100",
+    "lastChangeDate": "2016-11-07T02:21:21+0100",
+    "rowsCount": 191,
+    "dataSizeBytes": 18432,
+    "isAlias": false,
+    "attributes": [],
+    "bucket": {
+      "uri": "https:\/\/connection.keboola.com\/\/v2\/storage\/buckets\/in.c-keboola-ex-slack-213957518",
+      "id": "in.c-keboola-ex-slack-213957518",
+      "name": "c-keboola-ex-slack-213957518",
+      "stage": "in",
+      "description": "Created by Docker Runner",
+      "tables": "https:\/\/connection.keboola.com\/\/v2\/storage\/buckets\/in.c-keboola-ex-slack-213957518\/tables",
+      "created": "2016-11-07T02:18:37+0100",
+      "lastChangeDate": "2016-11-07T02:21:47+0100",
+      "isReadOnly": false,
+      "dataSizeBytes": 5626368,
+      "rowsCount": 74528,
+      "isMaintenance": false,
+      "backend": "snowflake"
+    },
+    "columns": [
+      "num_members",
+      "purpose_value",
+      "created",
+      "purpose_last_set",
+      "name",
+      "creator",
+      "topic_creator",
+      "is_channel",
+      "is_member",
+      "topic_value",
+      "is_general",
+      "is_archived",
+      "topic_last_set",
+      "id",
+      "purpose_creator"
+    ]
+  },
+  {
+    "uri": "https:\/\/connection.keboola.com\/\/v2\/storage\/tables\/in.c-keboola-ex-slack-213957518.messages",
+    "id": "in.c-keboola-ex-slack-213957518.messages",
+    "name": "messages",
+    "transactional": false,
+    "primaryKey": [
+      "ts",
+      "channel_id",
+      "user"
+    ],
+    "indexedColumns": [
+      "ts",
+      "channel_id",
+      "user"
+    ],
+    "created": "2016-11-07T02:19:44+0100",
+    "lastImportDate": "2016-11-07T02:21:46+0100",
+    "lastChangeDate": "2016-11-07T02:21:47+0100",
+    "rowsCount": 74256,
+    "dataSizeBytes": 5593088,
+    "isAlias": false,
+    "attributes": [],
+    "bucket": {
+      "uri": "https:\/\/connection.keboola.com\/\/v2\/storage\/buckets\/in.c-keboola-ex-slack-213957518",
+      "id": "in.c-keboola-ex-slack-213957518",
+      "name": "c-keboola-ex-slack-213957518",
+      "stage": "in",
+      "description": "Created by Docker Runner",
+      "tables": "https:\/\/connection.keboola.com\/\/v2\/storage\/buckets\/in.c-keboola-ex-slack-213957518\/tables",
+      "created": "2016-11-07T02:18:37+0100",
+      "lastChangeDate": "2016-11-07T02:21:47+0100",
+      "isReadOnly": false,
+      "dataSizeBytes": 5626368,
+      "rowsCount": 74528,
+      "isMaintenance": false,
+      "backend": "snowflake"
+    },
+    "columns": [
+      "ts",
+      "channel_id",
+      "type",
+      "subtype",
+      "user",
+      "text",
+      "reactions_count",
+      "file_pretty_type"
+    ]
+  },
+  {
+    "uri": "https:\/\/connection.keboola.com\/\/v2\/storage\/tables\/in.c-keboola-ex-slack-213957518.users",
+    "id": "in.c-keboola-ex-slack-213957518.users",
+    "name": "users",
+    "transactional": false,
+    "primaryKey": [
+      "id"
+    ],
+    "indexedColumns": [
+      "id"
+    ],
+    "created": "2016-11-07T02:18:42+0100",
+    "lastImportDate": "2016-11-07T02:20:45+0100",
+    "lastChangeDate": "2016-11-07T02:20:45+0100",
+    "rowsCount": 81,
+    "dataSizeBytes": 14848,
+    "isAlias": false,
+    "attributes": [],
+    "bucket": {
+      "uri": "https:\/\/connection.keboola.com\/\/v2\/storage\/buckets\/in.c-keboola-ex-slack-213957518",
+      "id": "in.c-keboola-ex-slack-213957518",
+      "name": "c-keboola-ex-slack-213957518",
+      "stage": "in",
+      "description": "Created by Docker Runner",
+      "tables": "https:\/\/connection.keboola.com\/\/v2\/storage\/buckets\/in.c-keboola-ex-slack-213957518\/tables",
+      "created": "2016-11-07T02:18:37+0100",
+      "lastChangeDate": "2016-11-07T02:21:47+0100",
+      "isReadOnly": false,
+      "dataSizeBytes": 5626368,
+      "rowsCount": 74528,
+      "isMaintenance": false,
+      "backend": "snowflake"
+    },
+    "columns": [
+      "is_primary_owner",
+      "is_ultra_restricted",
+      "tz",
+      "has_2fa",
+      "profile_phone",
+      "name",
+      "tz_offset",
+      "real_name",
+      "profile_last_name",
+      "is_restricted",
+      "is_bot",
+      "status",
+      "profile_email",
+      "deleted",
+      "is_admin",
+      "id",
+      "tz_label",
+      "team_id",
+      "is_owner",
+      "profile_first_name"
+    ]
+  },
+  {
+    "uri": "https:\/\/connection.keboola.com\/\/v2\/storage\/tables\/out.c-snowflake-aliases.Account",
+    "id": "out.c-snowflake-aliases.Account",
+    "name": "Account",
+    "transactional": false,
+    "primaryKey": [
+      "Id",
+      "Name"
+    ],
+    "indexedColumns": [
+      "Id",
+      "Name"
+    ],
+    "created": "2016-11-07T03:02:11+0100",
+    "lastImportDate": "2016-11-07T01:58:30+0100",
+    "lastChangeDate": "2016-11-07T01:58:30+0100",
+    "rowsCount": 1570,
+    "dataSizeBytes": 29696,
+    "isAlias": true,
+    "sourceTable": {
+      "id": "in.c-snowflake.Account",
+      "uri": "https:\/\/connection.keboola.com\/\/v2\/storage\/tables\/in.c-snowflake.Account",
+      "project": {
+        "id": 1818,
+        "name": "Data Takeout Recovery - Master"
+      }
+    },
+    "aliasColumnsAutoSync": true,
+    "attributes": [],
+    "bucket": {
+      "uri": "https:\/\/connection.keboola.com\/\/v2\/storage\/buckets\/out.c-snowflake-aliases",
+      "id": "out.c-snowflake-aliases",
+      "name": "c-snowflake-aliases",
+      "stage": "out",
+      "description": "",
+      "tables": "https:\/\/connection.keboola.com\/\/v2\/storage\/buckets\/out.c-snowflake-aliases\/tables",
+      "created": "2016-11-07T03:01:00+0100",
+      "lastChangeDate": "2016-11-07T03:02:11+0100",
+      "isReadOnly": false,
+      "dataSizeBytes": 0,
+      "rowsCount": 0,
+      "isMaintenance": false,
+      "backend": "snowflake"
+    },
+    "columns": [
+      "Id",
+      "Name"
+    ]
+  },
+  {
+    "uri": "https:\/\/connection.keboola.com\/\/v2\/storage\/tables\/out.c-mysql-aliases.Account",
+    "id": "out.c-mysql-aliases.Account",
+    "name": "Account",
+    "transactional": false,
+    "primaryKey": [
+      "Id"
+    ],
+    "indexedColumns": [
+      "Id"
+    ],
+    "created": "2016-11-07T03:01:56+0100",
+    "lastImportDate": "2016-11-07T02:01:51+0100",
+    "lastChangeDate": "2016-11-07T02:01:51+0100",
+    "rowsCount": 1570,
+    "dataSizeBytes": 229376,
+    "isAlias": true,
+    "sourceTable": {
+      "id": "in.c-mysql.Account",
+      "uri": "https:\/\/connection.keboola.com\/\/v2\/storage\/tables\/in.c-mysql.Account",
+      "project": {
+        "id": 1818,
+        "name": "Data Takeout Recovery - Master"
+      }
+    },
+    "aliasColumnsAutoSync": false,
+    "aliasFilter": {
+        "column": "Name",
+        "operator": "eq",
+        "values": [
+            "Keboola"
+        ]
+    },
+    "attributes": [],
+    "bucket": {
+      "uri": "https:\/\/connection.keboola.com\/\/v2\/storage\/buckets\/out.c-mysql-aliases",
+      "id": "out.c-mysql-aliases",
+      "name": "c-mysql-aliases",
+      "stage": "out",
+      "description": "",
+      "tables": "https:\/\/connection.keboola.com\/\/v2\/storage\/buckets\/out.c-mysql-aliases\/tables",
+      "created": "2016-11-07T03:01:47+0100",
+      "lastChangeDate": "2016-11-07T03:01:56+0100",
+      "isReadOnly": false,
+      "dataSizeBytes": 0,
+      "rowsCount": 0,
+      "isMaintenance": false,
+      "backend": "mysql"
+    },
+    "columns": [
+      "Id"
+    ]
+  },
+  {
+    "uri": "https:\/\/connection.keboola.com\/\/v2\/storage\/tables\/out.c-redshift-aliases.Account",
+    "id": "out.c-redshift-aliases.Account",
+    "name": "Account",
+    "transactional": false,
+    "primaryKey": [
+      "Id"
+    ],
+    "indexedColumns": [
+      "Id",
+      "Name"
+    ],
+    "created": "2016-11-07T06:57:03+0100",
+    "lastImportDate": "2016-11-07T01:59:56+0100",
+    "lastChangeDate": "2016-11-07T01:59:57+0100",
+    "rowsCount": 1570,
+    "dataSizeBytes": 12582912,
+    "isAlias": true,
+    "sourceTable": {
+      "id": "in.c-redshift.Account",
+      "uri": "https:\/\/connection.keboola.com\/\/v2\/storage\/tables\/in.c-redshift.Account",
+      "project": {
+        "id": 1818,
+        "name": "Data Takeout Recovery - Master"
+      }
+    },
+    "aliasColumnsAutoSync": true,
+    "attributes": [],
+    "bucket": {
+      "uri": "https:\/\/connection.keboola.com\/\/v2\/storage\/buckets\/out.c-redshift-aliases",
+      "id": "out.c-redshift-aliases",
+      "name": "c-redshift-aliases",
+      "stage": "out",
+      "description": "",
+      "tables": "https:\/\/connection.keboola.com\/\/v2\/storage\/buckets\/out.c-redshift-aliases\/tables",
+      "created": "2016-11-07T06:56:53+0100",
+      "lastChangeDate": "2016-11-07T06:57:03+0100",
+      "isReadOnly": false,
+      "dataSizeBytes": 0,
+      "rowsCount": 0,
+      "isMaintenance": false,
+      "backend": "redshift"
+    },
+    "columns": [
+      "Id",
+      "Name"
+    ]
+  }
+]
