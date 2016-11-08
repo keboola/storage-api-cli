@@ -11,13 +11,10 @@ namespace Keboola\StorageApi\Cli\Command;
 
 use Aws\S3\S3Client;
 use Keboola\Csv\CsvFile;
-use Keboola\StorageApi\Client;
 use Keboola\StorageApi\Components;
-use Keboola\StorageApi\Options\Components\ListConfigurationRowVersionsOptions;
-use Keboola\StorageApi\Options\Components\ListConfigurationsOptions;
-use Keboola\StorageApi\Options\Components\ListConfigurationVersionsOptions;
+use Keboola\StorageApi\Options\Components\Configuration;
+use Keboola\StorageApi\Options\Components\ConfigurationRow;
 use Keboola\StorageApi\Options\FileUploadOptions;
-use Keboola\StorageApi\Options\GetFileOptions;
 use Keboola\Temp\Temp;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -95,7 +92,6 @@ class RestoreProject extends Command
         }
 
         $output->write($this->format('Restoring buckets'));
-
         foreach($buckets as $bucketInfo) {
             // strip c-
             if (substr($bucketInfo["name"], 0, 2) == 'c-') {
@@ -120,12 +116,12 @@ class RestoreProject extends Command
         $s3->getObject([
             'Bucket' => $bucket,
             'Key' => $basePath . 'tables.json',
-            'SaveAs' => $tmp->getTmpFolder() . 'tables.json'
+            'SaveAs' => $tmp->getTmpFolder() . '/tables.json'
         ]);
         $output->writeln($this->check());
 
         $output->write($this->format('Restoring tables'));
-        $tables = json_decode(file_get_contents($tmp->getTmpFolder() . 'tables.json'), true);
+        $tables = json_decode(file_get_contents($tmp->getTmpFolder() . '/tables.json'), true);
         foreach($tables as $table) {
             if ($table["isAlias"] === true) {
                 continue;
@@ -139,7 +135,7 @@ class RestoreProject extends Command
             if (count($slices["Contents"]) == 1 && substr($slices["Contents"][0]["Key"], -14) != '.part_0.csv.gz') {
                 // one file and no slices => the file has header
                 // no slices = file does not end with .part_0.csv.gz
-                $fileName = $tmp->getTmpFolder() . $table["id"] . ".csv.gz";
+                $fileName = $tmp->getTmpFolder() . "/" . $table["id"] . ".csv.gz";
                 $s3->getObject([
                     'Bucket' => $bucket,
                     'Key' => $slices["Contents"][0]["Key"],
@@ -182,7 +178,7 @@ class RestoreProject extends Command
 
                 // download and upload each slice
                 foreach($slices["Contents"] as $slice) {
-                    $fileName = $tmp->getTmpFolder() . $table["id"] . $table["id"] . ".part_"  . $part . ".csv.gz";
+                    $fileName = $tmp->getTmpFolder() . "/" . $table["id"] . $table["id"] . ".part_"  . $part . ".csv.gz";
                     $s3->getObject([
                         'Bucket' => $bucket,
                         'Key' => $slice["Key"],
@@ -265,6 +261,60 @@ class RestoreProject extends Command
         }
         $output->writeln($this->check());
 
+        $output->write($this->format('Downloading configuration metadata'));
+        $s3->getObject([
+            'Bucket' => $bucket,
+            'Key' => $basePath . 'configurations.json',
+            'SaveAs' => $tmp->getTmpFolder() . '/configurations.json'
+        ]);
+        $configurations = json_decode(file_get_contents($tmp->getTmpFolder() . '/configurations.json'), true);
+        $output->writeln($this->check());
+
+        $output->write($this->format('Restoring configurations'));
+        $components = new Components($client);
+        foreach($configurations as $componentWithConfigurations) {
+            // do not import orchestrator
+            if ($componentWithConfigurations["id"] === "orchestrator") {
+                continue;
+            }
+            foreach($componentWithConfigurations["configurations"] as $componentConfiguration) {
+                $s3->getObject([
+                    'Bucket' => $bucket,
+                    'Key' => $basePath . "configurations/{$componentWithConfigurations["id"]}/{$componentConfiguration["id"]}.json",
+                    'SaveAs' => $tmp->getTmpFolder() . "/configurations-{$componentWithConfigurations["id"]}-{$componentConfiguration["id"]}.json"
+                ]);
+
+                // configurations as objects to preserve empty arrays or empty objects
+                $configurationData = json_decode(
+                    file_get_contents(
+                        $tmp->getTmpFolder() . "/configurations-{$componentWithConfigurations["id"]}-{$componentConfiguration["id"]}.json"
+                    )
+                );
+
+                $lastConfigurationVersion = $configurationData->_versions[0];
+                $configuration = new Configuration();
+                $configuration->setComponentId($componentWithConfigurations["id"]);
+                $configuration->setConfigurationId($componentConfiguration["id"]);
+                $configuration->setDescription($lastConfigurationVersion->description);
+                $configuration->setName($lastConfigurationVersion->name);
+                $components->addConfiguration($configuration);
+                $configuration->setChangeDescription("Configuration {$componentConfiguration["id"]} restored from backup");
+                $configuration->setState($lastConfigurationVersion->state);
+                $configuration->setConfiguration($lastConfigurationVersion->configuration);
+                $components->updateConfiguration($configuration);
+                if (count($configurationData->rows)) {
+                    foreach($configurationData->rows as $row) {
+                        $configurationRow = new ConfigurationRow($configuration);
+                        $configurationRow->setRowId($row->id);
+                        $components->addConfigurationRow($configurationRow);
+                        $configurationRow->setConfiguration($row->configuration);
+                        $configurationRow->setChangeDescription("Row {$row->id} restored from backup");
+                        $components->updateConfigurationRow($configurationRow);
+                    }
+                }
+            }
+        }
+        $output->writeln($this->check());
     }
 
     private function format($message)
@@ -276,10 +326,4 @@ class RestoreProject extends Command
     {
         return '<info>ok</info>';
     }
-
-    private function fail()
-    {
-        return '<error>failed</error>';
-    }
-
 }

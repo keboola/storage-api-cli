@@ -3,14 +3,12 @@
 namespace Keboola\DockerBundle\Tests\Command;
 
 use Aws\S3\S3Client;
-use Keboola\StorageApi\Cli\Command\BackupProject;
 use Keboola\StorageApi\Cli\Command\PurgeProject;
 use Keboola\StorageApi\Cli\Command\RestoreProject;
 use Keboola\StorageApi\Cli\Console\Application;
 use Keboola\StorageApi\Client;
 use Keboola\StorageApi\Components;
-use Keboola\StorageApi\Options\Components\Configuration;
-use Keboola\StorageApi\Options\Components\ConfigurationRow;
+use Keboola\Temp\Temp;
 use Symfony\Component\Console\Tester\ApplicationTester;
 
 class RestoreProjectTest extends \PHPUnit_Framework_TestCase
@@ -129,14 +127,32 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(["Id"], $mysqlAlias["columns"]);
         $this->assertEquals(["column" => "Name", "operator" => "eq", "values" => ["Keboola"]], $mysqlAlias["aliasFilter"]);
 
-        // TODO check configurations
-        /*
+        // configurations
         $components = new Components($client);
         $componentsList = $components->listComponents();
-        $this->assertCount(4, $componentsList);
-        */
+        // orchestrator is not imported
+        $this->assertCount(3, $componentsList);
 
-        // TODO check configuration rows
+        // configuration versions
+        $slackConfig = $components->getConfiguration('keboola.ex-slack', 213957518);
+        $this->assertEquals(2, $slackConfig["version"]);
+        $this->assertEquals("Configuration 213957518 restored from backup", $slackConfig["changeDescription"]);
+
+        // configuration rows
+        $transformationConfig = $components->getConfiguration('transformation', 213956216);
+        $this->assertEquals(5, $transformationConfig["version"]);
+        $this->assertCount(2, $transformationConfig["rows"]);
+        $this->assertEquals("Row 213956392 restored from backup", $transformationConfig["changeDescription"]);
+
+        // empty array and object in config
+        $tmp = new Temp();
+        $file = $tmp->createFile('config.json');
+        $client->apiGet('storage/components/transformation/configs/213956216', $file->getPathname());
+        $config = json_decode(file_get_contents($file->getPathname()));
+        $this->assertEquals(new \stdClass(), $config->rows[0]->configuration->dummyObject);
+        $this->assertEquals([], $config->rows[0]->configuration->queries);
+
+
     }
 
     public function setUp()

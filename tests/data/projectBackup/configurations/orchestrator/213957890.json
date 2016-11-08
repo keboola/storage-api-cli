@@ -1,1 +1,274 @@
-{"id":"213957890","name":"Main","description":"","created":"2016-11-07T02:18:19+0100","creatorToken":{"id":63470,"description":"ondrej.hlavacek@keboola.com"},"version":4,"changeDescription":"","configuration":{"tasks":[{"id":213958057,"component":"keboola.ex-slack","componentUrl":null,"action":"run","actionParameters":{"config":"213957518"},"timeoutMinutes":null,"active":true,"continueOnFailure":false,"phase":"Extraction"},{"id":213958058,"component":"transformation","componentUrl":null,"action":"run","actionParameters":{"config":"213956216"},"timeoutMinutes":null,"active":true,"continueOnFailure":false,"phase":"Transformation"},{"id":213958059,"component":"transformation","componentUrl":null,"action":"run","actionParameters":{"config":"213957181"},"timeoutMinutes":null,"active":true,"continueOnFailure":false,"phase":"Transformation"},{"id":213958060,"component":"transformation","componentUrl":null,"action":"run","actionParameters":{"config":"213956887"},"timeoutMinutes":null,"active":true,"continueOnFailure":false,"phase":"Transformation"},{"id":213958061,"component":"transformation","componentUrl":null,"action":"run","actionParameters":{"config":"213956718"},"timeoutMinutes":null,"active":true,"continueOnFailure":false,"phase":"Transformation"}]},"rows":[],"_versions":[{"version":4,"created":"2016-11-07T02:19:47+0100","creatorToken":{"id":63470,"description":"ondrej.hlavacek@keboola.com"},"changeDescription":"","name":"Main","description":"","configuration":{"tasks":[{"id":213958057,"component":"keboola.ex-slack","componentUrl":null,"action":"run","actionParameters":{"config":"213957518"},"timeoutMinutes":null,"active":true,"continueOnFailure":false,"phase":"Extraction"},{"id":213958058,"component":"transformation","componentUrl":null,"action":"run","actionParameters":{"config":"213956216"},"timeoutMinutes":null,"active":true,"continueOnFailure":false,"phase":"Transformation"},{"id":213958059,"component":"transformation","componentUrl":null,"action":"run","actionParameters":{"config":"213957181"},"timeoutMinutes":null,"active":true,"continueOnFailure":false,"phase":"Transformation"},{"id":213958060,"component":"transformation","componentUrl":null,"action":"run","actionParameters":{"config":"213956887"},"timeoutMinutes":null,"active":true,"continueOnFailure":false,"phase":"Transformation"},{"id":213958061,"component":"transformation","componentUrl":null,"action":"run","actionParameters":{"config":"213956718"},"timeoutMinutes":null,"active":true,"continueOnFailure":false,"phase":"Transformation"}]},"state":[]},{"version":3,"created":"2016-11-07T02:18:44+0100","creatorToken":{"id":63470,"description":"ondrej.hlavacek@keboola.com"},"changeDescription":"","name":"Main","description":"","configuration":{"tasks":[{"id":213957952,"component":"keboola.ex-slack","componentUrl":null,"action":"run","actionParameters":{"config":"213957518"},"timeoutMinutes":null,"active":true,"continueOnFailure":false,"phase":"new phase"},{"id":213957953,"component":"transformation","componentUrl":null,"action":"run","actionParameters":{"config":"213956216"},"timeoutMinutes":null,"active":true,"continueOnFailure":false,"phase":"new phase 1"},{"id":213957954,"component":"transformation","componentUrl":null,"action":"run","actionParameters":{"config":"213957181"},"timeoutMinutes":null,"active":true,"continueOnFailure":false,"phase":"new phase 1"},{"id":213957955,"component":"transformation","componentUrl":null,"action":"run","actionParameters":{"config":"213956887"},"timeoutMinutes":null,"active":true,"continueOnFailure":false,"phase":"new phase 1"},{"id":213957956,"component":"transformation","componentUrl":null,"action":"run","actionParameters":{"config":"213956718"},"timeoutMinutes":null,"active":true,"continueOnFailure":false,"phase":"new phase 1"}]},"state":[]},{"version":2,"created":"2016-11-07T02:18:19+0100","creatorToken":{"id":63470,"description":"ondrej.hlavacek@keboola.com"},"changeDescription":"","name":"Main","description":"","configuration":{"tasks":[]},"state":[]},{"version":1,"created":"2016-11-07T02:18:19+0100","creatorToken":{"id":63470,"description":"ondrej.hlavacek@keboola.com"},"changeDescription":"","name":"Main","description":"","configuration":[],"state":[]}]}
+{
+  "id": "213957890",
+  "name": "Main",
+  "description": "",
+  "created": "2016-11-07T02:18:19+0100",
+  "creatorToken": {
+    "id": 63470,
+    "description": "ondrej.hlavacek@keboola.com"
+  },
+  "version": 4,
+  "changeDescription": "",
+  "configuration": {
+    "tasks": [
+      {
+        "id": 213958057,
+        "component": "keboola.ex-slack",
+        "componentUrl": null,
+        "action": "run",
+        "actionParameters": {
+          "config": "213957518"
+        },
+        "timeoutMinutes": null,
+        "active": true,
+        "continueOnFailure": false,
+        "phase": "Extraction"
+      },
+      {
+        "id": 213958058,
+        "component": "transformation",
+        "componentUrl": null,
+        "action": "run",
+        "actionParameters": {
+          "config": "213956216"
+        },
+        "timeoutMinutes": null,
+        "active": true,
+        "continueOnFailure": false,
+        "phase": "Transformation"
+      },
+      {
+        "id": 213958059,
+        "component": "transformation",
+        "componentUrl": null,
+        "action": "run",
+        "actionParameters": {
+          "config": "213957181"
+        },
+        "timeoutMinutes": null,
+        "active": true,
+        "continueOnFailure": false,
+        "phase": "Transformation"
+      },
+      {
+        "id": 213958060,
+        "component": "transformation",
+        "componentUrl": null,
+        "action": "run",
+        "actionParameters": {
+          "config": "213956887"
+        },
+        "timeoutMinutes": null,
+        "active": true,
+        "continueOnFailure": false,
+        "phase": "Transformation"
+      },
+      {
+        "id": 213958061,
+        "component": "transformation",
+        "componentUrl": null,
+        "action": "run",
+        "actionParameters": {
+          "config": "213956718"
+        },
+        "timeoutMinutes": null,
+        "active": true,
+        "continueOnFailure": false,
+        "phase": "Transformation"
+      }
+    ]
+  },
+  "rows": [],
+  "_versions": [
+    {
+      "version": 4,
+      "created": "2016-11-07T02:19:47+0100",
+      "creatorToken": {
+        "id": 63470,
+        "description": "ondrej.hlavacek@keboola.com"
+      },
+      "changeDescription": "",
+      "name": "Main",
+      "description": "",
+      "configuration": {
+        "tasks": [
+          {
+            "id": 213958057,
+            "component": "keboola.ex-slack",
+            "componentUrl": null,
+            "action": "run",
+            "actionParameters": {
+              "config": "213957518"
+            },
+            "timeoutMinutes": null,
+            "active": true,
+            "continueOnFailure": false,
+            "phase": "Extraction"
+          },
+          {
+            "id": 213958058,
+            "component": "transformation",
+            "componentUrl": null,
+            "action": "run",
+            "actionParameters": {
+              "config": "213956216"
+            },
+            "timeoutMinutes": null,
+            "active": true,
+            "continueOnFailure": false,
+            "phase": "Transformation"
+          },
+          {
+            "id": 213958059,
+            "component": "transformation",
+            "componentUrl": null,
+            "action": "run",
+            "actionParameters": {
+              "config": "213957181"
+            },
+            "timeoutMinutes": null,
+            "active": true,
+            "continueOnFailure": false,
+            "phase": "Transformation"
+          },
+          {
+            "id": 213958060,
+            "component": "transformation",
+            "componentUrl": null,
+            "action": "run",
+            "actionParameters": {
+              "config": "213956887"
+            },
+            "timeoutMinutes": null,
+            "active": true,
+            "continueOnFailure": false,
+            "phase": "Transformation"
+          },
+          {
+            "id": 213958061,
+            "component": "transformation",
+            "componentUrl": null,
+            "action": "run",
+            "actionParameters": {
+              "config": "213956718"
+            },
+            "timeoutMinutes": null,
+            "active": true,
+            "continueOnFailure": false,
+            "phase": "Transformation"
+          }
+        ]
+      },
+      "state": []
+    },
+    {
+      "version": 3,
+      "created": "2016-11-07T02:18:44+0100",
+      "creatorToken": {
+        "id": 63470,
+        "description": "ondrej.hlavacek@keboola.com"
+      },
+      "changeDescription": "",
+      "name": "Main",
+      "description": "",
+      "configuration": {
+        "tasks": [
+          {
+            "id": 213957952,
+            "component": "keboola.ex-slack",
+            "componentUrl": null,
+            "action": "run",
+            "actionParameters": {
+              "config": "213957518"
+            },
+            "timeoutMinutes": null,
+            "active": true,
+            "continueOnFailure": false,
+            "phase": "new phase"
+          },
+          {
+            "id": 213957953,
+            "component": "transformation",
+            "componentUrl": null,
+            "action": "run",
+            "actionParameters": {
+              "config": "213956216"
+            },
+            "timeoutMinutes": null,
+            "active": true,
+            "continueOnFailure": false,
+            "phase": "new phase 1"
+          },
+          {
+            "id": 213957954,
+            "component": "transformation",
+            "componentUrl": null,
+            "action": "run",
+            "actionParameters": {
+              "config": "213957181"
+            },
+            "timeoutMinutes": null,
+            "active": true,
+            "continueOnFailure": false,
+            "phase": "new phase 1"
+          },
+          {
+            "id": 213957955,
+            "component": "transformation",
+            "componentUrl": null,
+            "action": "run",
+            "actionParameters": {
+              "config": "213956887"
+            },
+            "timeoutMinutes": null,
+            "active": true,
+            "continueOnFailure": false,
+            "phase": "new phase 1"
+          },
+          {
+            "id": 213957956,
+            "component": "transformation",
+            "componentUrl": null,
+            "action": "run",
+            "actionParameters": {
+              "config": "213956718"
+            },
+            "timeoutMinutes": null,
+            "active": true,
+            "continueOnFailure": false,
+            "phase": "new phase 1"
+          }
+        ]
+      },
+      "state": []
+    },
+    {
+      "version": 2,
+      "created": "2016-11-07T02:18:19+0100",
+      "creatorToken": {
+        "id": 63470,
+        "description": "ondrej.hlavacek@keboola.com"
+      },
+      "changeDescription": "",
+      "name": "Main",
+      "description": "",
+      "configuration": {
+        "tasks": []
+      },
+      "state": []
+    },
+    {
+      "version": 1,
+      "created": "2016-11-07T02:18:19+0100",
+      "creatorToken": {
+        "id": 63470,
+        "description": "ondrej.hlavacek@keboola.com"
+      },
+      "changeDescription": "",
+      "name": "Main",
+      "description": "",
+      "configuration": [],
+      "state": []
+    }
+  ]
+}
