@@ -315,6 +315,14 @@ class RestoreProject extends Command
             }
         }
         $output->writeln($this->check());
+        $output->writerln("Project successfully restored. Please note what's missing:");
+        $output->writerln(" - table snapshots");
+        $output->writerln(" - created/modified date of all objects");
+        $output->writerln(" - encrypted data (eg. passwords)");
+        $output->writerln(" - oauth authorizations");
+        $output->writerln(" - configuration versions");
+        $output->writerln(" - orchestrations");
+        $output->writerln(" - features of the original project");
     }
 
     private function format($message)
