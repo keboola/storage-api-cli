@@ -60,7 +60,6 @@ class CopyTable extends Command
         $sapiClientDst = $sapiClient;
         // Destination token
         if ($input->getArgument('dstToken')) {
-
             $output->writeln("Setting destination token");
 
             $sapiClientDst = new Client([
@@ -105,7 +104,6 @@ class CopyTable extends Command
             foreach ($tableInfo["attributes"] as $attribute) {
                 $sapiClientDst->setTableAttribute($destinationTable, $attribute["name"], $attribute["value"], $attribute["protected"]);
             }
-
         }
 
         // All done, cleanup

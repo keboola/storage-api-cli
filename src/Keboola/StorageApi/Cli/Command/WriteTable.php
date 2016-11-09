@@ -32,7 +32,6 @@ class WriteTable extends Command
                 new InputOption('enclosure', null, InputOption::VALUE_OPTIONAL, "csv enclosure", CsvFile::DEFAULT_ENCLOSURE),
                 new InputOption('escapedBy', null, InputOption::VALUE_OPTIONAL, "csv escape character", ''),
             ));
-
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)

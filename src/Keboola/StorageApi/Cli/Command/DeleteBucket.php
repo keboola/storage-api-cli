@@ -43,7 +43,6 @@ class DeleteBucket extends Command
         if (is_array($tablesInBucket) && count($tablesInBucket)) {
             if (!$input->getOption("recursive")) {
                 throw new \Exception("Bucket {$input->getArgument('bucketId')} is not empty. Delete tables manually or use --recursive option.");
-
             }
             $output->writeln("Deleting tables in bucket {$input->getArgument('bucketId')}");
             foreach ($tablesInBucket as $table) {

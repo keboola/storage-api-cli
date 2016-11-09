@@ -38,8 +38,8 @@ class PurgeProject extends Command
         $output->write($this->format('Dropping configurations'));
         $components = new Components($client);
         $componentList = $components->listComponents();
-        foreach($componentList as $componentItem) {
-            foreach($componentItem["configurations"] as $config) {
+        foreach ($componentList as $componentItem) {
+            foreach ($componentItem["configurations"] as $config) {
                 $components->deleteConfiguration($componentItem["id"], $config["id"]);
             }
         }
@@ -59,19 +59,17 @@ class PurgeProject extends Command
         }
 
         $output->write($this->format('Dropping buckets'));
-        foreach($buckets as $bucket) {
+        foreach ($buckets as $bucket) {
             $client->dropBucket($bucket["id"], ["force" => true]);
         }
         $output->writeln($this->check());
 
         $output->write($this->format('Dropping file uploads'));
-        foreach($client->listFiles() as $file) {
+        foreach ($client->listFiles() as $file) {
             $client->deleteFile($file["id"]);
         }
         $output->writeln($this->check());
-
     }
-
 
     private function format($message)
     {

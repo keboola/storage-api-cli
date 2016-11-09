@@ -110,7 +110,6 @@ class RestoreTableFromImports extends Command
             ));
 
             foreach ($events as $event) {
-
                 if (!($this->isImportEvent($event) && $this->isEventBeforeRestoreDate($event))) {
                     continue;
                 }
@@ -137,7 +136,6 @@ class RestoreTableFromImports extends Command
             // re-fetch event for fresh S3 link
             $this->processEvent($sapiClient->getEvent($event['id']));
         }
-
     }
 
     private function isImportEvent($event)
@@ -251,7 +249,6 @@ class RestoreTableFromImports extends Command
                 // import table
                 $this->getSapiClient()
                     ->writeTableAsync($this->input->getArgument('destinationTableId'), $csvFile, $importOptions);
-
             }
             $fs = new Filesystem();
             $fs->remove($tmpFile);
@@ -259,7 +256,6 @@ class RestoreTableFromImports extends Command
 
         $this->importedEventsCount++;
         $this->output->writeln("event $event[id]: end. {$this->importedEventsCount}/{$this->importEventsCount}");
-
     }
 
     private function createTable(CsvFile $csvFile, $options)

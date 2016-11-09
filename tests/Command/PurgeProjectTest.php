@@ -84,9 +84,4 @@ class PurgeProjectTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(0, $client->listFiles());
         $this->assertCount(0, $components->listComponents());
     }
-
-    public function tearDown()
-    {
-
-    }
 }

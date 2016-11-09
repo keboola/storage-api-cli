@@ -66,8 +66,8 @@ class RestoreProject extends Command
         if (!$input->getOption('ignore-storage-backend')) {
             $output->write($this->format('Checking bucket compatibility'));
             $tokenInfo = $client->verifyToken();
-            foreach($buckets as $bucket) {
-                switch($bucket["backend"]) {
+            foreach ($buckets as $bucket) {
+                switch ($bucket["backend"]) {
                     case "mysql":
                         if (!isset($tokenInfo["hasMysql"]) || $tokenInfo["hasMysql"] === false) {
                             $output->writeln("<error>Missing MySQL backend</error>");
@@ -92,7 +92,7 @@ class RestoreProject extends Command
         }
 
         $output->write($this->format('Restoring buckets'));
-        foreach($buckets as $bucketInfo) {
+        foreach ($buckets as $bucketInfo) {
             // strip c-
             if (substr($bucketInfo["name"], 0, 2) == 'c-') {
                 $bucketName = substr($bucketInfo["name"], 2);
@@ -122,7 +122,7 @@ class RestoreProject extends Command
 
         $output->write($this->format('Restoring tables'));
         $tables = json_decode(file_get_contents($tmp->getTmpFolder() . '/tables.json'), true);
-        foreach($tables as $table) {
+        foreach ($tables as $table) {
             if ($table["isAlias"] === true) {
                 continue;
             }
@@ -177,7 +177,7 @@ class RestoreProject extends Command
                 $part = 0;
 
                 // download and upload each slice
-                foreach($slices["Contents"] as $slice) {
+                foreach ($slices["Contents"] as $slice) {
                     $fileName = $tmp->getTmpFolder() . "/" . $table["id"] . $table["id"] . ".part_"  . $part . ".csv.gz";
                     $s3->getObject([
                         'Bucket' => $bucket,
@@ -223,7 +223,6 @@ class RestoreProject extends Command
                     'dataFileId' => $fileUploadInfo['id'],
                     'columns' => $headerFile->getHeader()
                 ));
-
             }
 
             // indexes
@@ -237,7 +236,7 @@ class RestoreProject extends Command
         $output->writeln($this->check());
 
         $output->write($this->format('Restoring aliases'));
-        foreach($tables as $table) {
+        foreach ($tables as $table) {
             if ($table["isAlias"] !== true) {
                 continue;
             }
@@ -253,11 +252,10 @@ class RestoreProject extends Command
         $output->writeln($this->check());
 
         $output->write($this->format('Restoring table attributes'));
-        foreach($tables as $table) {
+        foreach ($tables as $table) {
             if (count($table["attributes"])) {
                 $client->replaceTableAttributes($table["id"], $table["attributes"]);
             }
-
         }
         $output->writeln($this->check());
 
@@ -272,12 +270,12 @@ class RestoreProject extends Command
 
         $output->write($this->format('Restoring configurations'));
         $components = new Components($client);
-        foreach($configurations as $componentWithConfigurations) {
+        foreach ($configurations as $componentWithConfigurations) {
             // do not import orchestrator
             if ($componentWithConfigurations["id"] === "orchestrator") {
                 continue;
             }
-            foreach($componentWithConfigurations["configurations"] as $componentConfiguration) {
+            foreach ($componentWithConfigurations["configurations"] as $componentConfiguration) {
                 $s3->getObject([
                     'Bucket' => $bucket,
                     'Key' => $basePath . "configurations/{$componentWithConfigurations["id"]}/{$componentConfiguration["id"]}.json",
@@ -303,7 +301,7 @@ class RestoreProject extends Command
                 $configuration->setConfiguration($lastConfigurationVersion->configuration);
                 $components->updateConfiguration($configuration);
                 if (count($configurationData->rows)) {
-                    foreach($configurationData->rows as $row) {
+                    foreach ($configurationData->rows as $row) {
                         $configurationRow = new ConfigurationRow($configuration);
                         $configurationRow->setRowId($row->id);
                         $components->addConfigurationRow($configurationRow);
