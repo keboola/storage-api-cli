@@ -35,20 +35,22 @@ Options:
   --url               Storage API URL
 
 Available commands:
-  backup-project               Backup the whole project to AWS S3
-  copy-bucket                  Copy bucket with all tables in it
-  copy-table                   Copy table with PK, indexes and attributes (transferring nongzipped data)
-  create-table                 Create table in bucket
-  delete-bucket                Delete bucket
-  delete-table                 Delete table
-  export-table                 Export data from table to file
-  help                         Displays help for a command
-  list                         Lists commands
-  list-buckets                 list all available buckets
-  list-events                  List events
-  restore-table-from-imports   Creates new table from source table imports
-  truncate-table               Remove all data from table
-  write-table                  Write data into table
+  backup-project              Backup whole project to AWS S3
+  copy-bucket                 Copy bucket with all tables in it
+  copy-table                  Copy table with PK, indexes and attributes (transferring nongzipped data)
+  create-table                Create table in bucket
+  delete-bucket               Delete bucket
+  delete-table                Delete table
+  export-table                Export data from table to file
+  help                        Displays help for a command
+  list                        Lists commands
+  list-buckets                list all available buckets
+  list-events                 List events
+  purge-project               Purge the project
+  restore-project             Restore a project from a backup in AWS S3. Only the latest versions of all configs are used.
+  restore-table-from-imports  Creates new table from source table imports
+  truncate-table              Remove all data from table
+  write-table                 Write data into table
 
 ```
 
