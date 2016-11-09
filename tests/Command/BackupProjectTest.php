@@ -155,9 +155,14 @@ class BackupProjectTest extends \PHPUnit_Framework_TestCase
                 $deleteObjects[] = $key;
             }
         }
-        $s3Client->deleteObjects([
-            'Bucket' => TEST_S3_BUCKET,
-            'Delete' => ['Objects' => $deleteObjects]
-        ]);
+
+        if (count($deleteObjects) > 0) {
+            $s3Client->deleteObjects(
+                [
+                    'Bucket' => TEST_S3_BUCKET,
+                    'Delete' => ['Objects' => $deleteObjects]
+                ]
+            );
+        }
     }
 }
