@@ -7,14 +7,30 @@ use Keboola\StorageApi\Cli\Command\BackupProject;
 use Keboola\StorageApi\Cli\Console\Application;
 use Keboola\StorageApi\Client;
 use Keboola\StorageApi\Components;
+use Keboola\StorageApi\Exception;
 use Keboola\StorageApi\Options\Components\Configuration;
 use Keboola\StorageApi\Options\Components\ConfigurationRow;
 use Symfony\Component\Console\Tester\ApplicationTester;
 
 class BackupProjectTest extends \PHPUnit_Framework_TestCase
 {
-    const S3_PATH = 'cli-client-test/';
     const S3_REGION = 'us-east-1';
+    private $s3path;
+
+    public function setUp()
+    {
+        parent::setUp();
+        $client = new Client(['token' => TEST_STORAGE_API_TOKEN]);
+        $component = new Components($client);
+        try {
+            $component->deleteConfiguration('transformation', TEST_PREFIX . 'sapi-php-test');
+        } catch (Exception $e) {
+            if ($e->getCode() != 404) {
+                throw $e;
+            }
+        }
+        $this->s3path = 'cli-client-test' . TEST_PREFIX . '/';
+    }
 
     public function testExecuteNoVersions()
     {
@@ -22,7 +38,7 @@ class BackupProjectTest extends \PHPUnit_Framework_TestCase
         $config = new Configuration();
         $config->setComponentId('transformation');
         $config->setDescription('Test Configuration');
-        $config->setConfigurationId('sapi-php-test');
+        $config->setConfigurationId(TEST_PREFIX . 'sapi-php-test');
         $config->setName('test-configuration');
         $component = new Components($client);
         $configData = $component->addConfiguration($config);
@@ -54,14 +70,14 @@ class BackupProjectTest extends \PHPUnit_Framework_TestCase
             '--structure-only' => true,
             'bucket' => TEST_S3_BUCKET,
             'region' => self::S3_REGION,
-            'path' => self::S3_PATH
+            'path' => $this->s3path
         ]);
         $ret = $applicationTester->getDisplay();
         $this->assertContains('Buckets metadata', $ret);
         $this->assertContains('Tables metadata', $ret);
         $this->assertContains('Configurations', $ret);
 
-        $tmp = sys_get_temp_dir();
+        $tmp = sys_get_temp_dir() . DIRECTORY_SEPARATOR;
         $s3Client = new S3Client([
             'version' => 'latest',
             'region' => self::S3_REGION,
@@ -71,11 +87,11 @@ class BackupProjectTest extends \PHPUnit_Framework_TestCase
             ]
         ]);
         $targetFile = $tmp . 'configurations.json';
-        $s3Client->getObject(array(
+        $s3Client->getObject([
             'Bucket' => TEST_S3_BUCKET,
-            'Key' => self::S3_PATH . 'configurations.json',
+            'Key' => $this->s3path . 'configurations.json',
             'SaveAs' => $targetFile
-        ));
+        ]);
         $targetContents = file_get_contents($targetFile);
         $targetData = json_decode($targetContents, true);
         $targetComponent = [];
@@ -99,35 +115,20 @@ class BackupProjectTest extends \PHPUnit_Framework_TestCase
 
         $configurationId = $targetConfiguration['id'];
         $targetFile = $tmp . $configurationId . 'configurations.json';
-        $s3Client->getObject(array(
+        $s3Client->getObject([
             'Bucket' => TEST_S3_BUCKET,
-            'Key' => self::S3_PATH . 'configurations/transformation/' . $configurationId . '.json',
+            'Key' => $this->s3path . 'configurations/transformation/' . $configurationId . '.json',
             'SaveAs' => $targetFile
-        ));
+        ]);
         $targetContents = file_get_contents($targetFile);
-        $targetData = json_decode($targetContents, true);
-        $targetComponent = [];
-        foreach ($targetData as $component) {
-            if ($component['id'] == 'transformation') {
-                $targetComponent = $component;
-                break;
-            }
-        }
-        $this->assertGreaterThan(0, count($targetComponent));
-
-        $targetConfiguration = [];
-        foreach ($targetComponent['configurations'] as $configuration) {
-            if ($configuration['id'] == 'sapi-php-test') {
-                $targetConfiguration = $configuration;
-            }
-        }
+        $targetConfiguration = json_decode($targetContents, true);
         $this->assertGreaterThan(0, count($targetConfiguration));
         $this->assertEquals('test-configuration', $targetConfiguration['name']);
         $this->assertEquals('Test Configuration', $targetConfiguration['description']);
-        $this->assertContains('rows', $targetConfiguration);
+        $this->assertArrayHasKey('rows', $targetConfiguration);
         $this->assertEquals(2, count($targetConfiguration['rows']));
-        $this->assertEquals('foo', count($targetConfiguration['rows'][0]['queries'][0]));
-        $this->assertEquals('bar', count($targetConfiguration['rows'][1]['queries'][0]));
+        $this->assertEquals('foo', $targetConfiguration['rows'][0]['configuration']['queries'][0]);
+        $this->assertEquals('bar', $targetConfiguration['rows'][1]['configuration']['queries'][0]);
         $this->assertNotContains('versions', $targetConfiguration);
         $this->assertNotContains('versions', $targetConfiguration['rows'][0]);
     }
@@ -136,7 +137,7 @@ class BackupProjectTest extends \PHPUnit_Framework_TestCase
     {
         $client = new Client(['token' => TEST_STORAGE_API_TOKEN]);
         $component = new Components($client);
-        $component->deleteConfiguration('transformation', 'sapi-php-test');
+        $component->deleteConfiguration('transformation', TEST_PREFIX . 'sapi-php-test');
 
         $s3Client = new S3Client([
             'version' => 'latest',
@@ -150,7 +151,7 @@ class BackupProjectTest extends \PHPUnit_Framework_TestCase
         $keys = $keys->toArray()['Contents'];
         $deleteObjects = [];
         foreach ($keys as $key) {
-            if (substr($key['Key'], 0, strlen(self::S3_PATH)) == self::S3_PATH) {
+            if (substr($key['Key'], 0, strlen($this->s3path)) == $this->s3path) {
                 $deleteObjects[] = $key;
             }
         }
