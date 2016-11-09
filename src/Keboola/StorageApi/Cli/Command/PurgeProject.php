@@ -45,17 +45,21 @@ class PurgeProject extends Command
         }
         $output->writeln($this->check());
 
-        $output->write($this->format('Dropping aliases'));
-        foreach($client->listTables() as $table) {
-            if (!$table["isAlias"]) {
-                continue;
+        $buckets = $client->listBuckets();
+
+        if (count($buckets) > 0) {
+            $output->write($this->format('Dropping aliases'));
+            foreach ($client->listTables() as $table) {
+                if (!$table["isAlias"]) {
+                    continue;
+                }
+                $client->dropTable($table["id"]);
             }
-            $client->dropTable($table["id"]);
+            $output->writeln($this->check());
         }
-        $output->writeln($this->check());
 
         $output->write($this->format('Dropping buckets'));
-        foreach($client->listBuckets() as $bucket) {
+        foreach($buckets as $bucket) {
             $client->dropBucket($bucket["id"], ["force" => true]);
         }
         $output->writeln($this->check());
