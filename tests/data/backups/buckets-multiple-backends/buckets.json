@@ -1,0 +1,50 @@
+[
+  {
+    "uri": "https:\/\/connection.keboola.com\/\/v2\/storage\/buckets\/in.c-snowflake",
+    "id": "in.c-snowflake",
+    "name": "c-snowflake",
+    "stage": "in",
+    "description": "",
+    "tables": "https:\/\/connection.keboola.com\/\/v2\/storage\/buckets\/in.c-snowflake\/tables",
+    "created": "2016-11-07T01:57:53+0100",
+    "lastChangeDate": "2016-11-07T02:12:16+0100",
+    "isReadOnly": false,
+    "dataSizeBytes": 0,
+    "rowsCount": 0,
+    "isMaintenance": false,
+    "backend": "snowflake",
+    "attributes": []
+  },
+  {
+    "uri": "https:\/\/connection.keboola.com\/\/v2\/storage\/buckets\/in.c-redshift",
+    "id": "in.c-redshift",
+    "name": "c-redshift",
+    "stage": "in",
+    "description": "",
+    "tables": "https:\/\/connection.keboola.com\/\/v2\/storage\/buckets\/in.c-redshift\/tables",
+    "created": "2016-11-07T01:59:35+0100",
+    "lastChangeDate": "2016-11-07T02:09:58+0100",
+    "isReadOnly": false,
+    "dataSizeBytes": 0,
+    "rowsCount": 0,
+    "isMaintenance": false,
+    "backend": "redshift",
+    "attributes": []
+  },
+  {
+    "uri": "https:\/\/connection.keboola.com\/\/v2\/storage\/buckets\/in.c-mysql",
+    "id": "in.c-mysql",
+    "name": "c-mysql",
+    "stage": "in",
+    "description": "",
+    "tables": "https:\/\/connection.keboola.com\/\/v2\/storage\/buckets\/in.c-mysql\/tables",
+    "created": "2016-11-07T02:01:29+0100",
+    "lastChangeDate": "2016-11-07T02:07:42+0100",
+    "isReadOnly": false,
+    "dataSizeBytes": 0,
+    "rowsCount": 0,
+    "isMaintenance": false,
+    "backend": "mysql",
+    "attributes": []
+  }
+]

@@ -1,0 +1,104 @@
+[
+  {
+    "id": "orchestrator",
+    "type": "other",
+    "name": "Orchestrator",
+    "description": "Jobs scheduler",
+    "longDescription": null,
+    "hasUI": false,
+    "hasRun": false,
+    "ico32": "https:\/\/d3iz2gfan5zufq.cloudfront.net\/images\/cloud-services\/orchestrator-32-1.png",
+    "ico64": "https:\/\/d3iz2gfan5zufq.cloudfront.net\/images\/cloud-services\/orchestrator-64-1.png",
+    "data": [],
+    "flags": [],
+    "configurationSchema": [],
+    "emptyConfiguration": [],
+    "uiOptions": [],
+    "configurationDescription": null,
+    "uri": "https:\/\/syrup.keboola.com\/orchestrator",
+    "documentationUrl": "http:\/\/docs.keboolaorchestratorv2api.apiary.io\/",
+    "configurations": [
+      {
+        "id": "213957890",
+        "name": "Main",
+        "description": "",
+        "created": "2016-11-07T02:18:19+0100",
+        "creatorToken": {
+          "id": 63470,
+          "description": "ondrej.hlavacek@keboola.com"
+        },
+        "version": 4,
+        "changeDescription": "",
+        "configuration": {
+          "tasks": [
+            {
+              "id": 213958057,
+              "component": "keboola.ex-slack",
+              "componentUrl": null,
+              "action": "run",
+              "actionParameters": {
+                "config": "213957518"
+              },
+              "timeoutMinutes": null,
+              "active": true,
+              "continueOnFailure": false,
+              "phase": "Extraction"
+            },
+            {
+              "id": 213958058,
+              "component": "transformation",
+              "componentUrl": null,
+              "action": "run",
+              "actionParameters": {
+                "config": "213956216"
+              },
+              "timeoutMinutes": null,
+              "active": true,
+              "continueOnFailure": false,
+              "phase": "Transformation"
+            },
+            {
+              "id": 213958059,
+              "component": "transformation",
+              "componentUrl": null,
+              "action": "run",
+              "actionParameters": {
+                "config": "213957181"
+              },
+              "timeoutMinutes": null,
+              "active": true,
+              "continueOnFailure": false,
+              "phase": "Transformation"
+            },
+            {
+              "id": 213958060,
+              "component": "transformation",
+              "componentUrl": null,
+              "action": "run",
+              "actionParameters": {
+                "config": "213956887"
+              },
+              "timeoutMinutes": null,
+              "active": true,
+              "continueOnFailure": false,
+              "phase": "Transformation"
+            },
+            {
+              "id": 213958061,
+              "component": "transformation",
+              "componentUrl": null,
+              "action": "run",
+              "actionParameters": {
+                "config": "213956718"
+              },
+              "timeoutMinutes": null,
+              "active": true,
+              "continueOnFailure": false,
+              "phase": "Transformation"
+            }
+          ]
+        }
+      }
+    ]
+  }
+]

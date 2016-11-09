@@ -122,6 +122,8 @@ class Application extends BaseApplication
             new Command\ListEvents(),
             new Command\ExportTable(),
             new Command\BackupProject(),
+            new Command\RestoreProject(),
+            new Command\PurgeProject(),
         ), parent::getDefaultCommands());
     }
 

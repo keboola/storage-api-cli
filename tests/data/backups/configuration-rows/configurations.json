@@ -1,0 +1,48 @@
+[
+  {
+    "id": "transformation",
+    "type": "transformation",
+    "name": "Transformations",
+    "description": "Transformation API",
+    "longDescription": null,
+    "hasUI": false,
+    "hasRun": false,
+    "ico32": "",
+    "ico64": "",
+    "data": [],
+    "flags": [],
+    "configurationSchema": [],
+    "emptyConfiguration": [],
+    "uiOptions": [],
+    "configurationDescription": null,
+    "uri": "https:\/\/syrup.keboola.com\/transformation",
+    "configurations": [
+      {
+        "id": "1",
+        "name": "MySQL",
+        "description": "",
+        "created": "2016-11-07T02:06:34+0100",
+        "creatorToken": {
+          "id": 63470,
+          "description": "ondrej.hlavacek@keboola.com"
+        },
+        "version": 8,
+        "changeDescription": "Accounts changed to Account",
+        "configuration": {}
+      },
+      {
+        "id": "2",
+        "name": "Snowflake",
+        "description": "",
+        "created": "2016-11-07T02:09:08+0100",
+        "creatorToken": {
+          "id": 63470,
+          "description": "ondrej.hlavacek@keboola.com"
+        },
+        "version": 8,
+        "changeDescription": "Create output mapping in Ratings",
+        "configuration": {}
+      }
+    ]
+  }
+]
