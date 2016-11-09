@@ -85,13 +85,10 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
         $temp = new Temp();
         $file = $temp->createFile("account.csv");
         $tableExporter->exportTable("in.c-bucket.Account", $file->getPathname(), []);
-        $expectedResult = <<<EOF
-"Id","Name"
-"001C000000xYbhhIAC","Keboola"
-"001C000000xYbhhIAD","Keboola 2"
-
-EOF;
-        $this->assertEquals($expectedResult, file_get_contents($file->getPathname()));
+        $fileContents = file_get_contents($file->getPathname());
+        $this->assertContains('"Id","Name"', $fileContents);
+        $this->assertContains('"001C000000xYbhhIAC","Keboola"', $fileContents);
+        $this->assertContains('"001C000000xYbhhIAD","Keboola 2"', $fileContents);
     }
 
     public function testRestoreTableWithoutHeader()
@@ -105,13 +102,10 @@ EOF;
         $temp = new Temp();
         $file = $temp->createFile("account.csv");
         $tableExporter->exportTable("in.c-bucket.Account", $file->getPathname(), []);
-        $expectedResult = <<<EOF
-"Id","Name"
-"001C000000xYbhhIAC","Keboola"
-"001C000000xYbhhIAD","Keboola 2"
-
-EOF;
-        $this->assertEquals($expectedResult, file_get_contents($file->getPathname()));
+        $fileContents = file_get_contents($file->getPathname());
+        $this->assertContains('"Id","Name"', $fileContents);
+        $this->assertContains('"001C000000xYbhhIAC","Keboola"', $fileContents);
+        $this->assertContains('"001C000000xYbhhIAD","Keboola 2"', $fileContents);
     }
 
 
@@ -126,13 +120,10 @@ EOF;
         $temp = new Temp();
         $file = $temp->createFile("account.csv");
         $tableExporter->exportTable("in.c-bucket.Account", $file->getPathname(), []);
-        $expectedResult = <<<EOF
-"Id","Name"
-"001C000000xYbhhIAC","Keboola"
-"001C000000xYbhhIAD","Keboola 2"
-
-EOF;
-        $this->assertEquals($expectedResult, file_get_contents($file->getPathname()));
+        $fileContents = file_get_contents($file->getPathname());
+        $this->assertContains('"Id","Name"', $fileContents);
+        $this->assertContains('"001C000000xYbhhIAC","Keboola"', $fileContents);
+        $this->assertContains('"001C000000xYbhhIAD","Keboola 2"', $fileContents);
     }
 
     public function testRestoreTableAttributes()
