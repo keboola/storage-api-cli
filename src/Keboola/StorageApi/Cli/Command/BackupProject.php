@@ -16,6 +16,7 @@ use Keboola\StorageApi\Options\Components\ListConfigurationRowVersionsOptions;
 use Keboola\StorageApi\Options\Components\ListConfigurationsOptions;
 use Keboola\StorageApi\Options\Components\ListConfigurationVersionsOptions;
 use Keboola\StorageApi\Options\GetFileOptions;
+use Keboola\Temp\Temp;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -103,59 +104,63 @@ class BackupProject extends Command
     {
         $components = new Components($sapiClient);
         $limit = 2;
-        $configurations = $components->listComponents(
-            (new ListConfigurationsOptions())->setInclude(['configuration'])
-        );
+        $tmp = new Temp();
+        $tmp->initRunFolder();
+
+        $configurationsFile = $tmp->createFile("configurations.json");
+        $versionsFile = $tmp->createFile("versions.json");
+
+        // use raw api call to prevent parsing json - preserve empty JSON objects
+        $sapiClient->apiGet('storage/components?include=configuration', $configurationsFile->getPathname());
+        $handle = fopen($configurationsFile, "r");
         $s3->putObject([
             'Bucket' => $targetBucket,
             'Key' => $targetBasePath . 'configurations.json',
-            'Body' => json_encode($configurations),
+            'Body' => $handle,
         ]);
+        fclose($handle);
 
-        $configurations = $components->listComponents(
-            (new ListConfigurationsOptions())->setInclude(['configuration', 'rows'])
-        );
+        $url = "storage/components";
+        $url .= "?include=configuration,rows";
+        $sapiClient->apiGet($url, $configurationsFile->getPathname());
+        $configurations = json_decode(file_get_contents($configurationsFile->getPathname()));
+
         foreach ($configurations as $component) {
-            foreach ($component['configurations'] as $configuration) {
+            foreach ($component->configurations as $configuration) {
                 if ($saveVersions) {
                     $offset = 0;
                     $versions = [];
                     do {
-                        $versionsTmp = $components->listConfigurationVersions(
-                            (new ListConfigurationVersionsOptions())->setComponentId($component['id'])
-                                ->setConfigurationId($configuration['id'])
-                                ->setInclude(['name', 'description', 'configuration', 'state'])
-                                ->setLimit($limit)
-                                ->setOffset($offset)
-                        );
+                        $url = "storage/components/{$component->id}/configs/{$configuration->id}/versions";
+                        $url .= "?include=name,description,configuration,state";
+                        $url .= "&limit={$limit}&offset={$offset}";
+                        $sapiClient->apiGet($url, $versionsFile->getPathname());
+                        $versionsTmp = json_decode(file_get_contents($versionsFile->getPathname()));
                         $versions = array_merge($versions, $versionsTmp);
                         $offset = $offset + $limit;
                     } while (count($versionsTmp) > 0);
-                    $configuration['_versions'] = $versions;
+                    $configuration->_versions = $versions;
                 }
                 if ($saveVersions) {
-                    foreach ($configuration['rows'] as &$row) {
+                    foreach ($configuration->rows as &$row) {
                         $offset = 0;
                         $versions = [];
                         do {
-                            $versionsTmp = $components->listConfigurationRowVersions(
-                                (new ListConfigurationRowVersionsOptions())->setComponentId($component['id'])
-                                    ->setConfigurationId($configuration['id'])
-                                    ->setInclude(['configuration'])
-                                    ->setRowId($row['id'])
-                                    ->setLimit($limit)
-                                    ->setOffset($offset)
-                            );
+                            $url = "storage/components/{$component->id}/configs/{$configuration->id}/rows/{$row->id}/versions";
+                            $url .= "?include=configuration";
+                            $url .= "&limit={$limit}&offset={$offset}";
+                            $sapiClient->apiGet($url, $versionsFile->getPathname());
+                            $versionsTmp = json_decode(file_get_contents($versionsFile->getPathname()));
                             $versions = array_merge($versions, $versionsTmp);
                             $offset = $offset + $limit;
                         } while (count($versionsTmp) > 0);
-                        $row['_versions'] = $versions;
+                        $row->_versions = $versions;
                     }
                 }
                 $s3->putObject([
                     'Bucket' => $targetBucket,
-                    'Key' => $targetBasePath . 'configurations/' . $component['id'] . '/' .
-                        $configuration['id'] . '.json',
+                    'Key' => $targetBasePath . 'configurations/' . $component->id . '/' .
+                        $configuration->id . '.json',
                     'Body' => json_encode($configuration),
                 ]);
             }
