@@ -1,0 +1,38 @@
+[
+  {
+    "id": "keboola.csv-import",
+    "type": "extractor",
+    "name": "CSV Import",
+    "description": "Load a CSV file into Storage in 3 clicks",
+    "longDescription": "CSV Import allows you to import a file from your computer into Storage. You can choose in which table you want to import or you can create a new one. You can further specify the table parameters (primary key), load type (add data to table or overwrite) and file settings (delimiters and enclosure). This configuration is saved for future reuse.",
+    "hasUI": false,
+    "hasRun": false,
+    "ico32": "https:\/\/d3iz2gfan5zufq.cloudfront.net\/images\/cloud-services\/keboola.csv-import-32-1.png",
+    "ico64": "https:\/\/d3iz2gfan5zufq.cloudfront.net\/images\/cloud-services\/keboola.csv-import-64-1.png",
+    "data": [],
+    "flags": [
+      "excludeRun",
+      "genericDockerUI"
+    ],
+    "configurationSchema": [],
+    "emptyConfiguration": [],
+    "uiOptions": [],
+    "configurationDescription": null,
+    "uri": "https:\/\/syrup.keboola.com\/docker\/keboola.csv-import",
+    "configurations": [
+      {
+        "id": "1",
+        "name": "Accounts",
+        "description": "Default CSV Importer",
+        "created": "2016-11-07T02:13:52+0100",
+        "creatorToken": {
+          "id": 63470,
+          "description": "ondrej.hlavacek@keboola.com"
+        },
+        "version": 1,
+        "changeDescription": "",
+        "configuration": []
+      }
+    ]
+  }
+]

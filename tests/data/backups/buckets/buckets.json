@@ -1,0 +1,45 @@
+[
+  {
+    "uri": "https:\/\/connection.keboola.com\/\/v2\/storage\/buckets\/in.c-bucket1",
+    "id": "in.c-bucket1",
+    "name": "c-bucket1",
+    "stage": "in",
+    "description": "",
+    "tables": "https:\/\/connection.keboola.com\/\/v2\/storage\/buckets\/in.c-bucket1\/tables",
+    "created": "2016-11-07T01:57:53+0100",
+    "lastChangeDate": "2016-11-07T02:12:16+0100",
+    "isReadOnly": false,
+    "dataSizeBytes": 0,
+    "rowsCount": 0,
+    "isMaintenance": false,
+    "backend": "snowflake",
+    "attributes": [
+      {
+        "name": "myKey",
+        "value": "myValue",
+        "protected": false
+      },
+      {
+        "name": "myProtectedKey",
+        "value": "myProtectedValue",
+        "protected": true
+      }
+    ]
+  },
+  {
+    "uri": "https:\/\/connection.keboola.com\/\/v2\/storage\/buckets\/in.c-bucket2",
+    "id": "in.c-bucket2",
+    "name": "c-bucket2",
+    "stage": "in",
+    "description": "",
+    "tables": "https:\/\/connection.keboola.com\/\/v2\/storage\/buckets\/in.c-bucket2\/tables",
+    "created": "2016-11-07T01:59:35+0100",
+    "lastChangeDate": "2016-11-07T02:09:58+0100",
+    "isReadOnly": false,
+    "dataSizeBytes": 0,
+    "rowsCount": 0,
+    "isMaintenance": false,
+    "backend": "snowflake",
+    "attributes": []
+  }
+]
