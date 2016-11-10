@@ -1,3 +1,8 @@
+## 0.5.0
+ * [Feat] `purge-project` command
+ * [Feat] `restore-project` command
+ * [Fix] `backup-project` preserves empty JSON objects
+
 ## 0.2.9
  * [Feat] `backup-project` don't merge sliced files
 
