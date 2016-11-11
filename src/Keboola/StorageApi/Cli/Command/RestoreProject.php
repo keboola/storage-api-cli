@@ -69,19 +69,19 @@ class RestoreProject extends Command
             foreach ($buckets as $bucket) {
                 switch ($bucket["backend"]) {
                     case "mysql":
-                        if (!isset($tokenInfo["hasMysql"]) || $tokenInfo["hasMysql"] === false) {
+                        if (!isset($tokenInfo["owner"]["hasMysql"]) || $tokenInfo["owner"]["hasMysql"] === false) {
                             $output->writeln("<error>Missing MySQL backend</error>");
                             return 1;
                         }
                         break;
                     case "redshift":
-                        if (!isset($tokenInfo["hasRedshift"]) || $tokenInfo["hasRedshift"] === false) {
+                        if (!isset($tokenInfo["owner"]["hasRedshift"]) || $tokenInfo["owner"]["hasRedshift"] === false) {
                             $output->writeln("<error>Missing Redshift backend</error>");
                             return 1;
                         }
                         break;
                     case "snowflake":
-                        if (!isset($tokenInfo["hasSnowflake"]) || $tokenInfo["hasSnowflake"] === false) {
+                        if (!isset($tokenInfo["owner"]["hasSnowflake"]) || $tokenInfo["owner"]["hasSnowflake"] === false) {
                             $output->writeln("<error>Missing Snowflake backend</error>");
                             return 1;
                         }
