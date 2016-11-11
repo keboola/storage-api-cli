@@ -152,7 +152,6 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
         $this->assertContains('"001C000000xYbhhIAC","Keboola"', $fileContents);
         $this->assertContains('"001C000000xYbhhIAD","Keboola 2"', $fileContents);
         $this->assertCount(4, explode("\n", $fileContents));
-
     }
 
     public function testRestoreTableAttributes()
