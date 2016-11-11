@@ -66,8 +66,8 @@ class RestoreProject extends Command
         if (!$input->getOption('ignore-storage-backend')) {
             $output->write($this->format('Checking bucket compatibility'));
             $tokenInfo = $client->verifyToken();
-            foreach ($buckets as $bucket) {
-                switch ($bucket["backend"]) {
+            foreach ($buckets as $bucketInfo) {
+                switch ($bucketInfo["backend"]) {
                     case "mysql":
                         if (!isset($tokenInfo["owner"]["hasMysql"]) || $tokenInfo["owner"]["hasMysql"] === false) {
                             $output->writeln("<error>Missing MySQL backend</error>");
