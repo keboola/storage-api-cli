@@ -125,7 +125,7 @@ class RestoreProject extends Command
             if ($table["isAlias"] === true) {
                 continue;
             }
-            $output->writeln($this->format('Restoring table ' . $table["id"]));
+            $output->write($this->format('Restoring table ' . $table["id"]));
             $prefix = $basePath . $table["bucket"]["stage"] . "/" . $table["bucket"]["name"] . "/" . $table["name"] . ".";
             $slices = $s3->listObjects([
                 'Bucket' => $bucket,
