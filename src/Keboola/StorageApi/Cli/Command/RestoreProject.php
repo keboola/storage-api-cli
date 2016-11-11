@@ -126,7 +126,7 @@ class RestoreProject extends Command
                 continue;
             }
             $output->writeln($this->format('Restoring table ' . $table["id"]));
-            $prefix = $basePath . $table["bucket"]["stage"] . "/" . $table["bucket"]["name"] . "/" . $table["name"];
+            $prefix = $basePath . $table["bucket"]["stage"] . "/" . $table["bucket"]["name"] . "/" . $table["name"] . ".";
             $slices = $s3->listObjects([
                 'Bucket' => $bucket,
                 'Prefix' => $prefix

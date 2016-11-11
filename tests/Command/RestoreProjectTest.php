@@ -126,6 +126,35 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
         $this->assertContains('"001C000000xYbhhIAD","Keboola 2"', $fileContents);
     }
 
+    public function testRestoreTableFromMultipleSlicesSharedPrefix()
+    {
+        $this->loadBackupToS3('table-multiple-slices-shared-prefix');
+        $applicationTester = $this->runCommand();
+        $this->assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
+        $client = $this->getClient();
+        $this->assertTrue($client->tableExists("in.c-bucket.Account"));
+        $this->assertTrue($client->tableExists("in.c-bucket.Account2"));
+
+        $tableExporter = new TableExporter($client);
+        $temp = new Temp();
+        $file = $temp->createFile("account.csv");
+        $tableExporter->exportTable("in.c-bucket.Account", $file->getPathname(), []);
+        $fileContents = file_get_contents($file->getPathname());
+        $this->assertContains('"Id","Name"', $fileContents);
+        $this->assertContains('"001C000000xYbhhIAC","Keboola"', $fileContents);
+        $this->assertContains('"001C000000xYbhhIAD","Keboola 2"', $fileContents);
+        $this->assertCount(4, explode("\n", $fileContents));
+
+        $file = $temp->createFile("account2.csv");
+        $tableExporter->exportTable("in.c-bucket.Account2", $file->getPathname(), []);
+        $fileContents = file_get_contents($file->getPathname());
+        $this->assertContains('"Id","Name"', $fileContents);
+        $this->assertContains('"001C000000xYbhhIAC","Keboola"', $fileContents);
+        $this->assertContains('"001C000000xYbhhIAD","Keboola 2"', $fileContents);
+        $this->assertCount(4, explode("\n", $fileContents));
+
+    }
+
     public function testRestoreTableAttributes()
     {
         $this->loadBackupToS3('table-properties');
