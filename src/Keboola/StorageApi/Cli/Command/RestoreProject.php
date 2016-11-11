@@ -235,21 +235,34 @@ class RestoreProject extends Command
             $output->writeln($this->check());
         }
 
-        $output->write($this->format('Restoring aliases'));
         foreach ($tables as $table) {
             if ($table["isAlias"] !== true) {
                 continue;
             }
-            $aliasOptions = [];
-            if (isset($table["aliasFilter"])) {
-                $aliasOptions["aliasFilter"] = $table["aliasFilter"];
+            $output->write($this->format('Restoring alias ' . $table["id"]));
+            if (isset($table["selectSql"])) {
+                if (isset($table["sourceTable"]["id"])) {
+                    $client->createRedshiftAliasTable($table["bucket"]["id"], $table["selectSql"], $table["name"], $table["sourceTable"]["id"]);
+                } else {
+                    $client->createRedshiftAliasTable($table["bucket"]["id"], $table["selectSql"], $table["name"]);
+                }
+            } else {
+                $aliasOptions = [];
+                if (isset($table["aliasFilter"])) {
+                    $aliasOptions["aliasFilter"] = $table["aliasFilter"];
+                }
+                if (isset($table["aliasColumnsAutoSync"]) && $table["aliasColumnsAutoSync"] === false) {
+                    $aliasOptions["aliasColumns"] = $table["columns"];
+                }
+                $client->createAliasTable(
+                    $table["bucket"]["id"],
+                    $table["sourceTable"]["id"],
+                    $table["name"],
+                    $aliasOptions
+                );
             }
-            if ($table["aliasColumnsAutoSync"] === false) {
-                $aliasOptions["aliasColumns"] = $table["columns"];
-            }
-            $client->createAliasTable($table["bucket"]["id"], $table["sourceTable"]["id"], $table["name"], $aliasOptions);
+            $output->writeln($this->check());
         }
-        $output->writeln($this->check());
 
         $output->write($this->format('Restoring table attributes'));
         foreach ($tables as $table) {
