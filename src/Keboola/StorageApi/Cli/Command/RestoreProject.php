@@ -120,12 +120,12 @@ class RestoreProject extends Command
         ]);
         $output->writeln($this->check());
 
-        $output->write($this->format('Restoring tables'));
         $tables = json_decode(file_get_contents($tmp->getTmpFolder() . '/tables.json'), true);
         foreach ($tables as $table) {
             if ($table["isAlias"] === true) {
                 continue;
             }
+            $output->writeln($this->format('Restoring table ' . $table["id"]));
             $prefix = $basePath . $table["bucket"]["stage"] . "/" . $table["bucket"]["name"] . "/" . $table["name"];
             $slices = $s3->listObjects([
                 'Bucket' => $bucket,
@@ -232,8 +232,8 @@ class RestoreProject extends Command
                     $client->markTableColumnAsIndexed($table["id"], $missingIndex);
                 }
             }
+            $output->writeln($this->check());
         }
-        $output->writeln($this->check());
 
         $output->write($this->format('Restoring aliases'));
         foreach ($tables as $table) {
