@@ -370,14 +370,19 @@ class RestoreProject extends Command
                     $components->addConfiguration($configuration);
 
                     if (isset($configurationData->_versions[0])) {
-                        $lastConfigurationVersion = $configurationData->_versions[0];
-                        $configuration->setChangeDescription(
-                            "Configuration {$componentConfiguration["id"]} restored from backup"
-                        );
-                        $configuration->setState($lastConfigurationVersion->state);
-                        $configuration->setConfiguration($lastConfigurationVersion->configuration);
-                        $components->updateConfiguration($configuration);
+                        $restoreVersion = $lastConfigurationVersion = $configurationData->_versions[0];
+                    } else {
+                        $restoreVersion = $configurationData;
                     }
+                    $configuration->setChangeDescription(
+                        "Configuration {$componentConfiguration["id"]} restored from backup"
+                    );
+                    $configuration->setConfiguration($restoreVersion->configuration);
+                    if (isset($restoreVersion->state)) {
+                        $configuration->setState($restoreVersion->state);
+                    }
+                    $components->updateConfiguration($configuration);
+
                     if (count($configurationData->rows)) {
                         foreach ($configurationData->rows as $row) {
                             $configurationRow = new ConfigurationRow($configuration);

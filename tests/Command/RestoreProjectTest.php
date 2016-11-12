@@ -218,10 +218,35 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(["column" => "Name", "operator" => "eq", "values" => ["Keboola"]], $aliasTable["aliasFilter"]);
     }
 
-
     public function testRestoreConfigurations()
     {
         $this->loadBackupToS3('configurations');
+        $applicationTester = $this->runCommand();
+        $this->assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
+
+        $client = $this->getClient();
+        $components = new Components($client);
+        $componentsList = $components->listComponents();
+        $this->assertCount(2, $componentsList);
+        $this->assertEquals("keboola.csv-import", $componentsList[0]["id"]);
+        $this->assertEquals("keboola.ex-slack", $componentsList[1]["id"]);
+
+        $config = $components->getConfiguration("keboola.csv-import", 1);
+        $this->assertEquals(1, $config["version"]);
+        $this->assertEquals("", $config["changeDescription"]);
+        $this->assertEquals("Accounts", $config["name"]);
+        $this->assertEquals("Default CSV Importer", $config["description"]);
+
+        $config = $components->getConfiguration("keboola.ex-slack", 2);
+        $this->assertEquals(2, $config["version"]);
+        $this->assertEquals("Configuration 2 restored from backup", $config["changeDescription"]);
+        $this->assertEquals(["key" => "value"], $config["state"]);
+    }
+
+
+    public function testRestoreConfigurationsWithoutVersions()
+    {
+        $this->loadBackupToS3('configurations-no-versions');
         $applicationTester = $this->runCommand();
         $this->assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
 
