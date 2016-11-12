@@ -314,7 +314,7 @@ class RestoreProject extends Command
 
             $output->write($this->format('Restoring table attributes'));
             foreach ($tables as $table) {
-                if (count($table["attributes"])) {
+                if (isset($table["attributes"] && count($table["attributes"])) {
                     $client->replaceTableAttributes($table["id"], $table["attributes"]);
                 }
             }
