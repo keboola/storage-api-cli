@@ -16,7 +16,7 @@ use Symfony\Component\Console\Tester\ApplicationTester;
 class PurgeProjectTest extends \PHPUnit_Framework_TestCase
 {
 
-    public function testExecute()
+    public function setUp()
     {
         // add configs
         $client = new Client(['token' => TEST_STORAGE_API_TOKEN]);
@@ -64,10 +64,14 @@ class PurgeProjectTest extends \PHPUnit_Framework_TestCase
 
         // check stats
         $this->assertCount(2, $client->listTables());
+        $this->assertCount(2, $client->listBuckets());
         $this->assertCount(1, $client->listFiles());
         $components = new Components($client);
         $this->assertCount(1, $components->listComponents());
+    }
 
+    public function testExecuteFull()
+    {
         // run command
         $application = new Application();
         $application->setAutoExit(false);
@@ -79,9 +83,112 @@ class PurgeProjectTest extends \PHPUnit_Framework_TestCase
         ]);
 
         // check for the results
+        $client = new Client(['token' => TEST_STORAGE_API_TOKEN]);
+        $components = new Components($client);
         $this->assertCount(0, $client->listTables());
         $this->assertCount(0, $client->listBuckets());
         $this->assertCount(0, $client->listFiles());
         $this->assertCount(0, $components->listComponents());
+    }
+
+    public function testPurgeConfigurations()
+    {
+        // run command
+        $application = new Application();
+        $application->setAutoExit(false);
+        $application->add(new PurgeProject());
+        $applicationTester = new ApplicationTester($application);
+        $applicationTester->run([
+            'purge-project',
+            '--token' => TEST_STORAGE_API_TOKEN,
+            '--configurations' => true
+        ]);
+
+        // check stats
+        $client = new Client(['token' => TEST_STORAGE_API_TOKEN]);
+        $components = new Components($client);
+        $this->assertCount(2, $client->listTables());
+        $this->assertCount(2, $client->listBuckets());
+        $this->assertCount(1, $client->listFiles());
+        $this->assertCount(0, $components->listComponents());
+    }
+
+    public function testPurgeFileUploads()
+    {
+        // run command
+        $application = new Application();
+        $application->setAutoExit(false);
+        $application->add(new PurgeProject());
+        $applicationTester = new ApplicationTester($application);
+        $applicationTester->run([
+            'purge-project',
+            '--token' => TEST_STORAGE_API_TOKEN,
+            '--file-uploads' => true
+        ]);
+
+        // check stats
+        $client = new Client(['token' => TEST_STORAGE_API_TOKEN]);
+        $components = new Components($client);
+        $this->assertCount(2, $client->listTables());
+        $this->assertCount(2, $client->listBuckets());
+        $this->assertCount(0, $client->listFiles());
+        $this->assertCount(1, $components->listComponents());
+    }
+
+    public function testPurgeData()
+    {
+        // run command
+        $application = new Application();
+        $application->setAutoExit(false);
+        $application->add(new PurgeProject());
+        $applicationTester = new ApplicationTester($application);
+        $applicationTester->run([
+            'purge-project',
+            '--token' => TEST_STORAGE_API_TOKEN,
+            '--data' => true
+        ]);
+
+        // check stats
+        $client = new Client(['token' => TEST_STORAGE_API_TOKEN]);
+        $components = new Components($client);
+        $this->assertCount(0, $client->listTables());
+        $this->assertCount(0, $client->listBuckets());
+        $this->assertCount(1, $client->listFiles());
+        $this->assertCount(1, $components->listComponents());
+    }
+
+    public function testPurgeAliases()
+    {
+        // run command
+        $application = new Application();
+        $application->setAutoExit(false);
+        $application->add(new PurgeProject());
+        $applicationTester = new ApplicationTester($application);
+        $applicationTester->run([
+            'purge-project',
+            '--token' => TEST_STORAGE_API_TOKEN,
+            '--aliases' => true
+        ]);
+
+        // check stats
+        $client = new Client(['token' => TEST_STORAGE_API_TOKEN]);
+        $components = new Components($client);
+        $this->assertCount(1, $client->listTables());
+        $this->assertCount(2, $client->listBuckets());
+        $this->assertCount(1, $client->listFiles());
+        $this->assertCount(1, $components->listComponents());
+    }
+
+    public function tearDown()
+    {
+        // run command
+        $application = new Application();
+        $application->setAutoExit(false);
+        $application->add(new PurgeProject());
+        $applicationTester = new ApplicationTester($application);
+        $applicationTester->run([
+            'purge-project',
+            '--token' => TEST_STORAGE_API_TOKEN
+        ]);
     }
 }
