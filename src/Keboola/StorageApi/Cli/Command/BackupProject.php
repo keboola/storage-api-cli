@@ -121,7 +121,7 @@ class BackupProject extends Command
         fclose($handle);
 
         $url = "storage/components";
-        $url .= "?include=configuration,rows";
+        $url .= "?include=configuration,rows,state";
         $sapiClient->apiGet($url, $configurationsFile->getPathname());
         $configurations = json_decode(file_get_contents($configurationsFile->getPathname()));
 
