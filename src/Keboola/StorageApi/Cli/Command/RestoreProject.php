@@ -352,24 +352,32 @@ class RestoreProject extends Command
                     // configurations as objects to preserve empty arrays or empty objects
                     $configurationData = json_decode(
                         file_get_contents(
-                            $tmp->getTmpFolder(
-                            ) . "/configurations-{$componentWithConfigurations["id"]}-{$componentConfiguration["id"]}.json"
+                            $tmp->getTmpFolder() . "/configurations-{$componentWithConfigurations["id"]}-{$componentConfiguration["id"]}.json"
                         )
                     );
 
-                    $lastConfigurationVersion = $configurationData->_versions[0];
                     $configuration = new Configuration();
                     $configuration->setComponentId($componentWithConfigurations["id"]);
                     $configuration->setConfigurationId($componentConfiguration["id"]);
-                    $configuration->setDescription($lastConfigurationVersion->description);
-                    $configuration->setName($lastConfigurationVersion->name);
+                    if (isset($configurationData->_versions[0])) {
+                        $lastConfigurationVersion = $configurationData->_versions[0];
+                        $configuration->setDescription($lastConfigurationVersion->description);
+                        $configuration->setName($lastConfigurationVersion->name);
+                    } else {
+                        $configuration->setDescription($configurationData->description);
+                        $configuration->setName($configurationData->name);
+                    }
                     $components->addConfiguration($configuration);
-                    $configuration->setChangeDescription(
-                        "Configuration {$componentConfiguration["id"]} restored from backup"
-                    );
-                    $configuration->setState($lastConfigurationVersion->state);
-                    $configuration->setConfiguration($lastConfigurationVersion->configuration);
-                    $components->updateConfiguration($configuration);
+
+                    if (isset($configurationData->_versions[0])) {
+                        $lastConfigurationVersion = $configurationData->_versions[0];
+                        $configuration->setChangeDescription(
+                            "Configuration {$componentConfiguration["id"]} restored from backup"
+                        );
+                        $configuration->setState($lastConfigurationVersion->state);
+                        $configuration->setConfiguration($lastConfigurationVersion->configuration);
+                        $components->updateConfiguration($configuration);
+                    }
                     if (count($configurationData->rows)) {
                         foreach ($configurationData->rows as $row) {
                             $configurationRow = new ConfigurationRow($configuration);
