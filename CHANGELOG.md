@@ -1,3 +1,7 @@
+## 0.5.5
+ * [Feat] `purge-project` filtering options
+ * [Feat] `restore-project` filtering options
+
 ## 0.5.0
  * [Feat] `purge-project` command
  * [Feat] `restore-project` command
