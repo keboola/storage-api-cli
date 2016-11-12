@@ -323,6 +323,26 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals([], $config[0]->configuration->queries);
     }
 
+    public function testRestoreOnlyConfigurations()
+    {
+        $this->loadBackupToS3('table-with-header');
+        $applicationTester = $this->runCommand(false, true, false);
+        $this->assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
+        $client = $this->getClient();
+        $this->assertFalse($client->tableExists("in.c-bucket.Account"));
+    }
+
+    public function testRestoreOnlyData()
+    {
+        $this->loadBackupToS3('configurations');
+        $applicationTester = $this->runCommand(false, false, true);
+        $this->assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
+        $client = $this->getClient();
+        $components = new Components($client);
+        $componentsList = $components->listComponents();
+        $this->assertCount(0, $componentsList);
+    }
+
     protected function loadBackupToS3($backup)
     {
         // load data to S3
@@ -337,7 +357,7 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
         $s3Client->uploadDirectory(__DIR__ . "/../data/backups/{$backup}", TEST_S3_BUCKET, self::S3_PATH);
     }
 
-    protected function runCommand($ignoreStorageBackend = true)
+    protected function runCommand($ignoreStorageBackend = true, $onlyConfigurations = false, $onlyData = false)
     {
         putenv('AWS_ACCESS_KEY_ID=' . TEST_AWS_ACCESS_KEY_ID);
         putenv('AWS_SECRET_ACCESS_KEY=' . TEST_AWS_SECRET_ACCESS_KEY);
@@ -349,6 +369,8 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
             'restore-project',
             '--token' => TEST_STORAGE_API_TOKEN,
             '--ignore-storage-backend' => $ignoreStorageBackend,
+            '--configurations' => $onlyConfigurations,
+            '--data' => $onlyData,
             'bucket' => TEST_S3_BUCKET,
             'region' => self::S3_REGION,
             'path' => self::S3_PATH
