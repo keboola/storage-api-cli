@@ -289,6 +289,10 @@ class RestoreProject extends Command
                     continue;
                 }
                 $output->write($this->format('Restoring alias ' . $table["id"]));
+                if (substr($table["bucket"]["name"], 0, 2) != 'c-') {
+                    $output->writeln("Skipping");
+                    continue;
+                }
                 if (isset($table["selectSql"])) {
                     if (isset($table["sourceTable"]["id"])) {
                         $client->createRedshiftAliasTable(
