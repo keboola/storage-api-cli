@@ -368,6 +368,26 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(0, $componentsList);
     }
 
+    public function testRestoreBucketWithoutPrefix()
+    {
+        $this->loadBackupToS3('bucket-without-prefix');
+        $applicationTester = $this->runCommand();
+        $this->assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
+        $client = $this->getClient();
+        $buckets = $client->listBuckets();
+        $this->assertCount(0, $buckets);
+    }
+
+    public function testRestoreTableWithoutPrefix()
+    {
+        $this->loadBackupToS3('table-without-prefix');
+        $applicationTester = $this->runCommand();
+        $this->assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
+        $client = $this->getClient();
+        $buckets = $client->listBuckets();
+        $this->assertCount(0, $buckets);
+    }
+
     protected function loadBackupToS3($backup)
     {
         // load data to S3

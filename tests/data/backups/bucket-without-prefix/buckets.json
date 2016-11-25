@@ -1,0 +1,18 @@
+[
+  {
+    "uri": "https:\/\/connection.keboola.com\/\/v2\/storage\/buckets\/in.bucket1",
+    "id": "in.bucket1",
+    "name": "bucket1",
+    "stage": "in",
+    "description": "",
+    "tables": "https:\/\/connection.keboola.com\/\/v2\/storage\/buckets\/in.bucket1\/tables",
+    "created": "2016-11-07T01:57:53+0100",
+    "lastChangeDate": "2016-11-07T02:12:16+0100",
+    "isReadOnly": false,
+    "dataSizeBytes": 0,
+    "rowsCount": 0,
+    "isMaintenance": false,
+    "backend": "snowflake",
+    "attributes": []
+  }
+]

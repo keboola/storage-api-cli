@@ -110,7 +110,7 @@ class RestoreProject extends Command
                 if (substr($bucketInfo["name"], 0, 2) == 'c-') {
                     $bucketName = substr($bucketInfo["name"], 2);
                 } else {
-                    $output->writeln("Skipped");
+                    $output->writeln("Skipping");
                     continue;
                 }
                 if ($input->getOption('ignore-storage-backend')) {
@@ -148,6 +148,10 @@ class RestoreProject extends Command
                     continue;
                 }
                 $output->write($this->format('Restoring table ' . $table["id"]));
+                if (substr($bucketInfo["name"], 0, 2) != 'c-') {
+                    $output->writeln("Skipping");
+                    continue;
+                }
                 $prefix = $basePath . $table["bucket"]["stage"] . "/" . $table["bucket"]["name"] . "/" . $table["name"] . ".";
                 $slices = $s3->listObjects(
                     [

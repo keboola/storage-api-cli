@@ -1,0 +1,40 @@
+[
+  {
+    "uri": "https:\/\/connection.keboola.com\/\/v2\/storage\/tables\/in.bucket.Account",
+    "id": "in.bucket.Account",
+    "name": "Account",
+    "transactional": false,
+    "primaryKey": [
+      "Id"
+    ],
+    "indexedColumns": [
+      "Id"
+    ],
+    "created": "2016-11-07T01:58:16+0100",
+    "lastImportDate": "2016-11-07T01:58:30+0100",
+    "lastChangeDate": "2016-11-07T01:58:30+0100",
+    "rowsCount": 1570,
+    "dataSizeBytes": 29696,
+    "isAlias": false,
+    "attributes": [],
+    "bucket": {
+      "uri": "https:\/\/connection.keboola.com\/\/v2\/storage\/buckets\/in.bucket",
+      "id": "in.bucket",
+      "name": "bucket",
+      "stage": "in",
+      "description": "",
+      "tables": "https:\/\/connection.keboola.com\/\/v2\/storage\/buckets\/in.bucket\/tables",
+      "created": "2016-11-07T01:57:53+0100",
+      "lastChangeDate": "2016-11-07T02:12:16+0100",
+      "isReadOnly": false,
+      "dataSizeBytes": 6247936,
+      "rowsCount": 675727,
+      "isMaintenance": false,
+      "backend": "snowflake"
+    },
+    "columns": [
+      "Id",
+      "Name"
+    ]
+  }
+]
