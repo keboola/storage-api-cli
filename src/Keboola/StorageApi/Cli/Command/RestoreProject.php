@@ -148,7 +148,7 @@ class RestoreProject extends Command
                     continue;
                 }
                 $output->write($this->format('Restoring table ' . $table["id"]));
-                if (substr($bucketInfo["name"], 0, 2) != 'c-') {
+                if (substr($table["bucket"]["name"], 0, 2) != 'c-') {
                     $output->writeln("Skipping");
                     continue;
                 }
