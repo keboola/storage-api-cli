@@ -104,13 +104,14 @@ class RestoreProject extends Command
                 $output->writeln($this->check());
             }
 
-            $output->write($this->format('Restoring buckets'));
             foreach ($buckets as $bucketInfo) {
+                $output->write($this->format('Restoring bucket ' . $bucketInfo["name"]));
                 // strip c-
                 if (substr($bucketInfo["name"], 0, 2) == 'c-') {
                     $bucketName = substr($bucketInfo["name"], 2);
                 } else {
-                    throw new \Exception("Bucket without c- prefix.");
+                    $output->writeln("Skipped");
+                    continue;
                 }
                 if ($input->getOption('ignore-storage-backend')) {
                     $client->createBucket($bucketName, $bucketInfo['stage'], $bucketInfo['description']);
@@ -127,8 +128,9 @@ class RestoreProject extends Command
                 if (count($bucketInfo["attributes"])) {
                     $client->replaceBucketAttributes($bucketInfo["id"], $bucketInfo["attributes"]);
                 }
+                $output->writeln($this->check());
             }
-            $output->writeln($this->check());
+
 
             $output->write($this->format('Downloading tables metadata'));
             $s3->getObject(
