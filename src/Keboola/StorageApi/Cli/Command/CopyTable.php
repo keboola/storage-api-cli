@@ -11,6 +11,7 @@ namespace Keboola\StorageApi\Cli\Command;
 
 use Keboola\Csv\CsvFile;
 use Keboola\StorageApi\Client;
+use Keboola\StorageApi\TableExporter;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -49,16 +50,19 @@ class CopyTable extends Command
             $createOptions["primaryKey"] = $tableInfo["primaryKey"][0];
         }
 
-        // Download the table
+        // Download the table from the source
         $tmpFile = $this->getTmpDir() . "/" . $input->getArgument('sourceTableId') . ".csv";
-
-        $sapiClient->exportTable(
+        $exporter = new TableExporter($sapiClient);
+        $exporter->exportTable(
             $input->getArgument('sourceTableId'),
-            $tmpFile
+            $tmpFile,
+            array()
         );
+        $duration = time() - $startTime;
+        $output->writeln("Export done in $duration secs.");
 
-        $sapiClientDst = $sapiClient;
         // Destination token
+        $sapiClientDst = $sapiClient;
         if ($input->getArgument('dstToken')) {
             $output->writeln("Setting destination token");
 
@@ -113,4 +117,5 @@ class CopyTable extends Command
 
         $output->writeln("Table {$input->getArgument('sourceTableId')} copied to {$input->getArgument('destinationTableId')} in $duration secs.");
     }
+
 }
