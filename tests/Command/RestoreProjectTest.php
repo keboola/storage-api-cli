@@ -17,6 +17,22 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
     const S3_PATH = 'cli-client-restore-test/';
     const S3_REGION = 'us-east-1';
 
+    public function setUp()
+    {
+        // clean up components configs in test project
+        $client = $this->getClient();
+        $components = new Components($client);
+        $componentList = $components->listComponents();
+        foreach ($componentList as $componentItem) {
+            foreach ($componentItem["configurations"] as $config) {
+                // mark as isDeleted=true
+                $components->deleteConfiguration($componentItem["id"], $config["id"]);
+                // delete completely
+                $components->deleteConfiguration($componentItem["id"], $config["id"]);
+            }
+        }
+    }
+
     public function testRestoreBuckets()
     {
         $this->loadBackupToS3('buckets');

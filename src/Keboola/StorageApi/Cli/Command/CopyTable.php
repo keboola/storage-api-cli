@@ -117,5 +117,4 @@ class CopyTable extends Command
 
         $output->writeln("Table {$input->getArgument('sourceTableId')} copied to {$input->getArgument('destinationTableId')} in $duration secs.");
     }
-
 }
