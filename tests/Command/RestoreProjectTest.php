@@ -253,11 +253,13 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
         $client = $this->getClient();
         $components = new Components($client);
         $componentsList = $components->listComponents();
+
         $this->assertCount(2, $componentsList);
         $this->assertEquals("keboola.csv-import", $componentsList[0]["id"]);
         $this->assertEquals("keboola.ex-slack", $componentsList[1]["id"]);
 
         $config = $components->getConfiguration("keboola.csv-import", 1);
+
         $this->assertEquals(1, $config["version"]);
         $this->assertEquals("", $config["changeDescription"]);
         $this->assertEquals("Accounts", $config["name"]);

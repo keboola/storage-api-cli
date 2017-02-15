@@ -148,8 +148,7 @@ composer install
 Tool is distributed as PHAR package, follow these steps to create package of current version:
 
 ```
-curl -LSs http://box-project.github.io/box2/installer.php | php
-./box.phar build -v
+curl -LSs http://box-project.github.io/box2/installer.php | php -dphar.readonly=0 ./box.phar build -v
 ```
 
 `sapi-client.phar` archive will be created, you can execute it `./sapi-client.phar`

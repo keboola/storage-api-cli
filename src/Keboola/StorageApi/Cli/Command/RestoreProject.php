@@ -293,32 +293,21 @@ class RestoreProject extends Command
                     $output->writeln("Skipping");
                     continue;
                 }
-                if (isset($table["selectSql"])) {
-                    if (isset($table["sourceTable"]["id"])) {
-                        $client->createRedshiftAliasTable(
-                            $table["bucket"]["id"],
-                            $table["selectSql"],
-                            $table["name"],
-                            $table["sourceTable"]["id"]
-                        );
-                    } else {
-                        $client->createRedshiftAliasTable($table["bucket"]["id"], $table["selectSql"], $table["name"]);
-                    }
-                } else {
-                    $aliasOptions = [];
-                    if (isset($table["aliasFilter"])) {
-                        $aliasOptions["aliasFilter"] = $table["aliasFilter"];
-                    }
-                    if (isset($table["aliasColumnsAutoSync"]) && $table["aliasColumnsAutoSync"] === false) {
-                        $aliasOptions["aliasColumns"] = $table["columns"];
-                    }
-                    $client->createAliasTable(
-                        $table["bucket"]["id"],
-                        $table["sourceTable"]["id"],
-                        $table["name"],
-                        $aliasOptions
-                    );
+
+                $aliasOptions = [];
+                if (isset($table["aliasFilter"])) {
+                    $aliasOptions["aliasFilter"] = $table["aliasFilter"];
                 }
+                if (isset($table["aliasColumnsAutoSync"]) && $table["aliasColumnsAutoSync"] === false) {
+                    $aliasOptions["aliasColumns"] = $table["columns"];
+                }
+                $client->createAliasTable(
+                    $table["bucket"]["id"],
+                    $table["sourceTable"]["id"],
+                    $table["name"],
+                    $aliasOptions
+                );
+
                 $output->writeln($this->check());
             }
 

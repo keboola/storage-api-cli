@@ -44,6 +44,9 @@ class PurgeProject extends Command
             $componentList = $components->listComponents();
             foreach ($componentList as $componentItem) {
                 foreach ($componentItem["configurations"] as $config) {
+                    // mark as isDeleted=true
+                    $components->deleteConfiguration($componentItem["id"], $config["id"]);
+                    // delete completely
                     $components->deleteConfiguration($componentItem["id"], $config["id"]);
                 }
             }

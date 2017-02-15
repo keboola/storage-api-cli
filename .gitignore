@@ -5,3 +5,4 @@ sapi-client.phar
 test.csv
 vendor
 /config.php
+phpunit.sh
