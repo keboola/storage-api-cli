@@ -11,10 +11,6 @@ namespace Keboola\StorageApi\Cli\Command;
 
 use Aws\S3\S3Client;
 use Keboola\StorageApi\Client;
-use Keboola\StorageApi\Components;
-use Keboola\StorageApi\Options\Components\ListConfigurationRowVersionsOptions;
-use Keboola\StorageApi\Options\Components\ListConfigurationsOptions;
-use Keboola\StorageApi\Options\Components\ListConfigurationVersionsOptions;
 use Keboola\StorageApi\Options\GetFileOptions;
 use Keboola\Temp\Temp;
 use Symfony\Component\Console\Input\InputArgument;
@@ -102,7 +98,6 @@ class BackupProject extends Command
      */
     private function exportConfigs(Client $sapiClient, S3Client $s3, $targetBucket, $targetBasePath, $saveVersions)
     {
-        $components = new Components($sapiClient);
         $limit = 2;
         $tmp = new Temp();
         $tmp->initRunFolder();

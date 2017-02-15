@@ -9,18 +9,10 @@
 
 namespace Keboola\StorageApi\Cli\Command;
 
-use Aws\S3\S3Client;
-use Keboola\StorageApi\Client;
 use Keboola\StorageApi\Components;
-use Keboola\StorageApi\Options\Components\ListConfigurationRowVersionsOptions;
-use Keboola\StorageApi\Options\Components\ListConfigurationsOptions;
-use Keboola\StorageApi\Options\Components\ListConfigurationVersionsOptions;
-use Keboola\StorageApi\Options\GetFileOptions;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Filesystem\Filesystem;
 
 class PurgeProject extends Command
 {
