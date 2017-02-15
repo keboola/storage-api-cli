@@ -1,3 +1,6 @@
+## 0.5.6
+ * [Fix] `copy-table` use async export
+
 ## 0.5.5
  * [Feat] `purge-project` filtering options
  * [Feat] `restore-project` filtering options
