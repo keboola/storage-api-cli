@@ -1,3 +1,6 @@
+## 0.5.7
+ * [Fix] `copy-table` fixed creating composite primary key
+
 ## 0.5.6
  * [Fix] `copy-table` use async export
 
