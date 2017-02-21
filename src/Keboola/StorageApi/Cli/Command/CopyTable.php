@@ -47,7 +47,7 @@ class CopyTable extends Command
 
         $createOptions = array();
         if (isset($tableInfo["primaryKey"]) && count($tableInfo["primaryKey"])) {
-            $createOptions["primaryKey"] = $tableInfo["primaryKey"][0];
+            $createOptions["primaryKey"] = implode(",", $tableInfo["primaryKey"]);
         }
 
         // Download the table from the source
