@@ -152,6 +152,19 @@ class RestoreProject extends Command
                     $output->writeln("Skipping");
                     continue;
                 }
+
+                // Create header and create table
+                $headerFileInfo = $tmp->createFile($table["id"] . ".header.csv");
+                $headerFile = new CsvFile($headerFileInfo->getPathname());
+                $headerFile->writeRow($table["columns"]);
+                $tableId = $client->createTable(
+                    $table["bucket"]["id"],
+                    $table["name"],
+                    $headerFile,
+                    ["primaryKey" => join(",", $table["primaryKey"])]
+                );
+
+                // upload data
                 $prefix = $basePath . $table["bucket"]["stage"] . "/" . $table["bucket"]["name"] . "/" . $table["name"] . ".";
                 $slices = $s3->listObjects(
                     [
@@ -159,6 +172,11 @@ class RestoreProject extends Command
                         'Prefix' => $prefix
                     ]
                 );
+
+                // no files for the table found, probably an empty table
+                if (!isset($slices["Contents"])) {
+                    continue;
+                }
 
                 if (count($slices["Contents"]) == 1 && substr($slices["Contents"][0]["Key"], -14) != '.part_0.csv.gz') {
                     // one file and no slices => the file has header
@@ -175,12 +193,11 @@ class RestoreProject extends Command
                     $fileUploadOptions
                         ->setFileName($table["id"] . ".csv.gz");
                     $fileId = $client->uploadFile($fileName, $fileUploadOptions);
-                    $client->createTableAsyncDirect(
-                        $table["bucket"]["id"],
+                    $client->writeTableAsyncDirect(
+                        $tableId,
                         [
                             "name" => $table["name"],
-                            "dataFileId" => $fileId,
-                            "primaryKey" => join(",", $table["primaryKey"])
+                            "dataFileId" => $fileId
                         ]
                     );
                 } else {
@@ -253,16 +270,6 @@ class RestoreProject extends Command
                         )
                     );
 
-                    // Create header and create table
-                    $headerFileInfo = $tmp->createFile($table["id"] . ".header.csv");
-                    $headerFile = new CsvFile($headerFileInfo->getPathname());
-                    $headerFile->writeRow($table["columns"]);
-                    $tableId = $client->createTable(
-                        $table["bucket"]["id"],
-                        $table["name"],
-                        $headerFile,
-                        ["primaryKey" => join(",", $table["primaryKey"])]
-                    );
 
                     // Upload data to table
                     $client->writeTableAsyncDirect(

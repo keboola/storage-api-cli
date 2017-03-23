@@ -406,6 +406,16 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(0, $buckets);
     }
 
+    public function testRestoreTableEmpty()
+    {
+        $this->loadBackupToS3('table-empty');
+        $applicationTester = $this->runCommand();
+        $this->assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
+        $client = $this->getClient();
+        $this->assertTrue($client->tableExists("in.c-bucket.Account"));
+
+    }
+
     protected function loadBackupToS3($backup)
     {
         // load data to S3
