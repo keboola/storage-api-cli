@@ -23,13 +23,13 @@ class BackupProjectTest extends \PHPUnit_Framework_TestCase
         $client = new Client(['token' => TEST_STORAGE_API_TOKEN]);
         $component = new Components($client);
         try {
-            $component->deleteConfiguration('transformation', TEST_PREFIX . 'sapi-php-test');
+            $component->deleteConfiguration('transformation', 'sapi-php-test');
         } catch (Exception $e) {
             if ($e->getCode() != 404) {
                 throw $e;
             }
         }
-        $this->s3path = 'cli-client-test' . TEST_PREFIX . '/';
+        $this->s3path = 'cli-client-test/';
     }
 
     public function testExecuteNoVersions()
@@ -38,7 +38,7 @@ class BackupProjectTest extends \PHPUnit_Framework_TestCase
         $config = new Configuration();
         $config->setComponentId('transformation');
         $config->setDescription('Test Configuration');
-        $config->setConfigurationId(TEST_PREFIX . 'sapi-php-test');
+        $config->setConfigurationId('sapi-php-test');
         $config->setName('test-configuration');
         $component = new Components($client);
         $configData = $component->addConfiguration($config);
@@ -139,7 +139,7 @@ class BackupProjectTest extends \PHPUnit_Framework_TestCase
         $config = new Configuration();
         $config->setComponentId('transformation');
         $config->setDescription('Test Configuration');
-        $config->setConfigurationId(TEST_PREFIX . 'sapi-php-test');
+        $config->setConfigurationId('sapi-php-test');
         $config->setName('test-configuration');
         $config->setConfiguration(
             [
@@ -240,7 +240,7 @@ class BackupProjectTest extends \PHPUnit_Framework_TestCase
     {
         $client = new Client(['token' => TEST_STORAGE_API_TOKEN]);
         $component = new Components($client);
-        $component->deleteConfiguration('transformation', TEST_PREFIX . 'sapi-php-test');
+        $component->deleteConfiguration('transformation', 'sapi-php-test');
 
         $s3Client = new S3Client([
             'version' => 'latest',

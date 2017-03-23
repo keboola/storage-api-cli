@@ -12,4 +12,3 @@ defined('TEST_STORAGE_API_TOKEN') || define('TEST_STORAGE_API_TOKEN', getenv('TE
 defined('TEST_AWS_ACCESS_KEY_ID') || define('TEST_AWS_ACCESS_KEY_ID', getenv('TEST_AWS_ACCESS_KEY_ID') ?: 'your_token');
 defined('TEST_AWS_SECRET_ACCESS_KEY') || define('TEST_AWS_SECRET_ACCESS_KEY', getenv('TEST_AWS_SECRET_ACCESS_KEY') ?: 'your_token');
 defined('TEST_S3_BUCKET') || define('TEST_S3_BUCKET', getenv('TEST_S3_BUCKET') ?: 'sapi-backup-test');
-defined('TEST_PREFIX') || define('TEST_PREFIX', preg_replace('#[^a-z0-9]#', '_', getenv('TEST_PREFIX')) ?: 'prefix');
