@@ -413,7 +413,6 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
         $client = $this->getClient();
         $this->assertTrue($client->tableExists("in.c-bucket.Account"));
-
     }
 
     protected function loadBackupToS3($backup)
