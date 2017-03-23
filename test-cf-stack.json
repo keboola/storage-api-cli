@@ -6,7 +6,12 @@
       "Type": "AWS::S3::Bucket",
       "DeletionPolicy": "Delete",
       "Properties": {
-        "BucketName": "travis-storage-api-cli-tests"
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "keboola-storage-api-cli-tests"
+          }
+        ]
       }
     },
     "BackupBucketUser": {
