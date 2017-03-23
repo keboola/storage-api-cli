@@ -77,7 +77,8 @@ class BackupProject extends Command
         });
         $onlyStructure = $input->getOption('structure-only');
         foreach (array_values($tables) as $i => $table) {
-            $output->write($this->format("Table $i/$tablesCount - {$table['id']}"));
+            $currentTable = $i + 1;
+            $output->write($this->format("Table $currentTable/$tablesCount - {$table['id']}"));
             if ($onlyStructure && $table['bucket']['stage'] !== 'sys') {
                 $output->writeln('<comment>Skipped (not sys table)</comment>');
             } elseif (!$table['isAlias']) {
