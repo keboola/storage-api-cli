@@ -24,25 +24,28 @@ class DeleteMetadata extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $sapiClient = $this->getSapiClient();
+        $result = [];
         switch ($input->getArgument('type')) {
             case 'project':
                 $buckets = $sapiClient->listBuckets();
                 foreach ($buckets as $bucket) {
-                    $result = $this->deleteMetadataFromBucket($bucket['id']);
+                    $result['buckets'][] = $this->deleteMetadataFromBucket($bucket['id']);
                 }
                 break;
             case 'bucket':
-                $this->deleteMetadataFromBucket($input->getArgument('id'));
+                $result = $this->deleteMetadataFromBucket($input->getArgument('id'));
                 break;
             case 'table':
-                $this->deleteMetadataFromTable($input->getArgument('id'));
+                $result = $this->deleteMetadataFromTable($input->getArgument('id'));
                 break;
             case 'column':
-                $this->deleteMetadataFromColumn($input->getArgument('id'));
+                $result = $this->deleteMetadataFromColumn($input->getArgument('id'));
                 break;
             default:
                 throw new \Exception(sprintf("Unknown object type for metadata storage: %s", $input->getArgument('type')));
         }
+        $output->writeln("Summary:");
+        $this->dumpResult($result, $output);
     }
 
     private function deleteMetadataFromBucket($bucketId) {
@@ -55,14 +58,15 @@ class DeleteMetadata extends Command
         }
 
         $tables = $sapiClient->listTables($bucketId);
+        $tablesResult = [];
         foreach ($tables as $table) {
-            $this->deleteMetadataFromTable($table['id']);
+            $tablesResult[$table['id']] = $this->deleteMetadataFromTable($table['id']);
         }
         $bucketMetadata = $metadataClient->listBucketMetadata($bucketId);
         foreach ($bucketMetadata as $meta) {
             $metadataClient->deleteBucketMetadata($bucketId, $meta['id']);
         }
-        return [$bucketId => count($bucketMetadata)];
+        return [$bucketId => ['count' => count($bucketMetadata), 'tables' => $tablesResult]];
     }
 
     private function deleteMetadataFromTable($tableId) {
@@ -76,15 +80,18 @@ class DeleteMetadata extends Command
 
         $table = $sapiClient->getTable($tableId);
 
-        foreach ($table['columns'] as $column) {
-            $this->deleteMetadataFromColumn($table['id'] . '.' . $column, $table['columnMetadata'][$column]);
+        $columnsResult = [];
+        foreach ($table['columnMetadata'] as $column => $columnMetadata) {
+            $columnsResult[$column] = $this->deleteMetadataFromColumn(
+                $table['id'] . '.' . $column, $columnMetadata
+            );
         }
 
         $tableMetadata = $table['metadata'];
         foreach ($tableMetadata as $meta) {
             $metadataClient->deleteTableMetadata($tableId, $meta['id']);
         }
-
+        return [$tableId => ['count' => count($tableMetadata), 'columns' => $columnsResult]];
     }
 
     private function deleteMetadataFromColumn($columnId, $columnMeta = null) {
@@ -98,5 +105,16 @@ class DeleteMetadata extends Command
             $metadataClient->deleteColumnMetadata($columnId, $meta['id']);
         }
         return [$columnId => count($columnMeta)];
+    }
+
+    private function dumpResult(array $result, OutputInterface $output) {
+        foreach ($result as $key => $value) {
+            if (is_array($value)) {
+                $output->writeln($key . ": ");
+                $this->dumpResult($value, $output);
+            } else {
+                $output->writeln($key . ": " . $value);
+            }
+        }
     }
 }
