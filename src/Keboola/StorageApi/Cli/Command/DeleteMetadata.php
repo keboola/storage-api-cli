@@ -44,7 +44,7 @@ class DeleteMetadata extends Command
             default:
                 throw new \Exception(sprintf("Unknown object type for metadata storage: %s", $input->getArgument('type')));
         }
-        $output->writeln("Summary:");
+        $output->writeln("Summary of deletions:");
         $this->dumpResult($result, $output);
     }
 
@@ -60,13 +60,13 @@ class DeleteMetadata extends Command
         $tables = $sapiClient->listTables($bucketId);
         $tablesResult = [];
         foreach ($tables as $table) {
-            $tablesResult[$table['id']] = $this->deleteMetadataFromTable($table['id']);
+            $tablesResult[] = $this->deleteMetadataFromTable($table['id']);
         }
         $bucketMetadata = $metadataClient->listBucketMetadata($bucketId);
         foreach ($bucketMetadata as $meta) {
             $metadataClient->deleteBucketMetadata($bucketId, $meta['id']);
         }
-        return [$bucketId => ['count' => count($bucketMetadata), 'tables' => $tablesResult]];
+        return [$bucketId => count($bucketMetadata), 'tables' => $tablesResult];
     }
 
     private function deleteMetadataFromTable($tableId) {
@@ -82,7 +82,7 @@ class DeleteMetadata extends Command
 
         $columnsResult = [];
         foreach ($table['columnMetadata'] as $column => $columnMetadata) {
-            $columnsResult[$column] = $this->deleteMetadataFromColumn(
+            $columnsResult[] = $this->deleteMetadataFromColumn(
                 $table['id'] . '.' . $column, $columnMetadata
             );
         }
@@ -91,7 +91,7 @@ class DeleteMetadata extends Command
         foreach ($tableMetadata as $meta) {
             $metadataClient->deleteTableMetadata($tableId, $meta['id']);
         }
-        return [$tableId => ['count' => count($tableMetadata), 'columns' => $columnsResult]];
+        return [$tableId => count($tableMetadata), 'columns' => $columnsResult];
     }
 
     private function deleteMetadataFromColumn($columnId, $columnMeta = null) {
