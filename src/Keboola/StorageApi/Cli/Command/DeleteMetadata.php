@@ -48,7 +48,8 @@ class DeleteMetadata extends Command
         $this->dumpResult($result, $output);
     }
 
-    private function deleteMetadataFromBucket($bucketId) {
+    private function deleteMetadataFromBucket($bucketId)
+    {
 
         $sapiClient = $this->getSapiClient();
         $metadataClient = new Metadata($sapiClient);
@@ -69,7 +70,8 @@ class DeleteMetadata extends Command
         return [$bucketId => count($bucketMetadata), 'tables' => $tablesResult];
     }
 
-    private function deleteMetadataFromTable($tableId) {
+    private function deleteMetadataFromTable($tableId)
+    {
 
         $sapiClient = $this->getSapiClient();
         $metadataClient = new Metadata($sapiClient);
@@ -83,7 +85,8 @@ class DeleteMetadata extends Command
         $columnsResult = [];
         foreach ($table['columnMetadata'] as $column => $columnMetadata) {
             $columnsResult[] = $this->deleteMetadataFromColumn(
-                $table['id'] . '.' . $column, $columnMetadata
+                $table['id'] . '.' . $column,
+                $columnMetadata
             );
         }
 
@@ -94,7 +97,8 @@ class DeleteMetadata extends Command
         return [$tableId => count($tableMetadata), 'columns' => $columnsResult];
     }
 
-    private function deleteMetadataFromColumn($columnId, $columnMeta = null) {
+    private function deleteMetadataFromColumn($columnId, $columnMeta = null)
+    {
 
         $metadataClient = new Metadata($this->getSapiClient());
 
@@ -107,7 +111,8 @@ class DeleteMetadata extends Command
         return [$columnId => count($columnMeta)];
     }
 
-    private function dumpResult(array $result, OutputInterface $output) {
+    private function dumpResult(array $result, OutputInterface $output)
+    {
         foreach ($result as $key => $value) {
             if (is_array($value)) {
                 $output->writeln($key . ": ");
