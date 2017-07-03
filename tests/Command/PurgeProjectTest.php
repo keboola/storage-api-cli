@@ -15,6 +15,10 @@ use Symfony\Component\Console\Tester\ApplicationTester;
 
 class PurgeProjectTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var Temp
+     */
+    private $temp;
 
     public function setUp()
     {
@@ -45,9 +49,9 @@ class PurgeProjectTest extends \PHPUnit_Framework_TestCase
 
         // add table
         $client->createBucket("main", Client::STAGE_IN);
-        $temp = new Temp();
-        $temp->initRunFolder();
-        $filename = $temp->createFile("table.csv");
+        $this->temp = new Temp();
+        $this->temp->initRunFolder();
+        $filename = $this->temp->createFile("table.csv");
         $csv = new CsvFile($filename->getPathname());
         $csv->writeRow(["Id", "Name"]);
         $csv->writeRow(["1", "test"]);

@@ -17,8 +17,14 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
     const S3_PATH = 'cli-client-restore-test/';
     const S3_REGION = 'us-east-1';
 
+    /**
+     * @var Temp
+     */
+    private $temp;
+
     public function setUp()
     {
+        $this->temp = new Temp();
         // clean up components configs in test project
         $client = $this->getClient();
         $components = new Components($client);
@@ -98,8 +104,7 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
         $client = $this->getClient();
         $this->assertTrue($client->tableExists("in.c-bucket.Account"));
         $tableExporter = new TableExporter($client);
-        $temp = new Temp();
-        $file = $temp->createFile("account.csv");
+        $file = $this->temp->createFile("account.csv");
         $tableExporter->exportTable("in.c-bucket.Account", $file->getPathname(), []);
         $fileContents = file_get_contents($file->getPathname());
         $this->assertContains('"Id","Name"', $fileContents);
@@ -115,8 +120,7 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
         $client = $this->getClient();
         $this->assertTrue($client->tableExists("in.c-bucket.Account"));
         $tableExporter = new TableExporter($client);
-        $temp = new Temp();
-        $file = $temp->createFile("account.csv");
+        $file = $this->temp->createFile("account.csv");
         $tableExporter->exportTable("in.c-bucket.Account", $file->getPathname(), []);
         $fileContents = file_get_contents($file->getPathname());
         $this->assertContains('"Id","Name"', $fileContents);
@@ -133,8 +137,7 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
         $client = $this->getClient();
         $this->assertTrue($client->tableExists("in.c-bucket.Account"));
         $tableExporter = new TableExporter($client);
-        $temp = new Temp();
-        $file = $temp->createFile("account.csv");
+        $file = $this->temp->createFile("account.csv");
         $tableExporter->exportTable("in.c-bucket.Account", $file->getPathname(), []);
         $fileContents = file_get_contents($file->getPathname());
         $this->assertContains('"Id","Name"', $fileContents);
@@ -152,8 +155,7 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($client->tableExists("in.c-bucket.Account2"));
 
         $tableExporter = new TableExporter($client);
-        $temp = new Temp();
-        $file = $temp->createFile("account.csv");
+        $file = $this->temp->createFile("account.csv");
         $tableExporter->exportTable("in.c-bucket.Account", $file->getPathname(), []);
         $fileContents = file_get_contents($file->getPathname());
         $this->assertContains('"Id","Name"', $fileContents);
@@ -161,7 +163,7 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
         $this->assertContains('"001C000000xYbhhIAD","Keboola 2"', $fileContents);
         $this->assertCount(4, explode("\n", $fileContents));
 
-        $file = $temp->createFile("account2.csv");
+        $file = $this->temp->createFile("account2.csv");
         $tableExporter->exportTable("in.c-bucket.Account2", $file->getPathname(), []);
         $fileContents = file_get_contents($file->getPathname());
         $this->assertContains('"Id","Name"', $fileContents);
@@ -308,8 +310,7 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
         $client = $this->getClient();
 
         // empty array and object in config
-        $tmp = new Temp();
-        $file = $tmp->createFile('config.json');
+        $file = $this->temp->createFile('config.json');
         $client->apiGet('storage/components/keboola.csv-import/configs/1', $file->getPathname());
         $config = json_decode(file_get_contents($file->getPathname()));
         $this->assertEquals(new \stdClass(), $config->configuration->emptyObject);
@@ -357,8 +358,7 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
 
         // empty array and object in config
-        $tmp = new Temp();
-        $file = $tmp->createFile('config.json');
+        $file = $this->temp->createFile('config.json');
         $client = $this->getClient();
         $client->apiGet('storage/components/transformation/configs/1/rows', $file->getPathname());
         $config = json_decode(file_get_contents($file->getPathname()));

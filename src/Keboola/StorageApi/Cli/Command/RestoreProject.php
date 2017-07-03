@@ -175,6 +175,7 @@ class RestoreProject extends Command
 
                 // no files for the table found, probably an empty table
                 if (!isset($slices["Contents"])) {
+                    unset($headerFile);
                     continue;
                 }
 
@@ -280,6 +281,7 @@ class RestoreProject extends Command
                         )
                     );
                 }
+                unset($headerFile);
 
                 // indexes
                 $missingIndexes = array_diff($table["indexedColumns"], $table["primaryKey"]);

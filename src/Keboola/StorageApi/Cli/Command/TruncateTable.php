@@ -56,6 +56,8 @@ class TruncateTable extends Command
             $headFile
         );
 
+        unset($csvFile);
+        unset($headFile);
         $this->destroyTmpDir();
 
         $duration = time() - $startTime;

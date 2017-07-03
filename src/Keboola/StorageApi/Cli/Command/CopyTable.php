@@ -51,7 +51,7 @@ class CopyTable extends Command
         }
 
         // Download the table from the source
-        $tmpFile = $this->getTmpDir() . "/" . $input->getArgument('sourceTableId') . ".csv";
+        $tmpFile = $this->getTmpDir() . DIRECTORY_SEPARATOR . $input->getArgument('sourceTableId') . ".csv";
         $exporter = new TableExporter($sapiClient);
         $exporter->exportTable(
             $input->getArgument('sourceTableId'),

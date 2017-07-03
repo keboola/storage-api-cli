@@ -70,7 +70,7 @@ abstract class Command extends BaseCommand
     {
         if ($this->tmpDir == "") {
             $fs = new Filesystem();
-            $dir = "/tmp/sapi-cli-" . uniqid();
+            $dir = sys_get_temp_dir() . DIRECTORY_SEPARATOR . "sapi-cli-" . uniqid();
             $fs->mkdir($dir);
             $this->tmpDir = $dir;
         }

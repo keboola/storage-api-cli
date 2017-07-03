@@ -6,11 +6,14 @@ use Keboola\StorageApi\Cli\Command\CopyTable;
 use Keboola\StorageApi\Cli\Command\PurgeProject;
 use Keboola\StorageApi\Cli\Console\Application;
 use Keboola\StorageApi\Client;
+use Keboola\StorageApi\ClientException;
 use Keboola\Temp\Temp;
 use Symfony\Component\Console\Tester\ApplicationTester;
 
 class CopyTableTest extends \PHPUnit_Framework_TestCase
 {
+    private $temp;
+
     public function setUp()
     {
         // add configs
@@ -18,13 +21,12 @@ class CopyTableTest extends \PHPUnit_Framework_TestCase
 
         // add table
         $client->createBucket("main", Client::STAGE_IN);
-        $temp = new Temp();
-        $temp->initRunFolder();
-        $filename = $temp->createFile("table.csv");
+        $this->temp = new Temp();
+        $this->temp->initRunFolder();
+        $filename = $this->temp->createFile("table.csv");
         $csv = new CsvFile($filename->getPathname());
         $csv->writeRow(["Id", "Name"]);
         $csv->writeRow(["1", "test"]);
-
 
         $client->createTable("in.c-main", "testNoPk", $csv);
 
