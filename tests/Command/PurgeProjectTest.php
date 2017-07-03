@@ -12,6 +12,7 @@ use Keboola\StorageApi\Options\Components\ConfigurationRow;
 use Keboola\StorageApi\Options\FileUploadOptions;
 use Keboola\Temp\Temp;
 use Symfony\Component\Console\Tester\ApplicationTester;
+use Symfony\Component\Filesystem\Filesystem;
 
 class PurgeProjectTest extends \PHPUnit_Framework_TestCase
 {
@@ -119,6 +120,16 @@ class PurgeProjectTest extends \PHPUnit_Framework_TestCase
 
     public function testPurgeFileUploads()
     {
+        $client = new Client(['token' => TEST_STORAGE_API_TOKEN]);
+        $fileUploadOptions = new FileUploadOptions();
+        $fileUploadOptions->setFileName("test");
+        $fs = new Filesystem();
+        for ($i = 0; $i <= 100; $i++) {
+            $fileName = $this->temp->getTmpFolder() . DIRECTORY_SEPARATOR . 'tmp-' . $i;
+            $fs->dumpFile($fileName, 'content' . $i);
+            $client->uploadFile($fileName, $fileUploadOptions);
+        }
+
         // run command
         $application = new Application();
         $application->setAutoExit(false);

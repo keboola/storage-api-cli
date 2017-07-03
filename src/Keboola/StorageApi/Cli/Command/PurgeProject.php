@@ -10,6 +10,8 @@
 namespace Keboola\StorageApi\Cli\Command;
 
 use Keboola\StorageApi\Components;
+use Keboola\StorageApi\Options\GetFileOptions;
+use Keboola\StorageApi\Options\ListFilesOptions;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -68,7 +70,7 @@ class PurgeProject extends Command
             }
         }
 
-        if (!$limit ||$input->getOption('data')) {
+        if (!$limit || $input->getOption('data')) {
             $output->write($this->format('Dropping buckets'));
             foreach ($buckets as $bucket) {
                 $client->dropBucket($bucket["id"], ["force" => true]);
@@ -76,11 +78,18 @@ class PurgeProject extends Command
             $output->writeln($this->check());
         }
 
-        if (!$limit ||$input->getOption('file-uploads')) {
-            $output->write($this->format('Dropping file uploads'));
-            foreach ($client->listFiles() as $file) {
-                $client->deleteFile($file["id"]);
-            }
+        if (!$limit || $input->getOption('file-uploads')) {
+            $fileOptions = new ListFilesOptions();
+            $fileOptions->setLimit(100);
+            $fileOptions->setOffset(0);
+            $output->write($this->format('Dropping file uploads (dot = ' . $fileOptions->getLimit() . ' files)'));
+            do {
+                $output->write('.');
+                $files = $client->listFiles($fileOptions);
+                foreach ($files as $file) {
+                    $client->deleteFile($file["id"]);
+                }
+            } while ($files);
             $output->writeln($this->check());
         }
     }
