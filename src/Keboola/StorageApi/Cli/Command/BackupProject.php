@@ -1,16 +1,10 @@
 <?php
-/**
- * Created by JetBrains PhpStorm.
- * User: martinhalamicek
- * Date: 5/16/13
- * Time: 3:19 PM
- * To change this template use File | Settings | File Templates.
- */
 
 namespace Keboola\StorageApi\Cli\Command;
 
 use Aws\S3\S3Client;
 use Keboola\StorageApi\Client;
+use Keboola\StorageApi\HandlerStack;
 use Keboola\StorageApi\Options\GetFileOptions;
 use Keboola\Temp\Temp;
 use Symfony\Component\Console\Input\InputArgument;
@@ -21,6 +15,8 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class BackupProject extends Command
 {
+    const VERSION_LIMIT = 2;
+
     public function configure()
     {
         $this
@@ -99,7 +95,7 @@ class BackupProject extends Command
      */
     private function exportConfigs(Client $sapiClient, S3Client $s3, $targetBucket, $targetBasePath, $saveVersions)
     {
-        $limit = 2;
+        $limit = self::VERSION_LIMIT;
         $tmp = new Temp();
         $tmp->initRunFolder();
 
@@ -186,10 +182,15 @@ class BackupProject extends Command
         $fs = new Filesystem();
         if ($fileInfo['isSliced'] === true) {
             // Download manifest with all sliced files
-            $manifest = json_decode(file_get_contents($fileInfo["url"]), true);
+            $client = new \GuzzleHttp\Client([
+                'handler' => HandlerStack::create([
+                    'backoffMaxTries' => 10,
+                ]),
+            ]);
+            $manifest = json_decode($client->get($fileInfo['url'])->getBody(), true);
 
             // Download all slices
-            $tmpFilePath = $this->getTmpDir() . '/' . uniqid('sapi-export-');
+            $tmpFilePath = $this->getTmpDir() . DIRECTORY_SEPARATOR . uniqid('sapi-export-');
             foreach ($manifest["entries"] as $i => $part) {
                 $fileKey = substr($part["url"], strpos($part["url"], '/', 5) + 1);
                 $filePath = $tmpFilePath . '_' . md5(str_replace('/', '_', $fileKey));
@@ -208,7 +209,7 @@ class BackupProject extends Command
                 $fs->remove($filePath);
             }
         } else {
-            $tmpFilePath = $this->getTmpDir() . "/" . uniqid('table');
+            $tmpFilePath = $this->getTmpDir() . DIRECTORY_SEPARATOR . uniqid('table');
             $s3Client->getObject(array(
                 'Bucket' => $fileInfo["s3Path"]["bucket"],
                 'Key' => $fileInfo["s3Path"]["key"],
