@@ -1,3 +1,7 @@
+## 0.6.0
+ * [Feat] `create-bucket` command
+ * [Feat] `delete-bucket` command
+
 ## 0.5.7
  * [Fix] `copy-table` fixed creating composite primary key
 

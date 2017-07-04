@@ -5,20 +5,20 @@
 Simple command line wrapper for [Keboola Storage REST API](http://docs.keboola.apiary.io/)
 
 ## Installation
-Download the latest version from https://s3.amazonaws.com/keboola-storage-api-cli/builds/sapi-client.phar .
+Download the latest version from [https://s3.amazonaws.com/keboola-storage-api-cli/builds/sapi-client.phar](https://s3.amazonaws.com/keboola-storage-api-cli/builds/sapi-client.phar).
 
 From there, you may place it anywhere that will make it easier for you to access (such as /usr/local/bin) and chmod it to 755.
 You can even rename it to just sapi-client to avoid having to type the .phar extension every time.
 
 Storage API cli requires PHP 5.5 or newer, 
-for PHP 5.4 you can use https://s3.amazonaws.com/keboola-storage-api-cli/builds/sapi-client.0.2.9.phar (5.4 version is no longer supported),
-for PHP 5.3 you can use https://s3.amazonaws.com/keboola-storage-api-cli/builds/sapi-client.0.1.9.phar
+for PHP 5.4 you can use [https://s3.amazonaws.com/keboola-storage-api-cli/builds/sapi-client.0.2.9.phar](https://s3.amazonaws.com/keboola-storage-api-cli/builds/sapi-client.0.2.9.phar) (5.4 version is no longer supported),
+for PHP 5.3 you can use [https://s3.amazonaws.com/keboola-storage-api-cli/builds/sapi-client.0.1.9.phar](https://s3.amazonaws.com/keboola-storage-api-cli/builds/sapi-client.0.1.9.phar).
 
 ## Usage
 
 ```
 ➜  storage-api-cli git:(master) php sapi-client.phar --token=your_sapi_token
-Keboola Storage API CLI version 0.2.3
+Keboola Storage API CLI version 0.6.0
 
 Usage:
   [options] command [arguments]
@@ -39,7 +39,9 @@ Available commands:
   copy-bucket                 Copy bucket with all tables in it
   copy-table                  Copy table with PK, indexes and attributes (transferring nongzipped data)
   create-table                Create table in bucket
+  create-bucket               Create bucket
   delete-bucket               Delete bucket
+  delete-metadata             Delete metadata from column, table, bucket or entire project
   delete-table                Delete table
   export-table                Export data from table to file
   help                        Displays help for a command
