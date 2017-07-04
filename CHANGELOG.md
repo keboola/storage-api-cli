@@ -1,3 +1,6 @@
+## 0.7.0
+ * [Feat] Drop support for PHP 5.5, add support for PHP 7.1
+
 ## 0.6.0
  * [Feat] `create-bucket` command
  * [Feat] `delete-bucket` command
