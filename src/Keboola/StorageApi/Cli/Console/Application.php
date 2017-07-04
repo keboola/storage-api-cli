@@ -125,6 +125,7 @@ class Application extends BaseApplication
             new Command\BackupProject(),
             new Command\RestoreProject(),
             new Command\PurgeProject(),
+            new Command\DeleteMetadata(),
         ), parent::getDefaultCommands());
     }
 

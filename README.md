@@ -51,7 +51,7 @@ Available commands:
   restore-table-from-imports  Creates new table from source table imports
   truncate-table              Remove all data from table
   write-table                 Write data into table
-
+  delete-metadataa            Delete all metadata from project, bucket, table or column
 ```
 
 #### export-table
