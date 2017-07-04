@@ -47,8 +47,8 @@ class WriteTableTest extends \PHPUnit_Framework_TestCase
             '--token' => TEST_STORAGE_API_TOKEN,
         ]);
 
-        $this->assertContains('Import done', $applicationTester->getDisplay());
-        $this->assertEquals(0, $applicationTester->getStatusCode());
+        self::assertContains('Import done', $applicationTester->getDisplay());
+        self::assertEquals(0, $applicationTester->getStatusCode());
         // check for the results
         $client = new Client(['token' => TEST_STORAGE_API_TOKEN]);
         $exporter = new TableExporter($client);
@@ -59,8 +59,8 @@ class WriteTableTest extends \PHPUnit_Framework_TestCase
         foreach ($csv as $line) {
             $results[$line[1]] = $line[0];
         }
-        $this->assertEquals(['name', 'id'], $csv->getHeader());
-        $this->assertEquals([4 => 'fooBar', 5 => 'barBaz', 6 => 'bazFoo', 'id' => 'name'], $results);
+        self::assertEquals(['name', 'id'], $csv->getHeader());
+        self::assertEquals([4 => 'fooBar', 5 => 'barBaz', 6 => 'bazFoo', 'id' => 'name'], $results);
     }
 
     public function testExecuteIncremental()
@@ -80,8 +80,8 @@ class WriteTableTest extends \PHPUnit_Framework_TestCase
             '--token' => TEST_STORAGE_API_TOKEN,
         ]);
 
-        $this->assertContains('Import done', $applicationTester->getDisplay());
-        $this->assertEquals(0, $applicationTester->getStatusCode());
+        self::assertContains('Import done', $applicationTester->getDisplay());
+        self::assertEquals(0, $applicationTester->getStatusCode());
         // check for the results
         $client = new Client(['token' => TEST_STORAGE_API_TOKEN]);
         $exporter = new TableExporter($client);
@@ -92,8 +92,8 @@ class WriteTableTest extends \PHPUnit_Framework_TestCase
         foreach ($csv as $line) {
             $results[$line[1]] = $line[0];
         }
-        $this->assertEquals(['name', 'id'], $csv->getHeader());
-        $this->assertEquals([1 => 'foo', 2 => 'bar', 4 => 'fooBar', 5 => 'barBaz', 'id' => 'name'], $results);
+        self::assertEquals(['name', 'id'], $csv->getHeader());
+        self::assertEquals([1 => 'foo', 2 => 'bar', 4 => 'fooBar', 5 => 'barBaz', 'id' => 'name'], $results);
     }
 
     public function testExecuteExtendedDelimiter()
@@ -114,8 +114,8 @@ class WriteTableTest extends \PHPUnit_Framework_TestCase
             '--token' => TEST_STORAGE_API_TOKEN,
         ]);
 
-        $this->assertContains('Import done', $applicationTester->getDisplay());
-        $this->assertEquals(0, $applicationTester->getStatusCode());
+        self::assertContains('Import done', $applicationTester->getDisplay());
+        self::assertEquals(0, $applicationTester->getStatusCode());
         // check for the results
         $client = new Client(['token' => TEST_STORAGE_API_TOKEN]);
         $exporter = new TableExporter($client);
@@ -126,8 +126,8 @@ class WriteTableTest extends \PHPUnit_Framework_TestCase
         foreach ($csv as $line) {
             $results[$line[1]] = $line[0];
         }
-        $this->assertEquals(['name', 'id'], $csv->getHeader());
-        $this->assertEquals([1 => 'foo', 2 => 'bar', 4 => 'fooBar', 5 => 'barBaz', 'id' => 'name'], $results);
+        self::assertEquals(['name', 'id'], $csv->getHeader());
+        self::assertEquals([1 => 'foo', 2 => 'bar', 4 => 'fooBar', 5 => 'barBaz', 'id' => 'name'], $results);
     }
 
     public function tearDown()

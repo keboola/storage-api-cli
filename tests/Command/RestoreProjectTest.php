@@ -43,43 +43,43 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
     {
         $this->loadBackupToS3('buckets');
         $applicationTester = $this->runCommand();
-        $this->assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
+        self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
         $client = $this->getClient();
         $buckets = $client->listBuckets();
-        $this->assertCount(2, $buckets);
-        $this->assertEquals("in.c-bucket1", $buckets[0]["id"]);
-        $this->assertEquals("in.c-bucket2", $buckets[1]["id"]);
+        self::assertCount(2, $buckets);
+        self::assertEquals("in.c-bucket1", $buckets[0]["id"]);
+        self::assertEquals("in.c-bucket2", $buckets[1]["id"]);
     }
 
     public function testRestoreBucketsIgnoreStorageBackend()
     {
         $this->loadBackupToS3('buckets-multiple-backends');
         $applicationTester = $this->runCommand();
-        $this->assertEquals(0, $applicationTester->getStatusCode());
+        self::assertEquals(0, $applicationTester->getStatusCode());
         $client = $this->getClient();
         $buckets = $client->listBuckets();
-        $this->assertCount(3, $buckets);
-        $this->assertTrue($client->bucketExists("in.c-snowflake"));
-        $this->assertTrue($client->bucketExists("in.c-redshift"));
-        $this->assertTrue($client->bucketExists("in.c-mysql"));
+        self::assertCount(3, $buckets);
+        self::assertTrue($client->bucketExists("in.c-snowflake"));
+        self::assertTrue($client->bucketExists("in.c-redshift"));
+        self::assertTrue($client->bucketExists("in.c-mysql"));
     }
 
     public function testBackendMissingError()
     {
         $this->loadBackupToS3('buckets-multiple-backends');
         $applicationTester = $this->runCommand(false);
-        $this->assertEquals(1, $applicationTester->getStatusCode());
+        self::assertEquals(1, $applicationTester->getStatusCode());
         $ret = $applicationTester->getDisplay();
-        $this->assertContains('Missing', $ret);
+        self::assertContains('Missing', $ret);
     }
 
     public function testRestoreBucketAttributes()
     {
         $this->loadBackupToS3('buckets');
         $applicationTester = $this->runCommand();
-        $this->assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
+        self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
         $client = $this->getClient();
-        $this->assertEquals(
+        self::assertEquals(
             [
                 [
                     "name" => "myKey",
@@ -100,32 +100,32 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
     {
         $this->loadBackupToS3('table-with-header');
         $applicationTester = $this->runCommand();
-        $this->assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
+        self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
         $client = $this->getClient();
-        $this->assertTrue($client->tableExists("in.c-bucket.Account"));
+        self::assertTrue($client->tableExists("in.c-bucket.Account"));
         $tableExporter = new TableExporter($client);
         $file = $this->temp->createFile("account.csv");
         $tableExporter->exportTable("in.c-bucket.Account", $file->getPathname(), []);
         $fileContents = file_get_contents($file->getPathname());
-        $this->assertContains('"Id","Name"', $fileContents);
-        $this->assertContains('"001C000000xYbhhIAC","Keboola"', $fileContents);
-        $this->assertContains('"001C000000xYbhhIAD","Keboola 2"', $fileContents);
+        self::assertContains('"Id","Name"', $fileContents);
+        self::assertContains('"001C000000xYbhhIAC","Keboola"', $fileContents);
+        self::assertContains('"001C000000xYbhhIAD","Keboola 2"', $fileContents);
     }
 
     public function testRestoreTableWithoutHeader()
     {
         $this->loadBackupToS3('table-without-header');
         $applicationTester = $this->runCommand();
-        $this->assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
+        self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
         $client = $this->getClient();
-        $this->assertTrue($client->tableExists("in.c-bucket.Account"));
+        self::assertTrue($client->tableExists("in.c-bucket.Account"));
         $tableExporter = new TableExporter($client);
         $file = $this->temp->createFile("account.csv");
         $tableExporter->exportTable("in.c-bucket.Account", $file->getPathname(), []);
         $fileContents = file_get_contents($file->getPathname());
-        $this->assertContains('"Id","Name"', $fileContents);
-        $this->assertContains('"001C000000xYbhhIAC","Keboola"', $fileContents);
-        $this->assertContains('"001C000000xYbhhIAD","Keboola 2"', $fileContents);
+        self::assertContains('"Id","Name"', $fileContents);
+        self::assertContains('"001C000000xYbhhIAC","Keboola"', $fileContents);
+        self::assertContains('"001C000000xYbhhIAD","Keboola 2"', $fileContents);
     }
 
 
@@ -133,52 +133,52 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
     {
         $this->loadBackupToS3('table-multiple-slices');
         $applicationTester = $this->runCommand();
-        $this->assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
+        self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
         $client = $this->getClient();
-        $this->assertTrue($client->tableExists("in.c-bucket.Account"));
+        self::assertTrue($client->tableExists("in.c-bucket.Account"));
         $tableExporter = new TableExporter($client);
         $file = $this->temp->createFile("account.csv");
         $tableExporter->exportTable("in.c-bucket.Account", $file->getPathname(), []);
         $fileContents = file_get_contents($file->getPathname());
-        $this->assertContains('"Id","Name"', $fileContents);
-        $this->assertContains('"001C000000xYbhhIAC","Keboola"', $fileContents);
-        $this->assertContains('"001C000000xYbhhIAD","Keboola 2"', $fileContents);
+        self::assertContains('"Id","Name"', $fileContents);
+        self::assertContains('"001C000000xYbhhIAC","Keboola"', $fileContents);
+        self::assertContains('"001C000000xYbhhIAD","Keboola 2"', $fileContents);
     }
 
     public function testRestoreTableFromMultipleSlicesSharedPrefix()
     {
         $this->loadBackupToS3('table-multiple-slices-shared-prefix');
         $applicationTester = $this->runCommand();
-        $this->assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
+        self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
         $client = $this->getClient();
-        $this->assertTrue($client->tableExists("in.c-bucket.Account"));
-        $this->assertTrue($client->tableExists("in.c-bucket.Account2"));
+        self::assertTrue($client->tableExists("in.c-bucket.Account"));
+        self::assertTrue($client->tableExists("in.c-bucket.Account2"));
 
         $tableExporter = new TableExporter($client);
         $file = $this->temp->createFile("account.csv");
         $tableExporter->exportTable("in.c-bucket.Account", $file->getPathname(), []);
         $fileContents = file_get_contents($file->getPathname());
-        $this->assertContains('"Id","Name"', $fileContents);
-        $this->assertContains('"001C000000xYbhhIAC","Keboola"', $fileContents);
-        $this->assertContains('"001C000000xYbhhIAD","Keboola 2"', $fileContents);
-        $this->assertCount(4, explode("\n", $fileContents));
+        self::assertContains('"Id","Name"', $fileContents);
+        self::assertContains('"001C000000xYbhhIAC","Keboola"', $fileContents);
+        self::assertContains('"001C000000xYbhhIAD","Keboola 2"', $fileContents);
+        self::assertCount(4, explode("\n", $fileContents));
 
         $file = $this->temp->createFile("account2.csv");
         $tableExporter->exportTable("in.c-bucket.Account2", $file->getPathname(), []);
         $fileContents = file_get_contents($file->getPathname());
-        $this->assertContains('"Id","Name"', $fileContents);
-        $this->assertContains('"001C000000xYbhhIAC","Keboola"', $fileContents);
-        $this->assertContains('"001C000000xYbhhIAD","Keboola 2"', $fileContents);
-        $this->assertCount(4, explode("\n", $fileContents));
+        self::assertContains('"Id","Name"', $fileContents);
+        self::assertContains('"001C000000xYbhhIAC","Keboola"', $fileContents);
+        self::assertContains('"001C000000xYbhhIAD","Keboola 2"', $fileContents);
+        self::assertCount(4, explode("\n", $fileContents));
     }
 
     public function testRestoreTableAttributes()
     {
         $this->loadBackupToS3('table-properties');
         $applicationTester = $this->runCommand();
-        $this->assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
+        self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
         $client = $this->getClient();
-        $this->assertEquals(
+        self::assertEquals(
             [
                 [
                     "name" => "myKey",
@@ -199,66 +199,66 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
     {
         $this->loadBackupToS3('table-properties');
         $applicationTester = $this->runCommand();
-        $this->assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
+        self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
         $client = $this->getClient();
         $accountTable = $client->getTable("in.c-bucket.Account");
         $account2Table = $client->getTable("in.c-bucket.Account2");
-        $this->assertEquals(["Id", "Name"], $accountTable["indexedColumns"]);
-        $this->assertEquals(["Id", "Name"], $accountTable["primaryKey"]);
-        $this->assertEquals(["Id"], $account2Table["primaryKey"]);
-        $this->assertEquals(["Id", "Name"], $account2Table["indexedColumns"]);
+        self::assertEquals(["Id", "Name"], $accountTable["indexedColumns"]);
+        self::assertEquals(["Id", "Name"], $accountTable["primaryKey"]);
+        self::assertEquals(["Id"], $account2Table["primaryKey"]);
+        self::assertEquals(["Id", "Name"], $account2Table["indexedColumns"]);
     }
 
     public function testRestoreAlias()
     {
         $this->loadBackupToS3('alias');
         $applicationTester = $this->runCommand();
-        $this->assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
+        self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
         $client = $this->getClient();
         $aliasTable = $client->getTable("out.c-bucket.Account");
-        $this->assertEquals(true, $aliasTable["isAlias"]);
-        $this->assertEquals(true, $aliasTable["aliasColumnsAutoSync"]);
-        $this->assertEquals(["Id", "Name"], $aliasTable["columns"]);
-        $this->assertEquals("in.c-bucket.Account", $aliasTable["sourceTable"]["id"]);
+        self::assertEquals(true, $aliasTable["isAlias"]);
+        self::assertEquals(true, $aliasTable["aliasColumnsAutoSync"]);
+        self::assertEquals(["Id", "Name"], $aliasTable["columns"]);
+        self::assertEquals("in.c-bucket.Account", $aliasTable["sourceTable"]["id"]);
     }
 
     public function testRestoreFilteredAlias()
     {
         $this->loadBackupToS3('alias-filtered');
         $applicationTester = $this->runCommand();
-        $this->assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
+        self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
         $client = $this->getClient();
         $aliasTable = $client->getTable("out.c-bucket.Account");
-        $this->assertEquals(true, $aliasTable["isAlias"]);
-        $this->assertEquals(false, $aliasTable["aliasColumnsAutoSync"]);
-        $this->assertEquals(["Id"], $aliasTable["columns"]);
-        $this->assertEquals("in.c-bucket.Account", $aliasTable["sourceTable"]["id"]);
-        $this->assertEquals(["column" => "Name", "operator" => "eq", "values" => ["Keboola"]], $aliasTable["aliasFilter"]);
+        self::assertEquals(true, $aliasTable["isAlias"]);
+        self::assertEquals(false, $aliasTable["aliasColumnsAutoSync"]);
+        self::assertEquals(["Id"], $aliasTable["columns"]);
+        self::assertEquals("in.c-bucket.Account", $aliasTable["sourceTable"]["id"]);
+        self::assertEquals(["column" => "Name", "operator" => "eq", "values" => ["Keboola"]], $aliasTable["aliasFilter"]);
     }
 
     public function testRestoreConfigurations()
     {
         $this->loadBackupToS3('configurations');
         $applicationTester = $this->runCommand();
-        $this->assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
+        self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
 
         $client = $this->getClient();
         $components = new Components($client);
         $componentsList = $components->listComponents();
-        $this->assertCount(2, $componentsList);
-        $this->assertEquals("keboola.csv-import", $componentsList[0]["id"]);
-        $this->assertEquals("keboola.ex-slack", $componentsList[1]["id"]);
+        self::assertCount(2, $componentsList);
+        self::assertEquals("keboola.csv-import", $componentsList[0]["id"]);
+        self::assertEquals("keboola.ex-slack", $componentsList[1]["id"]);
 
         $config = $components->getConfiguration("keboola.csv-import", 1);
-        $this->assertEquals(1, $config["version"]);
-        $this->assertEquals("", $config["changeDescription"]);
-        $this->assertEquals("Accounts", $config["name"]);
-        $this->assertEquals("Default CSV Importer", $config["description"]);
+        self::assertEquals(1, $config["version"]);
+        self::assertEquals("", $config["changeDescription"]);
+        self::assertEquals("Accounts", $config["name"]);
+        self::assertEquals("Default CSV Importer", $config["description"]);
 
         $config = $components->getConfiguration("keboola.ex-slack", 2);
-        $this->assertEquals(2, $config["version"]);
-        $this->assertEquals("Configuration 2 restored from backup", $config["changeDescription"]);
-        $this->assertEquals(["key" => "value"], $config["state"]);
+        self::assertEquals(2, $config["version"]);
+        self::assertEquals("Configuration 2 restored from backup", $config["changeDescription"]);
+        self::assertEquals(["key" => "value"], $config["state"]);
     }
 
 
@@ -266,46 +266,46 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
     {
         $this->loadBackupToS3('configurations-no-versions');
         $applicationTester = $this->runCommand();
-        $this->assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
+        self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
 
         $client = $this->getClient();
         $components = new Components($client);
         $componentsList = $components->listComponents();
 
-        $this->assertCount(2, $componentsList);
-        $this->assertEquals("keboola.csv-import", $componentsList[0]["id"]);
-        $this->assertEquals("keboola.ex-slack", $componentsList[1]["id"]);
+        self::assertCount(2, $componentsList);
+        self::assertEquals("keboola.csv-import", $componentsList[0]["id"]);
+        self::assertEquals("keboola.ex-slack", $componentsList[1]["id"]);
 
         $config = $components->getConfiguration("keboola.csv-import", 1);
 
-        $this->assertEquals(1, $config["version"]);
-        $this->assertEquals("", $config["changeDescription"]);
-        $this->assertEquals("Accounts", $config["name"]);
-        $this->assertEquals("Default CSV Importer", $config["description"]);
+        self::assertEquals(1, $config["version"]);
+        self::assertEquals("", $config["changeDescription"]);
+        self::assertEquals("Accounts", $config["name"]);
+        self::assertEquals("Default CSV Importer", $config["description"]);
 
         $config = $components->getConfiguration("keboola.ex-slack", 2);
-        $this->assertEquals(2, $config["version"]);
-        $this->assertEquals("Configuration 2 restored from backup", $config["changeDescription"]);
-        $this->assertEquals(["key" => "value"], $config["state"]);
+        self::assertEquals(2, $config["version"]);
+        self::assertEquals("Configuration 2 restored from backup", $config["changeDescription"]);
+        self::assertEquals(["key" => "value"], $config["state"]);
     }
 
     public function testDoNotRestoreOrchestrationConfigurations()
     {
         $this->loadBackupToS3('configuration-orchestration');
         $applicationTester = $this->runCommand();
-        $this->assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
+        self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
 
         $client = $this->getClient();
         $components = new Components($client);
         $componentsList = $components->listComponents();
-        $this->assertCount(0, $componentsList);
+        self::assertCount(0, $componentsList);
     }
 
     public function testRestoreEmptyObjectInConfiguration()
     {
         $this->loadBackupToS3('configuration-empty-object');
         $applicationTester = $this->runCommand();
-        $this->assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
+        self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
 
         $client = $this->getClient();
 
@@ -313,106 +313,106 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
         $file = $this->temp->createFile('config.json');
         $client->apiGet('storage/components/keboola.csv-import/configs/1', $file->getPathname());
         $config = json_decode(file_get_contents($file->getPathname()));
-        $this->assertEquals(new \stdClass(), $config->configuration->emptyObject);
-        $this->assertEquals([], $config->configuration->emptyArray);
+        self::assertEquals(new \stdClass(), $config->configuration->emptyObject);
+        self::assertEquals([], $config->configuration->emptyArray);
     }
 
     public function testRestoreConfigurationRows()
     {
         $this->loadBackupToS3('configuration-rows');
         $applicationTester = $this->runCommand();
-        $this->assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
+        self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
 
         $client = $this->getClient();
         $components = new Components($client);
         $componentsList = $components->listComponents();
 
-        $this->assertCount(1, $componentsList);
-        $this->assertEquals("transformation", $componentsList[0]["id"]);
-        $this->assertCount(2, $componentsList[0]["configurations"]);
+        self::assertCount(1, $componentsList);
+        self::assertEquals("transformation", $componentsList[0]["id"]);
+        self::assertCount(2, $componentsList[0]["configurations"]);
 
         $config = $components->getConfiguration("transformation", 1);
-        $this->assertEquals("MySQL", $config["name"]);
-        $this->assertEquals(5, $config["version"]);
-        $this->assertEquals("Row 4 restored from backup", $config["changeDescription"]);
-        $this->assertCount(2, $config["rows"]);
-        $this->assertEquals(3, $config["rows"][0]["id"]);
-        $this->assertEquals("Account", $config["rows"][0]["configuration"]["name"]);
-        $this->assertEquals(4, $config["rows"][1]["id"]);
-        $this->assertEquals("Ratings", $config["rows"][1]["configuration"]["name"]);
+        self::assertEquals("MySQL", $config["name"]);
+        self::assertEquals(5, $config["version"]);
+        self::assertEquals("Row 4 restored from backup", $config["changeDescription"]);
+        self::assertCount(2, $config["rows"]);
+        self::assertEquals(3, $config["rows"][0]["id"]);
+        self::assertEquals("Account", $config["rows"][0]["configuration"]["name"]);
+        self::assertEquals(4, $config["rows"][1]["id"]);
+        self::assertEquals("Ratings", $config["rows"][1]["configuration"]["name"]);
 
         $config = $components->getConfiguration("transformation", 2);
-        $this->assertEquals("Snowflake", $config["name"]);
-        $this->assertEquals(5, $config["version"]);
-        $this->assertEquals("Row 6 restored from backup", $config["changeDescription"]);
-        $this->assertEquals(5, $config["rows"][0]["id"]);
-        $this->assertEquals("Account", $config["rows"][0]["configuration"]["name"]);
-        $this->assertEquals(6, $config["rows"][1]["id"]);
-        $this->assertEquals("Ratings", $config["rows"][1]["configuration"]["name"]);
+        self::assertEquals("Snowflake", $config["name"]);
+        self::assertEquals(5, $config["version"]);
+        self::assertEquals("Row 6 restored from backup", $config["changeDescription"]);
+        self::assertEquals(5, $config["rows"][0]["id"]);
+        self::assertEquals("Account", $config["rows"][0]["configuration"]["name"]);
+        self::assertEquals(6, $config["rows"][1]["id"]);
+        self::assertEquals("Ratings", $config["rows"][1]["configuration"]["name"]);
     }
 
     public function testRestoreEmptyObjectInConfigurationRow()
     {
         $this->loadBackupToS3('configuration-rows');
         $applicationTester = $this->runCommand();
-        $this->assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
+        self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
 
         // empty array and object in config
         $file = $this->temp->createFile('config.json');
         $client = $this->getClient();
         $client->apiGet('storage/components/transformation/configs/1/rows', $file->getPathname());
         $config = json_decode(file_get_contents($file->getPathname()));
-        $this->assertEquals(new \stdClass(), $config[0]->configuration->input[0]->datatypes);
-        $this->assertEquals([], $config[0]->configuration->queries);
+        self::assertEquals(new \stdClass(), $config[0]->configuration->input[0]->datatypes);
+        self::assertEquals([], $config[0]->configuration->queries);
     }
 
     public function testRestoreOnlyConfigurations()
     {
         $this->loadBackupToS3('table-with-header');
         $applicationTester = $this->runCommand(false, true, false);
-        $this->assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
+        self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
         $client = $this->getClient();
-        $this->assertFalse($client->tableExists("in.c-bucket.Account"));
+        self::assertFalse($client->tableExists("in.c-bucket.Account"));
     }
 
     public function testRestoreOnlyData()
     {
         $this->loadBackupToS3('configurations');
         $applicationTester = $this->runCommand(false, false, true);
-        $this->assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
+        self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
         $client = $this->getClient();
         $components = new Components($client);
         $componentsList = $components->listComponents();
-        $this->assertCount(0, $componentsList);
+        self::assertCount(0, $componentsList);
     }
 
     public function testRestoreBucketWithoutPrefix()
     {
         $this->loadBackupToS3('bucket-without-prefix');
         $applicationTester = $this->runCommand();
-        $this->assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
+        self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
         $client = $this->getClient();
         $buckets = $client->listBuckets();
-        $this->assertCount(0, $buckets);
+        self::assertCount(0, $buckets);
     }
 
     public function testRestoreTableWithoutPrefix()
     {
         $this->loadBackupToS3('table-without-prefix');
         $applicationTester = $this->runCommand();
-        $this->assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
+        self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
         $client = $this->getClient();
         $buckets = $client->listBuckets();
-        $this->assertCount(0, $buckets);
+        self::assertCount(0, $buckets);
     }
 
     public function testRestoreTableEmpty()
     {
         $this->loadBackupToS3('table-empty');
         $applicationTester = $this->runCommand();
-        $this->assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
+        self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
         $client = $this->getClient();
-        $this->assertTrue($client->tableExists("in.c-bucket.Account"));
+        self::assertTrue($client->tableExists("in.c-bucket.Account"));
     }
 
     protected function loadBackupToS3($backup)

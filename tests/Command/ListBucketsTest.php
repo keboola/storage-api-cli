@@ -39,11 +39,11 @@ class ListBucketsTest extends \PHPUnit_Framework_TestCase
             '--token' => TEST_STORAGE_API_TOKEN,
         ]);
 
-        $this->assertContains('Buckets:', $applicationTester->getDisplay());
-        $this->assertEquals(0, $applicationTester->getStatusCode());
-        $this->assertContains('in.c-test', $applicationTester->getDisplay());
-        $this->assertContains('in.c-empty-test', $applicationTester->getDisplay());
-        $this->assertNotContains('some-table', $applicationTester->getDisplay());
+        self::assertContains('Buckets:', $applicationTester->getDisplay());
+        self::assertEquals(0, $applicationTester->getStatusCode());
+        self::assertContains('in.c-test', $applicationTester->getDisplay());
+        self::assertContains('in.c-empty-test', $applicationTester->getDisplay());
+        self::assertNotContains('some-table', $applicationTester->getDisplay());
     }
 
     public function testExecuteInclude()
@@ -58,11 +58,11 @@ class ListBucketsTest extends \PHPUnit_Framework_TestCase
             '--token' => TEST_STORAGE_API_TOKEN,
         ]);
 
-        $this->assertContains('Buckets:', $applicationTester->getDisplay());
-        $this->assertEquals(0, $applicationTester->getStatusCode());
-        $this->assertContains('in.c-test', $applicationTester->getDisplay());
-        $this->assertContains('in.c-empty-test', $applicationTester->getDisplay());
-        $this->assertContains('some-table', $applicationTester->getDisplay());
+        self::assertContains('Buckets:', $applicationTester->getDisplay());
+        self::assertEquals(0, $applicationTester->getStatusCode());
+        self::assertContains('in.c-test', $applicationTester->getDisplay());
+        self::assertContains('in.c-empty-test', $applicationTester->getDisplay());
+        self::assertContains('some-table', $applicationTester->getDisplay());
     }
 
     public function tearDown()

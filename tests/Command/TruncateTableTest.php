@@ -43,8 +43,8 @@ class TruncateTableTest extends \PHPUnit_Framework_TestCase
             '--token' => TEST_STORAGE_API_TOKEN,
         ]);
 
-        $this->assertContains('Truncate done', $applicationTester->getDisplay());
-        $this->assertEquals(0, $applicationTester->getStatusCode());
+        self::assertContains('Truncate done', $applicationTester->getDisplay());
+        self::assertEquals(0, $applicationTester->getStatusCode());
         // check for the results
         $client = new Client(['token' => TEST_STORAGE_API_TOKEN]);
         $exporter = new TableExporter($client);
@@ -55,8 +55,8 @@ class TruncateTableTest extends \PHPUnit_Framework_TestCase
         foreach ($csv as $line) {
             $results[] = $line;
         }
-        $this->assertEquals(['name', 'id'], $csv->getHeader());
-        $this->assertCount(1, $results);
+        self::assertEquals(['name', 'id'], $csv->getHeader());
+        self::assertCount(1, $results);
     }
 
     public function tearDown()

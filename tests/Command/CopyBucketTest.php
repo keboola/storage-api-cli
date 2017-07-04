@@ -42,12 +42,12 @@ class CopyBucketTest extends \PHPUnit_Framework_TestCase
             '--token' => TEST_STORAGE_API_TOKEN,
         ]);
 
-        $this->assertContains('Table in.c-test.some-table copied', $applicationTester->getDisplay());
-        $this->assertEquals(0, $applicationTester->getStatusCode());
+        self::assertContains('Table in.c-test.some-table copied', $applicationTester->getDisplay());
+        self::assertEquals(0, $applicationTester->getStatusCode());
         // check for the results
         $client = new Client(['token' => TEST_STORAGE_API_TOKEN]);
-        $this->assertTrue($client->bucketExists('in.c-destination'));
-        $this->assertTrue($client->tableExists('in.c-destination.some-table'));
+        self::assertTrue($client->bucketExists('in.c-destination'));
+        self::assertTrue($client->tableExists('in.c-destination.some-table'));
     }
 
     public function testExecuteExists()
@@ -65,8 +65,8 @@ class CopyBucketTest extends \PHPUnit_Framework_TestCase
             '--token' => TEST_STORAGE_API_TOKEN,
         ]);
 
-        $this->assertContains('Destination bucket in.c-destination already exists', $applicationTester->getDisplay());
-        $this->assertEquals(1, $applicationTester->getStatusCode());
+        self::assertContains('Destination bucket in.c-destination already exists', $applicationTester->getDisplay());
+        self::assertEquals(1, $applicationTester->getStatusCode());
     }
 
     public function testExecuteDifferentProject()
@@ -84,12 +84,12 @@ class CopyBucketTest extends \PHPUnit_Framework_TestCase
             '--token' => TEST_STORAGE_API_TOKEN,
         ]);
 
-        $this->assertContains('Table in.c-test.some-table copied', $applicationTester->getDisplay());
-        $this->assertEquals(0, $applicationTester->getStatusCode());
+        self::assertContains('Table in.c-test.some-table copied', $applicationTester->getDisplay());
+        self::assertEquals(0, $applicationTester->getStatusCode());
         // check for the results
         $client = new Client(['token' => TEST_STORAGE_API_SECONDARY_TOKEN]);
-        $this->assertTrue($client->bucketExists('in.c-destination'));
-        $this->assertTrue($client->tableExists('in.c-destination.some-table'));
+        self::assertTrue($client->bucketExists('in.c-destination'));
+        self::assertTrue($client->tableExists('in.c-destination.some-table'));
     }
 
     public function tearDown()

@@ -68,11 +68,11 @@ class PurgeProjectTest extends \PHPUnit_Framework_TestCase
         $client->uploadFile($csv->getPathname(), $fileUploadOptions);
 
         // check stats
-        $this->assertCount(2, $client->listTables());
-        $this->assertCount(2, $client->listBuckets());
-        $this->assertCount(1, $client->listFiles());
+        self::assertCount(2, $client->listTables());
+        self::assertCount(2, $client->listBuckets());
+        self::assertCount(1, $client->listFiles());
         $components = new Components($client);
-        $this->assertCount(1, $components->listComponents());
+        self::assertCount(1, $components->listComponents());
     }
 
     public function testExecuteFull()
@@ -90,10 +90,10 @@ class PurgeProjectTest extends \PHPUnit_Framework_TestCase
         // check for the results
         $client = new Client(['token' => TEST_STORAGE_API_TOKEN]);
         $components = new Components($client);
-        $this->assertCount(0, $client->listTables());
-        $this->assertCount(0, $client->listBuckets());
-        $this->assertCount(0, $client->listFiles());
-        $this->assertCount(0, $components->listComponents());
+        self::assertCount(0, $client->listTables());
+        self::assertCount(0, $client->listBuckets());
+        self::assertCount(0, $client->listFiles());
+        self::assertCount(0, $components->listComponents());
     }
 
     public function testPurgeConfigurations()
@@ -112,10 +112,10 @@ class PurgeProjectTest extends \PHPUnit_Framework_TestCase
         // check stats
         $client = new Client(['token' => TEST_STORAGE_API_TOKEN]);
         $components = new Components($client);
-        $this->assertCount(2, $client->listTables());
-        $this->assertCount(2, $client->listBuckets());
-        $this->assertCount(1, $client->listFiles());
-        $this->assertCount(0, $components->listComponents());
+        self::assertCount(2, $client->listTables());
+        self::assertCount(2, $client->listBuckets());
+        self::assertCount(1, $client->listFiles());
+        self::assertCount(0, $components->listComponents());
     }
 
     public function testPurgeFileUploads()
@@ -144,10 +144,10 @@ class PurgeProjectTest extends \PHPUnit_Framework_TestCase
         // check stats
         $client = new Client(['token' => TEST_STORAGE_API_TOKEN]);
         $components = new Components($client);
-        $this->assertCount(2, $client->listTables());
-        $this->assertCount(2, $client->listBuckets());
-        $this->assertCount(0, $client->listFiles());
-        $this->assertCount(1, $components->listComponents());
+        self::assertCount(2, $client->listTables());
+        self::assertCount(2, $client->listBuckets());
+        self::assertCount(0, $client->listFiles());
+        self::assertCount(1, $components->listComponents());
     }
 
     public function testPurgeData()
@@ -166,10 +166,10 @@ class PurgeProjectTest extends \PHPUnit_Framework_TestCase
         // check stats
         $client = new Client(['token' => TEST_STORAGE_API_TOKEN]);
         $components = new Components($client);
-        $this->assertCount(0, $client->listTables());
-        $this->assertCount(0, $client->listBuckets());
-        $this->assertCount(1, $client->listFiles());
-        $this->assertCount(1, $components->listComponents());
+        self::assertCount(0, $client->listTables());
+        self::assertCount(0, $client->listBuckets());
+        self::assertCount(1, $client->listFiles());
+        self::assertCount(1, $components->listComponents());
     }
 
     public function testPurgeAliases()
@@ -188,10 +188,10 @@ class PurgeProjectTest extends \PHPUnit_Framework_TestCase
         // check stats
         $client = new Client(['token' => TEST_STORAGE_API_TOKEN]);
         $components = new Components($client);
-        $this->assertCount(1, $client->listTables());
-        $this->assertCount(2, $client->listBuckets());
-        $this->assertCount(1, $client->listFiles());
-        $this->assertCount(1, $components->listComponents());
+        self::assertCount(1, $client->listTables());
+        self::assertCount(2, $client->listBuckets());
+        self::assertCount(1, $client->listFiles());
+        self::assertCount(1, $components->listComponents());
     }
 
     public function tearDown()

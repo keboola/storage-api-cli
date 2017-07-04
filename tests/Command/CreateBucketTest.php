@@ -24,13 +24,13 @@ class CreateBucketTest extends \PHPUnit_Framework_TestCase
             '--token' => TEST_STORAGE_API_TOKEN,
         ]);
 
-        $this->assertContains('Bucket created: in.c-clientTest', $applicationTester->getDisplay());
-        $this->assertEquals(0, $applicationTester->getStatusCode());
+        self::assertContains('Bucket created: in.c-clientTest', $applicationTester->getDisplay());
+        self::assertEquals(0, $applicationTester->getStatusCode());
         // check for the results
         $client = new Client(['token' => TEST_STORAGE_API_TOKEN]);
         $bucket = $client->getBucket('in.c-clientTest');
-        $this->assertEquals('c-clientTest', $bucket['name']);
-        $this->assertEquals('Client testing', $bucket['description']);
+        self::assertEquals('c-clientTest', $bucket['name']);
+        self::assertEquals('Client testing', $bucket['description']);
     }
 
     public function tearDown()

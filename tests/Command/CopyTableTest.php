@@ -37,7 +37,7 @@ class CopyTableTest extends \PHPUnit_Framework_TestCase
         $client->createTablePrimaryKey("in.c-main.testCompositePk", ["Id", "Name"]);
 
         // check stats
-        $this->assertCount(3, $client->listTables());
+        self::assertCount(3, $client->listTables());
     }
 
     public function testExecute()
@@ -61,14 +61,14 @@ class CopyTableTest extends \PHPUnit_Framework_TestCase
                 '--token' => TEST_STORAGE_API_TOKEN,
             ]);
 
-            $this->assertEquals(0, $applicationTester->getStatusCode());
+            self::assertEquals(0, $applicationTester->getStatusCode());
 
             // check for the results
             $client = new Client(['token' => TEST_STORAGE_API_TOKEN]);
 
             $table = $client->getTable($tableId . 'Copy');
-            $this->assertArrayHasKey('primaryKey', $table);
-            $this->assertEquals($primaryKey, $table['primaryKey']);
+            self::assertArrayHasKey('primaryKey', $table);
+            self::assertEquals($primaryKey, $table['primaryKey']);
         }
     }
 

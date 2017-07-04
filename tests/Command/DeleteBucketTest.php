@@ -40,11 +40,11 @@ class DeleteBucketTest extends \PHPUnit_Framework_TestCase
             '--token' => TEST_STORAGE_API_TOKEN,
         ]);
 
-        $this->assertEquals(0, $applicationTester->getStatusCode());
+        self::assertEquals(0, $applicationTester->getStatusCode());
         // check for the results
         $client = new Client(['token' => TEST_STORAGE_API_TOKEN]);
-        $this->assertFalse($client->bucketExists('in.c-empty-test'));
-        $this->assertTrue($client->bucketExists('in.c-test'));
+        self::assertFalse($client->bucketExists('in.c-empty-test'));
+        self::assertTrue($client->bucketExists('in.c-test'));
     }
 
     public function testExecuteNonEmpty()
@@ -59,12 +59,12 @@ class DeleteBucketTest extends \PHPUnit_Framework_TestCase
             '--token' => TEST_STORAGE_API_TOKEN,
         ]);
 
-        $this->assertEquals(1, $applicationTester->getStatusCode());
-        $this->assertContains('not empty', $applicationTester->getDisplay());
+        self::assertEquals(1, $applicationTester->getStatusCode());
+        self::assertContains('not empty', $applicationTester->getDisplay());
         // check for the results
         $client = new Client(['token' => TEST_STORAGE_API_TOKEN]);
-        $this->assertTrue($client->bucketExists('in.c-empty-test'));
-        $this->assertTrue($client->bucketExists('in.c-test'));
+        self::assertTrue($client->bucketExists('in.c-empty-test'));
+        self::assertTrue($client->bucketExists('in.c-test'));
     }
 
     public function testExecuteNonEmptyForce()
@@ -80,11 +80,11 @@ class DeleteBucketTest extends \PHPUnit_Framework_TestCase
             '--token' => TEST_STORAGE_API_TOKEN,
         ]);
 
-        $this->assertEquals(0, $applicationTester->getStatusCode());
+        self::assertEquals(0, $applicationTester->getStatusCode());
         // check for the results
         $client = new Client(['token' => TEST_STORAGE_API_TOKEN]);
-        $this->assertTrue($client->bucketExists('in.c-empty-test'));
-        $this->assertFalse($client->bucketExists('in.c-test'));
+        self::assertTrue($client->bucketExists('in.c-empty-test'));
+        self::assertFalse($client->bucketExists('in.c-test'));
     }
 
     public function tearDown()

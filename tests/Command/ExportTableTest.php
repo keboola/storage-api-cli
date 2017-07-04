@@ -44,16 +44,16 @@ class ExportTableTest extends \PHPUnit_Framework_TestCase
             '--token' => TEST_STORAGE_API_TOKEN,
         ]);
 
-        $this->assertEquals(0, $applicationTester->getStatusCode());
+        self::assertEquals(0, $applicationTester->getStatusCode());
         // check for the results
-        $this->assertFileExists($fileName);
+        self::assertFileExists($fileName);
         $csv = new CsvFile($fileName);
         $results = [];
         foreach ($csv as $line) {
             $results[$line[1]] = $line[0];
         }
-        $this->assertEquals(['name', 'id'], $csv->getHeader());
-        $this->assertEquals([1 => 'foo', 2 => 'bar', 3 => 'baz', 'id' => 'name'], $results);
+        self::assertEquals(['name', 'id'], $csv->getHeader());
+        self::assertEquals([1 => 'foo', 2 => 'bar', 3 => 'baz', 'id' => 'name'], $results);
     }
 
     public function testExecuteExtended()
@@ -73,16 +73,16 @@ class ExportTableTest extends \PHPUnit_Framework_TestCase
             '--token' => TEST_STORAGE_API_TOKEN,
         ]);
 
-        $this->assertEquals(0, $applicationTester->getStatusCode());
+        self::assertEquals(0, $applicationTester->getStatusCode());
         // check for the results
-        $this->assertFileExists($fileName);
+        self::assertFileExists($fileName);
         $csv = new CsvFile($fileName);
         $results = [];
         foreach ($csv as $line) {
             $results[$line[1]] = $line[0];
         }
-        $this->assertEquals(['name', 'id'], $csv->getHeader());
-        $this->assertEquals([1 => 'foo', 3 => 'baz', 'id' => 'name'], $results);
+        self::assertEquals(['name', 'id'], $csv->getHeader());
+        self::assertEquals([1 => 'foo', 3 => 'baz', 'id' => 'name'], $results);
     }
 
     public function tearDown()

@@ -39,10 +39,10 @@ class DeleteTableTest extends \PHPUnit_Framework_TestCase
             '--token' => TEST_STORAGE_API_TOKEN,
         ]);
 
-        $this->assertEquals(0, $applicationTester->getStatusCode());
+        self::assertEquals(0, $applicationTester->getStatusCode());
         // check for the results
         $client = new Client(['token' => TEST_STORAGE_API_TOKEN]);
-        $this->assertFalse($client->tableExists('in.c-test.some-table'));
+        self::assertFalse($client->tableExists('in.c-test.some-table'));
     }
 
     public function tearDown()

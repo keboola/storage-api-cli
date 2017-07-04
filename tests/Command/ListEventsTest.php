@@ -27,8 +27,8 @@ class ListEventsTest extends \PHPUnit_Framework_TestCase
             '--token' => TEST_STORAGE_API_TOKEN,
         ], ['interactive' => false]);
 
-        $this->assertContains('Created bucket in.c-empty-test', $applicationTester->getDisplay());
-        $this->assertEquals(0, $applicationTester->getStatusCode());
+        self::assertContains('Created bucket in.c-empty-test', $applicationTester->getDisplay());
+        self::assertEquals(0, $applicationTester->getStatusCode());
     }
 
     public function testExecuteComponent()
@@ -43,8 +43,8 @@ class ListEventsTest extends \PHPUnit_Framework_TestCase
             '--token' => TEST_STORAGE_API_TOKEN,
         ], ['interactive' => false]);
 
-        $this->assertContains('storage[storage.bucketCreated]', $applicationTester->getDisplay());
-        $this->assertEquals(0, $applicationTester->getStatusCode());
+        self::assertContains('storage[storage.bucketCreated]', $applicationTester->getDisplay());
+        self::assertEquals(0, $applicationTester->getStatusCode());
     }
 
     public function tearDown()

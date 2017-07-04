@@ -73,9 +73,9 @@ class BackupProjectTest extends \PHPUnit_Framework_TestCase
             'path' => $this->s3path
         ]);
         $ret = $applicationTester->getDisplay();
-        $this->assertContains('Buckets metadata', $ret);
-        $this->assertContains('Tables metadata', $ret);
-        $this->assertContains('Configurations', $ret);
+        self::assertContains('Buckets metadata', $ret);
+        self::assertContains('Tables metadata', $ret);
+        self::assertContains('Configurations', $ret);
 
         $tmp = sys_get_temp_dir() . DIRECTORY_SEPARATOR;
         $s3Client = new S3Client([
@@ -101,7 +101,7 @@ class BackupProjectTest extends \PHPUnit_Framework_TestCase
                 break;
             }
         }
-        $this->assertGreaterThan(0, count($targetComponent));
+        self::assertGreaterThan(0, count($targetComponent));
 
         $targetConfiguration = [];
         foreach ($targetComponent['configurations'] as $configuration) {
@@ -109,9 +109,9 @@ class BackupProjectTest extends \PHPUnit_Framework_TestCase
                 $targetConfiguration = $configuration;
             }
         }
-        $this->assertGreaterThan(0, count($targetConfiguration));
-        $this->assertEquals('Test Configuration', $targetConfiguration['description']);
-        $this->assertNotContains('rows', $targetConfiguration);
+        self::assertGreaterThan(0, count($targetConfiguration));
+        self::assertEquals('Test Configuration', $targetConfiguration['description']);
+        self::assertNotContains('rows', $targetConfiguration);
 
         $configurationId = $targetConfiguration['id'];
         $targetFile = $tmp . $configurationId . 'configurations.json';
@@ -122,15 +122,15 @@ class BackupProjectTest extends \PHPUnit_Framework_TestCase
         ]);
         $targetContents = file_get_contents($targetFile);
         $targetConfiguration = json_decode($targetContents, true);
-        $this->assertGreaterThan(0, count($targetConfiguration));
-        $this->assertEquals('test-configuration', $targetConfiguration['name']);
-        $this->assertEquals('Test Configuration', $targetConfiguration['description']);
-        $this->assertArrayHasKey('rows', $targetConfiguration);
-        $this->assertEquals(2, count($targetConfiguration['rows']));
-        $this->assertEquals('foo', $targetConfiguration['rows'][0]['configuration']['queries'][0]);
-        $this->assertEquals('bar', $targetConfiguration['rows'][1]['configuration']['queries'][0]);
-        $this->assertNotContains('versions', $targetConfiguration);
-        $this->assertNotContains('versions', $targetConfiguration['rows'][0]);
+        self::assertGreaterThan(0, count($targetConfiguration));
+        self::assertEquals('test-configuration', $targetConfiguration['name']);
+        self::assertEquals('Test Configuration', $targetConfiguration['description']);
+        self::assertArrayHasKey('rows', $targetConfiguration);
+        self::assertEquals(2, count($targetConfiguration['rows']));
+        self::assertEquals('foo', $targetConfiguration['rows'][0]['configuration']['queries'][0]);
+        self::assertEquals('bar', $targetConfiguration['rows'][1]['configuration']['queries'][0]);
+        self::assertNotContains('versions', $targetConfiguration);
+        self::assertNotContains('versions', $targetConfiguration['rows'][0]);
     }
 
     public function testPreserveEmptyObjectAndArray()
@@ -196,9 +196,9 @@ class BackupProjectTest extends \PHPUnit_Framework_TestCase
             'path' => $this->s3path
         ]);
         $ret = $applicationTester->getDisplay();
-        $this->assertContains('Buckets metadata', $ret);
-        $this->assertContains('Tables metadata', $ret);
-        $this->assertContains('Configurations', $ret);
+        self::assertContains('Buckets metadata', $ret);
+        self::assertContains('Tables metadata', $ret);
+        self::assertContains('Configurations', $ret);
 
         $tmp = sys_get_temp_dir() . DIRECTORY_SEPARATOR;
         $s3Client = new S3Client([
@@ -219,8 +219,8 @@ class BackupProjectTest extends \PHPUnit_Framework_TestCase
         $targetData = json_decode($targetContents);
         $targetConfiguration = $targetData[0]->configurations[0];
 
-        $this->assertEquals(new \stdClass(), $targetConfiguration->configuration->dummyObject);
-        $this->assertEquals([], $targetConfiguration->configuration->dummyArray);
+        self::assertEquals(new \stdClass(), $targetConfiguration->configuration->dummyObject);
+        self::assertEquals([], $targetConfiguration->configuration->dummyArray);
 
         $configurationId = $targetConfiguration->id;
         $targetFile = $tmp . $configurationId . 'configurations.json';
@@ -232,8 +232,8 @@ class BackupProjectTest extends \PHPUnit_Framework_TestCase
         $targetContents = file_get_contents($targetFile);
         $targetConfiguration = json_decode($targetContents);
 
-        $this->assertEquals(new \stdClass(), $targetConfiguration->rows[0]->configuration->dummyObject);
-        $this->assertEquals([], $targetConfiguration->rows[0]->configuration->dummyArray);
+        self::assertEquals(new \stdClass(), $targetConfiguration->rows[0]->configuration->dummyObject);
+        self::assertEquals([], $targetConfiguration->rows[0]->configuration->dummyArray);
     }
 
     public function tearDown()
