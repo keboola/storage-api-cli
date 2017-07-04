@@ -14,7 +14,7 @@
     "keboola/storage-api-client": "^6.0",
     "keboola/php-temp": "^0.1",
     "keboola/symfony-console-nested-formatter-helper": "^0.1",
-    "phpunit/phpunit": "^5.7",
+    "phpunit/phpunit": "^4.8",
     "squizlabs/php_codesniffer": "^3.0"
   },
   "autoload": {
