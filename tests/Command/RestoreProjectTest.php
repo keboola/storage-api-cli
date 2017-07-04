@@ -443,8 +443,8 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
             '--configurations' => $onlyConfigurations,
             '--data' => $onlyData,
             'bucket' => TEST_S3_BUCKET,
-            'path' => self::S3_PATH
-            'region' => TEST_AWS_REGION,
+            'path' => self::S3_PATH,
+            'region' => TEST_AWS_REGION
         ]);
         return $applicationTester;
     }
