@@ -3,10 +3,10 @@
 
 $autoloadPath =  __DIR__ . '/../vendor/autoload.php';
 if (!file_exists($autoloadPath)) {
-	 echo 'You must set up the project dependencies, run the following commands:'.PHP_EOL.
+    echo 'You must set up the project dependencies, run the following commands:'.PHP_EOL.
             'curl -sS https://getcomposer.org/installer | php'.PHP_EOL.
             'php composer.phar install'.PHP_EOL;
-	exit(1);
+    exit(1);
 }
 
 require_once $autoloadPath;
@@ -18,8 +18,7 @@ $app = new Application();
 
 $newOptions = [];
 if (!in_array('--no-ansi', $_SERVER['argv'])) {
-	$newOptions[] = '--ansi';
+    $newOptions[] = '--ansi';
 }
 $input = new ArgvInput(array_merge($_SERVER['argv'], $newOptions));
 $app->run($input);
-

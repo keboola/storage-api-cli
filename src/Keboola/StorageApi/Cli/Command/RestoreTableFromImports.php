@@ -57,10 +57,10 @@ class RestoreTableFromImports extends Command
                 new InputOption('restore-date', null, InputOption::VALUE_REQUIRED, 'Date to restore')
             ))
             ->setHelp('
-				Creates new table and restores data from source table imports. It start with first full
-				load and then performs all subsequent increments.
-				Data can be restored to specified data - import events until this date are processed.
-			');
+                Creates new table and restores data from source table imports. It start with first full
+                load and then performs all subsequent increments.
+                Data can be restored to specified data - import events until this date are processed.
+            ');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
