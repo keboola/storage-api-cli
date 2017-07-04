@@ -45,7 +45,6 @@ class ListEventsTest extends \PHPUnit_Framework_TestCase
 
         $this->assertContains('storage[storage.bucketCreated]', $applicationTester->getDisplay());
         $this->assertEquals(0, $applicationTester->getStatusCode());
-
     }
 
     public function tearDown()
