@@ -55,9 +55,9 @@ class DeleteMetadataTest extends \PHPUnit_Framework_TestCase
             '--token' => TEST_STORAGE_API_TOKEN,
         ]);
 
-        $this->assertContains('Summary of deletions:', $applicationTester->getDisplay());
-        $this->assertContains('in.c-main.some-table.Name: 2', $applicationTester->getDisplay());
-        $this->assertEquals(0, $applicationTester->getStatusCode());
+        self::assertContains('Summary of deletions:', $applicationTester->getDisplay());
+        self::assertContains('in.c-main.some-table.Name: 2', $applicationTester->getDisplay());
+        self::assertEquals(0, $applicationTester->getStatusCode());
 
         // check for the results
         $client = new Client(['token' => TEST_STORAGE_API_TOKEN]);
@@ -102,9 +102,9 @@ class DeleteMetadataTest extends \PHPUnit_Framework_TestCase
             '--token' => TEST_STORAGE_API_TOKEN,
         ]);
 
-        $this->assertContains('Summary of deletions:', $applicationTester->getDisplay());
-        $this->assertContains('in.c-main.some-table.Name: 2', $applicationTester->getDisplay());
-        $this->assertEquals(0, $applicationTester->getStatusCode());
+        self::assertContains('Summary of deletions:', $applicationTester->getDisplay());
+        self::assertContains('in.c-main.some-table.Name: 2', $applicationTester->getDisplay());
+        self::assertEquals(0, $applicationTester->getStatusCode());
 
         // check for the results
         $client = new Client(['token' => TEST_STORAGE_API_TOKEN]);
@@ -140,9 +140,9 @@ class DeleteMetadataTest extends \PHPUnit_Framework_TestCase
             '--token' => TEST_STORAGE_API_TOKEN,
         ]);
 
-        $this->assertContains('Summary of deletions:', $applicationTester->getDisplay());
-        $this->assertContains('in.c-main.some-table.Name: 2', $applicationTester->getDisplay());
-        $this->assertEquals(0, $applicationTester->getStatusCode());
+        self::assertContains('Summary of deletions:', $applicationTester->getDisplay());
+        self::assertContains('in.c-main.some-table.Name: 2', $applicationTester->getDisplay());
+        self::assertEquals(0, $applicationTester->getStatusCode());
 
         // check for the results
         $client = new Client(['token' => TEST_STORAGE_API_TOKEN]);
@@ -175,9 +175,9 @@ class DeleteMetadataTest extends \PHPUnit_Framework_TestCase
             '--token' => TEST_STORAGE_API_TOKEN,
         ]);
 
-        $this->assertContains('Summary of deletions:', $applicationTester->getDisplay());
-        $this->assertContains('in.c-main.some-table.Name: 2', $applicationTester->getDisplay());
-        $this->assertEquals(0, $applicationTester->getStatusCode());
+        self::assertContains('Summary of deletions:', $applicationTester->getDisplay());
+        self::assertContains('in.c-main.some-table.Name: 2', $applicationTester->getDisplay());
+        self::assertEquals(0, $applicationTester->getStatusCode());
 
         // check for the results
         $client = new Client(['token' => TEST_STORAGE_API_TOKEN]);
@@ -207,8 +207,8 @@ class DeleteMetadataTest extends \PHPUnit_Framework_TestCase
             '--token' => TEST_STORAGE_API_TOKEN,
         ]);
 
-        $this->assertContains('Unknown object type for metadata storage: invalid', $applicationTester->getDisplay());
-        $this->assertEquals(1, $applicationTester->getStatusCode());
+        self::assertContains('Unknown object type for metadata storage: invalid', $applicationTester->getDisplay());
+        self::assertEquals(1, $applicationTester->getStatusCode());
     }
 
     public function testExecuteNotFound()
@@ -223,19 +223,19 @@ class DeleteMetadataTest extends \PHPUnit_Framework_TestCase
             'id' => 'some-id',
             '--token' => TEST_STORAGE_API_TOKEN,
         ]);
-        
-        $this->assertContains('Table some-id does not exist or is not accessible.', $applicationTester->getDisplay());
-        $this->assertEquals(1, $applicationTester->getStatusCode());
+
+        self::assertContains('Table some-id does not exist or is not accessible.', $applicationTester->getDisplay());
+        self::assertEquals(1, $applicationTester->getStatusCode());
     }
 
     private function compareMetadata($expected, $actual)
     {
-        $this->assertEquals(count($expected), count($actual));
+        self::assertEquals(count($expected), count($actual));
         foreach ($actual as &$actualRow) {
             unset($actualRow['timestamp']);
             unset($actualRow['id']);
         }
-        $this->assertEquals($expected, $actual);
+        self::assertEquals($expected, $actual);
     }
 
     public function tearDown()

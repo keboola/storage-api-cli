@@ -204,7 +204,6 @@ class RestoreTableFromImports extends Command
             $csvParams['escapedBy'] = "";
         }
 
-        $fileName = "";
         if (isset($event['params']['source']) && isset($event['params']['source']['fileName'])) {
             $fileName = $event['params']['source']['fileName'];
         } elseif (isset($event['params']['csv']) && isset($event['params']['csv']['file'])) {

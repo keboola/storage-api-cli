@@ -1,8 +1,5 @@
 .idea
-cache.properties
 box.phar
 sapi-client.phar
-test.csv
 vendor
 /config.php
-phpunit.sh

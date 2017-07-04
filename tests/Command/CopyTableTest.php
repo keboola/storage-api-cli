@@ -6,7 +6,6 @@ use Keboola\StorageApi\Cli\Command\CopyTable;
 use Keboola\StorageApi\Cli\Command\PurgeProject;
 use Keboola\StorageApi\Cli\Console\Application;
 use Keboola\StorageApi\Client;
-use Keboola\StorageApi\ClientException;
 use Keboola\Temp\Temp;
 use Symfony\Component\Console\Tester\ApplicationTester;
 

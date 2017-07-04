@@ -10,7 +10,6 @@
 namespace Keboola\StorageApi\Cli\Command;
 
 use Keboola\StorageApi\Components;
-use Keboola\StorageApi\Options\GetFileOptions;
 use Keboola\StorageApi\Options\ListFilesOptions;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
