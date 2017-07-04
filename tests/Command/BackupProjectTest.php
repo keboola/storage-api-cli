@@ -14,7 +14,6 @@ use Symfony\Component\Console\Tester\ApplicationTester;
 
 class BackupProjectTest extends \PHPUnit_Framework_TestCase
 {
-    const S3_REGION = 'us-east-1';
     private $s3path;
 
     public function setUp()
@@ -69,7 +68,7 @@ class BackupProjectTest extends \PHPUnit_Framework_TestCase
             '--token' => TEST_STORAGE_API_TOKEN,
             '--structure-only' => true,
             'bucket' => TEST_S3_BUCKET,
-            'region' => self::S3_REGION,
+            'region' => TEST_AWS_REGION,
             'path' => $this->s3path
         ]);
         $ret = $applicationTester->getDisplay();
@@ -80,7 +79,7 @@ class BackupProjectTest extends \PHPUnit_Framework_TestCase
         $tmp = sys_get_temp_dir() . DIRECTORY_SEPARATOR;
         $s3Client = new S3Client([
             'version' => 'latest',
-            'region' => self::S3_REGION,
+            'region' => TEST_AWS_REGION,
             'credentials' => [
                 'key' => TEST_AWS_ACCESS_KEY_ID,
                 'secret' => TEST_AWS_SECRET_ACCESS_KEY,
@@ -192,7 +191,7 @@ class BackupProjectTest extends \PHPUnit_Framework_TestCase
             '--token' => TEST_STORAGE_API_TOKEN,
             '--structure-only' => true,
             'bucket' => TEST_S3_BUCKET,
-            'region' => self::S3_REGION,
+            'region' => TEST_AWS_REGION,
             'path' => $this->s3path
         ]);
         $ret = $applicationTester->getDisplay();
@@ -203,7 +202,7 @@ class BackupProjectTest extends \PHPUnit_Framework_TestCase
         $tmp = sys_get_temp_dir() . DIRECTORY_SEPARATOR;
         $s3Client = new S3Client([
             'version' => 'latest',
-            'region' => self::S3_REGION,
+            'region' => TEST_AWS_REGION,
             'credentials' => [
                 'key' => TEST_AWS_ACCESS_KEY_ID,
                 'secret' => TEST_AWS_SECRET_ACCESS_KEY,
@@ -244,7 +243,7 @@ class BackupProjectTest extends \PHPUnit_Framework_TestCase
 
         $s3Client = new S3Client([
             'version' => 'latest',
-            'region' => self::S3_REGION,
+            'region' => TEST_AWS_REGION,
             'credentials' => [
                 'key' => TEST_AWS_ACCESS_KEY_ID,
                 'secret' => TEST_AWS_SECRET_ACCESS_KEY,

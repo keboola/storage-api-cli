@@ -15,7 +15,6 @@ use Symfony\Component\Console\Tester\ApplicationTester;
 class RestoreProjectTest extends \PHPUnit_Framework_TestCase
 {
     const S3_PATH = 'cli-client-restore-test/';
-    const S3_REGION = 'us-east-1';
 
     /**
      * @var Temp
@@ -420,7 +419,7 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
         // load data to S3
         $s3Client = new S3Client([
             'version' => 'latest',
-            'region' => self::S3_REGION,
+            'region' => TEST_AWS_REGION,
             'credentials' => [
                 'key' => TEST_AWS_ACCESS_KEY_ID,
                 'secret' => TEST_AWS_SECRET_ACCESS_KEY,
@@ -444,8 +443,8 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
             '--configurations' => $onlyConfigurations,
             '--data' => $onlyData,
             'bucket' => TEST_S3_BUCKET,
-            'region' => self::S3_REGION,
             'path' => self::S3_PATH
+            'region' => TEST_AWS_REGION,
         ]);
         return $applicationTester;
     }
@@ -465,7 +464,7 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
         // delete from S3
         $s3Client = new S3Client([
             'version' => 'latest',
-            'region' => self::S3_REGION,
+            'region' => TEST_AWS_REGION,
             'credentials' => [
                 'key' => TEST_AWS_ACCESS_KEY_ID,
                 'secret' => TEST_AWS_SECRET_ACCESS_KEY,
