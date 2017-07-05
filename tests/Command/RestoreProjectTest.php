@@ -357,7 +357,7 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
 
     public function testRestoreOnlyData()
     {
-        $applicationTester = $this->runCommand(self::S3_PATH . 'configurations/',false, false, true);
+        $applicationTester = $this->runCommand(self::S3_PATH . 'configurations/', false, false, true);
         self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
         $client = $this->getClient();
         $components = new Components($client);
