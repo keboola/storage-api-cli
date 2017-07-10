@@ -3,6 +3,7 @@ php:
   - 5.6
   - 7.0
   - 7.1
+
 services:
   - docker
 
@@ -18,13 +19,14 @@ script:
   - php ./box.phar build
   - php ./sapi-client.phar
   - docker-compose run --rm tests
-  s  
+  
 after_success:
-  - CURRENT_TAG=`git describe --tags HEAD`
-  - echo $CURRENT_TAG
+  - echo ${TRAVIS_TAG}
   - mkdir builds
-  - cp ./sapi-client.phar ./builds/sapi-client.$CURRENT_TAG.phar
+  - cp ./sapi-client.phar ./builds/sapi-client.${TRAVIS_TAG}.phar
   - cp ./sapi-client.phar ./builds/sapi-client.phar
+  - docker images
+
 deploy:
 
   - provider: s3

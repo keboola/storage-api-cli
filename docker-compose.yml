@@ -11,7 +11,6 @@ services:
 
   tests:
     build: .
-    image: keboola/storage-api-cli
     volumes:
       - ./.git:/code/.git    
     command: "/code/phpunit.sh"
@@ -26,7 +25,6 @@ services:
 
   tests-local:
     build: .
-    image: keboola/storage-api-cli
     volumes:
       - .:/code
     command: "/code/phpunit.sh"
