@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 echo "Running tests"
 /code/vendor/bin/phpcs --standard=psr2 --ignore=vendor -n /code/
