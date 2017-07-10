@@ -3,16 +3,22 @@ php:
   - 5.6
   - 7.0
   - 7.1
-sudo: false
+services:
+  - docker
+
 before_script:
   - curl -LSs http://box-project.github.io/box2/installer.php | php
   - composer install --prefer-source --dev --no-interaction
+  - docker-compose build
+
 script:
   - export TEST_PREFIX=$TRAVIS_PHP_VERSION
   - ./vendor/bin/phpcs --standard=psr2 --ignore=vendor -n .
   - php vendor/bin/phpunit --testsuite storage-api-cli
   - php ./box.phar build
   - php ./sapi-client.phar
+  - docker-compose run --rm tests
+  s  
 after_success:
   - CURRENT_TAG=`git describe --tags HEAD`
   - echo $CURRENT_TAG
@@ -20,6 +26,7 @@ after_success:
   - cp ./sapi-client.phar ./builds/sapi-client.$CURRENT_TAG.phar
   - cp ./sapi-client.phar ./builds/sapi-client.phar
 deploy:
+
   - provider: s3
     bucket: keboola-storage-api-cli
     local-dir: builds
@@ -29,3 +36,8 @@ deploy:
     detect_encoding: true
     access_key_id: "$AWS_ACCESS_KEY_ID"
     secret_access_key: "$AWS_SECRET_KEY"
+  - provider: script
+    skip_cleanup: true
+    script: ./deploy.sh
+    on:
+      tags: true
