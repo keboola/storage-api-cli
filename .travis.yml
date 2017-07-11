@@ -32,6 +32,8 @@ matrix:
           detect_encoding: true
           access_key_id: "$AWS_ACCESS_KEY_ID"
           secret_access_key: "$AWS_SECRET_KEY"
+          on:
+            tags: true
 
     - php: 7.0
       before_script:
