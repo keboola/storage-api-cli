@@ -8,16 +8,19 @@ matrix:
 
       script:
         - ./vendor/bin/phpcs --standard=psr2 --ignore=vendor -n .
-        #- php vendor/bin/phpunit --testsuite storage-api-cli
-        #- php ./box.phar build
-        #- php ./sapi-client.phar
-        
+        - php vendor/bin/phpunit --testsuite storage-api-cli
+        - php ./box.phar build
+        - php ./sapi-client.phar
+
+      # prepare phars for deployment        
       after_success:
         - CURRENT_TAG=`git describe --tags HEAD`
         - echo $CURRENT_TAG
         - mkdir builds
         - cp ./sapi-client.phar ./builds/sapi-client.$CURRENT_TAG.phar
-        - cp ./sapi-client.phar ./builds/sapi-client.phar    
+        - cp ./sapi-client.phar ./builds/sapi-client.phar
+
+      # deployment is done on lowest supported version
       deploy:
         - provider: s3
           bucket: keboola-storage-api-cli
@@ -28,16 +31,36 @@ matrix:
           detect_encoding: true
           access_key_id: "$AWS_ACCESS_KEY_ID"
           secret_access_key: "$AWS_SECRET_KEY"
-        
-#    php: 7.0
-#    php: 7.1
+
+    - php: 7.0
+      before_script:
+        - curl -LSs http://box-project.github.io/box2/installer.php | php
+        - composer install --prefer-source --dev --no-interaction
+
+      script:
+        - ./vendor/bin/phpcs --standard=psr2 --ignore=vendor -n .
+        - php vendor/bin/phpunit --testsuite storage-api-cli
+        - php ./box.phar build
+        - php ./sapi-client.phar
+
+    - php: 7.1
+      before_script:
+        - curl -LSs http://box-project.github.io/box2/installer.php | php
+        - composer install --prefer-source --dev --no-interaction
+
+      script:
+        - ./vendor/bin/phpcs --standard=psr2 --ignore=vendor -n .
+        - php vendor/bin/phpunit --testsuite storage-api-cli
+        - php ./box.phar build
+        - php ./sapi-client.phar
+
+    # abuse php:nightly to test and deploy docker image
     - php: nightly
       services:
         - docker
-      before_script:
-        - docker-compose build      
       script:
         - docker-compose run --rm tests
+        - docker-compose build app
       after_success:
         - docker images
       deploy:

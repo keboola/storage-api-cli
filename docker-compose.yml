@@ -13,7 +13,8 @@ services:
     build: .
     volumes:
       - ./.git:/code/.git    
-    command: "/code/phpunit.sh"
+    entrypoint:
+      - /code/phpunit.sh
     tty: true
     stdin_open: true
     environment:
@@ -27,7 +28,10 @@ services:
     build: .
     volumes:
       - .:/code
-    command: "/code/phpunit.sh"
+    entrypoint:
+      - /bin/bash 
+      - -c
+      - "composer install --no-interaction && /code/phpunit.sh"
     tty: true
     stdin_open: true
     environment:
