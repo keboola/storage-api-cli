@@ -15,7 +15,6 @@ use Symfony\Component\Console\Tester\ApplicationTester;
 class RestoreProjectTest extends \PHPUnit_Framework_TestCase
 {
     const S3_PATH = 'cli-client-restore-test/';
-    const S3_REGION = 'us-east-1';
 
     /**
      * @var Temp
@@ -41,8 +40,7 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
 
     public function testRestoreBuckets()
     {
-        $this->loadBackupToS3('buckets');
-        $applicationTester = $this->runCommand();
+        $applicationTester = $this->runCommand(self::S3_PATH . 'buckets/');
         self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
         $client = $this->getClient();
         $buckets = $client->listBuckets();
@@ -53,9 +51,8 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
 
     public function testRestoreBucketsIgnoreStorageBackend()
     {
-        $this->loadBackupToS3('buckets-multiple-backends');
-        $applicationTester = $this->runCommand();
-        self::assertEquals(0, $applicationTester->getStatusCode());
+        $applicationTester = $this->runCommand(self::S3_PATH . 'buckets-multiple-backends/');
+        self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
         $client = $this->getClient();
         $buckets = $client->listBuckets();
         self::assertCount(3, $buckets);
@@ -66,8 +63,7 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
 
     public function testBackendMissingError()
     {
-        $this->loadBackupToS3('buckets-multiple-backends');
-        $applicationTester = $this->runCommand(false);
+        $applicationTester = $this->runCommand(self::S3_PATH . 'buckets-multiple-backends/', false);
         self::assertEquals(1, $applicationTester->getStatusCode());
         $ret = $applicationTester->getDisplay();
         self::assertContains('Missing', $ret);
@@ -75,8 +71,7 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
 
     public function testRestoreBucketAttributes()
     {
-        $this->loadBackupToS3('buckets');
-        $applicationTester = $this->runCommand();
+        $applicationTester = $this->runCommand(self::S3_PATH . 'buckets/');
         self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
         $client = $this->getClient();
         self::assertEquals(
@@ -98,8 +93,7 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
 
     public function testRestoreTableWithHeader()
     {
-        $this->loadBackupToS3('table-with-header');
-        $applicationTester = $this->runCommand();
+        $applicationTester = $this->runCommand(self::S3_PATH . 'table-with-header/');
         self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
         $client = $this->getClient();
         self::assertTrue($client->tableExists("in.c-bucket.Account"));
@@ -114,8 +108,7 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
 
     public function testRestoreTableWithoutHeader()
     {
-        $this->loadBackupToS3('table-without-header');
-        $applicationTester = $this->runCommand();
+        $applicationTester = $this->runCommand(self::S3_PATH . 'table-without-header/');
         self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
         $client = $this->getClient();
         self::assertTrue($client->tableExists("in.c-bucket.Account"));
@@ -131,8 +124,7 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
 
     public function testRestoreTableFromMultipleSlices()
     {
-        $this->loadBackupToS3('table-multiple-slices');
-        $applicationTester = $this->runCommand();
+        $applicationTester = $this->runCommand(self::S3_PATH . 'table-multiple-slices/');
         self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
         $client = $this->getClient();
         self::assertTrue($client->tableExists("in.c-bucket.Account"));
@@ -147,8 +139,7 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
 
     public function testRestoreTableFromMultipleSlicesSharedPrefix()
     {
-        $this->loadBackupToS3('table-multiple-slices-shared-prefix');
-        $applicationTester = $this->runCommand();
+        $applicationTester = $this->runCommand(self::S3_PATH . 'table-multiple-slices-shared-prefix/');
         self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
         $client = $this->getClient();
         self::assertTrue($client->tableExists("in.c-bucket.Account"));
@@ -174,8 +165,7 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
 
     public function testRestoreTableAttributes()
     {
-        $this->loadBackupToS3('table-properties');
-        $applicationTester = $this->runCommand();
+        $applicationTester = $this->runCommand(self::S3_PATH . 'table-properties');
         self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
         $client = $this->getClient();
         self::assertEquals(
@@ -197,8 +187,7 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
 
     public function testRestoreTableIndexesAndPrimaryKeys()
     {
-        $this->loadBackupToS3('table-properties');
-        $applicationTester = $this->runCommand();
+        $applicationTester = $this->runCommand(self::S3_PATH . 'table-properties/');
         self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
         $client = $this->getClient();
         $accountTable = $client->getTable("in.c-bucket.Account");
@@ -211,8 +200,7 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
 
     public function testRestoreAlias()
     {
-        $this->loadBackupToS3('alias');
-        $applicationTester = $this->runCommand();
+        $applicationTester = $this->runCommand(self::S3_PATH . 'alias');
         self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
         $client = $this->getClient();
         $aliasTable = $client->getTable("out.c-bucket.Account");
@@ -224,8 +212,7 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
 
     public function testRestoreFilteredAlias()
     {
-        $this->loadBackupToS3('alias-filtered');
-        $applicationTester = $this->runCommand();
+        $applicationTester = $this->runCommand(self::S3_PATH . 'alias-filtered');
         self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
         $client = $this->getClient();
         $aliasTable = $client->getTable("out.c-bucket.Account");
@@ -238,8 +225,7 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
 
     public function testRestoreConfigurations()
     {
-        $this->loadBackupToS3('configurations');
-        $applicationTester = $this->runCommand();
+        $applicationTester = $this->runCommand(self::S3_PATH . 'configurations/');
         self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
 
         $client = $this->getClient();
@@ -264,8 +250,7 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
 
     public function testRestoreConfigurationsWithoutVersions()
     {
-        $this->loadBackupToS3('configurations-no-versions');
-        $applicationTester = $this->runCommand();
+        $applicationTester = $this->runCommand(self::S3_PATH . 'configurations-no-versions');
         self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
 
         $client = $this->getClient();
@@ -291,8 +276,7 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
 
     public function testDoNotRestoreOrchestrationConfigurations()
     {
-        $this->loadBackupToS3('configuration-orchestration');
-        $applicationTester = $this->runCommand();
+        $applicationTester = $this->runCommand(self::S3_PATH . 'configuration-orchestration/');
         self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
 
         $client = $this->getClient();
@@ -303,8 +287,7 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
 
     public function testRestoreEmptyObjectInConfiguration()
     {
-        $this->loadBackupToS3('configuration-empty-object');
-        $applicationTester = $this->runCommand();
+        $applicationTester = $this->runCommand(self::S3_PATH . 'configuration-empty-object/');
         self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
 
         $client = $this->getClient();
@@ -319,8 +302,7 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
 
     public function testRestoreConfigurationRows()
     {
-        $this->loadBackupToS3('configuration-rows');
-        $applicationTester = $this->runCommand();
+        $applicationTester = $this->runCommand(self::S3_PATH . 'configuration-rows/');
         self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
 
         $client = $this->getClient();
@@ -353,8 +335,7 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
 
     public function testRestoreEmptyObjectInConfigurationRow()
     {
-        $this->loadBackupToS3('configuration-rows');
-        $applicationTester = $this->runCommand();
+        $applicationTester = $this->runCommand(self::S3_PATH . 'configuration-rows/');
         self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
 
         // empty array and object in config
@@ -368,8 +349,7 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
 
     public function testRestoreOnlyConfigurations()
     {
-        $this->loadBackupToS3('table-with-header');
-        $applicationTester = $this->runCommand(false, true, false);
+        $applicationTester = $this->runCommand(self::S3_PATH . 'table-with-header/', false, true, false);
         self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
         $client = $this->getClient();
         self::assertFalse($client->tableExists("in.c-bucket.Account"));
@@ -377,8 +357,7 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
 
     public function testRestoreOnlyData()
     {
-        $this->loadBackupToS3('configurations');
-        $applicationTester = $this->runCommand(false, false, true);
+        $applicationTester = $this->runCommand(self::S3_PATH . 'configurations/', false, false, true);
         self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
         $client = $this->getClient();
         $components = new Components($client);
@@ -388,8 +367,7 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
 
     public function testRestoreBucketWithoutPrefix()
     {
-        $this->loadBackupToS3('bucket-without-prefix');
-        $applicationTester = $this->runCommand();
+        $applicationTester = $this->runCommand(self::S3_PATH . 'bucket-without-prefix/');
         self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
         $client = $this->getClient();
         $buckets = $client->listBuckets();
@@ -398,8 +376,7 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
 
     public function testRestoreTableWithoutPrefix()
     {
-        $this->loadBackupToS3('table-without-prefix');
-        $applicationTester = $this->runCommand();
+        $applicationTester = $this->runCommand(self::S3_PATH . 'table-without-prefix/');
         self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
         $client = $this->getClient();
         $buckets = $client->listBuckets();
@@ -408,28 +385,13 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
 
     public function testRestoreTableEmpty()
     {
-        $this->loadBackupToS3('table-empty');
-        $applicationTester = $this->runCommand();
+        $applicationTester = $this->runCommand(self::S3_PATH . 'table-empty/');
         self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
         $client = $this->getClient();
         self::assertTrue($client->tableExists("in.c-bucket.Account"));
     }
 
-    protected function loadBackupToS3($backup)
-    {
-        // load data to S3
-        $s3Client = new S3Client([
-            'version' => 'latest',
-            'region' => self::S3_REGION,
-            'credentials' => [
-                'key' => TEST_AWS_ACCESS_KEY_ID,
-                'secret' => TEST_AWS_SECRET_ACCESS_KEY,
-            ]
-        ]);
-        $s3Client->uploadDirectory(__DIR__ . "/../data/backups/{$backup}", TEST_S3_BUCKET, self::S3_PATH);
-    }
-
-    protected function runCommand($ignoreStorageBackend = true, $onlyConfigurations = false, $onlyData = false)
+    protected function runCommand($path, $ignoreStorageBackend = true, $onlyConfigurations = false, $onlyData = false)
     {
         putenv('AWS_ACCESS_KEY_ID=' . TEST_AWS_ACCESS_KEY_ID);
         putenv('AWS_SECRET_ACCESS_KEY=' . TEST_AWS_SECRET_ACCESS_KEY);
@@ -444,8 +406,8 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
             '--configurations' => $onlyConfigurations,
             '--data' => $onlyData,
             'bucket' => TEST_S3_BUCKET,
-            'region' => self::S3_REGION,
-            'path' => self::S3_PATH
+            'region' => TEST_AWS_REGION,
+            'path' => $path
         ]);
         return $applicationTester;
     }
@@ -461,17 +423,6 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
             'purge-project',
             '--token' => TEST_STORAGE_API_TOKEN
         ]);
-
-        // delete from S3
-        $s3Client = new S3Client([
-            'version' => 'latest',
-            'region' => self::S3_REGION,
-            'credentials' => [
-                'key' => TEST_AWS_ACCESS_KEY_ID,
-                'secret' => TEST_AWS_SECRET_ACCESS_KEY,
-            ]
-        ]);
-        $s3Client->deleteMatchingObjects(TEST_S3_BUCKET, self::S3_PATH);
     }
 
     public function getClient()

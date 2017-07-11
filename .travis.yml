@@ -8,6 +8,7 @@ matrix:
 
       script:
         - ./vendor/bin/phpcs --standard=psr2 --ignore=vendor -n .
+        - php tests/loadToS3.php
         - php vendor/bin/phpunit --testsuite storage-api-cli
         - php ./box.phar build
         - php ./sapi-client.phar
@@ -39,6 +40,7 @@ matrix:
 
       script:
         - ./vendor/bin/phpcs --standard=psr2 --ignore=vendor -n .
+        - php tests/loadToS3.php
         - php vendor/bin/phpunit --testsuite storage-api-cli
         - php ./box.phar build
         - php ./sapi-client.phar
@@ -50,6 +52,7 @@ matrix:
 
       script:
         - ./vendor/bin/phpcs --standard=psr2 --ignore=vendor -n .
+        - php tests/loadToS3.php
         - php vendor/bin/phpunit --testsuite storage-api-cli
         - php ./box.phar build
         - php ./sapi-client.phar
