@@ -1,0 +1,42 @@
+version: '2'
+
+services:
+  app:
+    build: .
+    image: keboola/storage-api-cli
+    volumes:
+      - .:/code
+    tty: true
+    stdin_open: true
+
+  tests:
+    build: .
+    volumes:
+      - ./.git:/code/.git    
+    entrypoint:
+      - /code/phpunit.sh
+    tty: true
+    stdin_open: true
+    environment:
+      - TEST_AWS_ACCESS_KEY_ID
+      - TEST_AWS_SECRET_ACCESS_KEY
+      - TEST_S3_BUCKET
+      - TEST_STORAGE_API_SECONDARY_TOKEN
+      - TEST_STORAGE_API_TOKEN
+
+  tests-local:
+    build: .
+    volumes:
+      - .:/code
+    entrypoint:
+      - /bin/bash 
+      - -c
+      - "composer install --no-interaction && /code/phpunit.sh"
+    tty: true
+    stdin_open: true
+    environment:
+      - TEST_AWS_ACCESS_KEY_ID
+      - TEST_AWS_SECRET_ACCESS_KEY
+      - TEST_S3_BUCKET
+      - TEST_STORAGE_API_SECONDARY_TOKEN
+      - TEST_STORAGE_API_TOKEN
