@@ -18,9 +18,20 @@ matrix:
         - mkdir builds
         - cp ./sapi-client.phar ./builds/sapi-client.$CURRENT_TAG.phar
         - cp ./sapi-client.phar ./builds/sapi-client.phar    
+      deploy:
+        - provider: s3
+          bucket: keboola-storage-api-cli
+          local-dir: builds
+          upload-dir: builds
+          acl: public_read
+          skip_cleanup: true
+          detect_encoding: true
+          access_key_id: "$AWS_ACCESS_KEY_ID"
+          secret_access_key: "$AWS_SECRET_KEY"
+        
 #    php: 7.0
 #    php: 7.1
-    - php: development
+    - php: nightly
       services:
         - docker
       before_script:
@@ -29,21 +40,9 @@ matrix:
         - docker-compose run --rm tests
       after_success:
         - docker images
-
-
-
-deploy:
-  - provider: s3
-    bucket: keboola-storage-api-cli
-    local-dir: builds
-    upload-dir: builds
-    acl: public_read
-    skip_cleanup: true
-    detect_encoding: true
-    access_key_id: "$AWS_ACCESS_KEY_ID"
-    secret_access_key: "$AWS_SECRET_KEY"
-  - provider: script
-    skip_cleanup: true
-    script: ./deploy.sh
-    on:
-      tags: true
+      deploy:
+      - provider: script
+        skip_cleanup: true
+        script: ./deploy.sh
+        on:
+          tags: true
