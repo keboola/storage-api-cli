@@ -9,13 +9,13 @@ Storage API CLI is a simple command line wrapper for [Keboola Storage REST API](
 The client is packaged in a docker image [keboola/storage-api-cli](https://quay.io/repository/keboola/storage-api-cli). All you need to do is simply run it:
 
 ```
-docker run -i -t keboola/storage-api-cli
+docker run -i -t quay.io/keboola/storage-api-cli
 ```
 
 or with parameters:
 
 ```
-docker run -i -t keboola/storage-api-cli list-buckets --token=your-token
+docker run -i -t quay.io/keboola/storage-api-cli list-buckets --token=your-token
 ```
 
 ## Running PHAR
@@ -46,7 +46,7 @@ php sapi-client.phar list-buckets --token=your-token
 
 
 ### Usage
-If you run the client without parameters (`docker run -i -t keboola/storage-api-cli` or `php sapi-client.phar`, help will be displayed.
+If you run the client without parameters (`docker run -i -t quay.io/keboola/storage-api-cli` or `php sapi-client.phar`, help will be displayed.
 
 ```
 Keboola Storage API CLI version 0.7.0
@@ -89,7 +89,7 @@ Available commands:
 You can also display help for any command by running it with the `--help` parameter, e.g:
 
 ```
-docker run -i -t keboola/storage-api-cli export-table --help
+docker run -i -t quay.io/keboola/storage-api-cli export-table --help
 ```
 
 or
