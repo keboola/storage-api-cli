@@ -47,25 +47,22 @@ class BackupProject extends Command
         $tables = $sapiClient->listTables(null, [
             'include' => 'attributes,columns,buckets'
         ]);
-        $output->write($this->format('Tables metadata'));
+        $output->write($this->format('Exporting tables'));
         $s3->putObject([
             'Bucket' => $bucket,
             'Key' => $basePath . 'tables.json',
             'Body' => json_encode($tables),
         ]);
-        $output->writeln($this->check());
 
-        $output->write($this->format('Buckets metadata'));
+        $output->write($this->format('Exporting buckets'));
         $s3->putObject([
             'Bucket' => $bucket,
             'Key' => $basePath . 'buckets.json',
             'Body' => json_encode($sapiClient->listBuckets()),
         ]);
-        $output->writeln($this->check());
 
-        $output->write($this->format('Configurations'));
+        $output->write($this->format('Exporting configurations'));
         $this->exportConfigs($sapiClient, $s3, $bucket, $basePath, $input->getOption('include-versions'));
-        $output->writeln($this->check());
 
         $tablesCount = count($tables);
         usort($tables, function ($a, $b) {
@@ -74,14 +71,14 @@ class BackupProject extends Command
         $onlyStructure = $input->getOption('structure-only');
         foreach (array_values($tables) as $i => $table) {
             $currentTable = $i + 1;
-            $output->write($this->format("Table $currentTable/$tablesCount - {$table['id']}"));
+
             if ($onlyStructure && $table['bucket']['stage'] !== 'sys') {
-                $output->writeln('<comment>Skipped (not sys table)</comment>');
+                $output->write($this->format("Skipping table $currentTable/$tablesCount - {$table['id']} (sys bucket)"));
             } elseif (!$table['isAlias']) {
+                $output->write($this->format("Exporting table $currentTable/$tablesCount - {$table['id']}"));
                 $this->exportTable($table['id'], $s3, $bucket, $basePath);
-                $output->writeln($this->check());
             } else {
-                $output->writeln('<comment>Skipped (alias table)</comment>');
+                $output->write($this->format("Skipping table $currentTable/$tablesCount - {$table['id']} (alias)"));
             }
         }
     }
@@ -230,10 +227,5 @@ class BackupProject extends Command
     private function format($message)
     {
         return sprintf('%-50s', $message);
-    }
-
-    private function check()
-    {
-        return '<info>ok</info>';
     }
 }

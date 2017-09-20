@@ -72,9 +72,9 @@ class BackupProjectTest extends \PHPUnit_Framework_TestCase
             'path' => $this->s3path
         ]);
         $ret = $applicationTester->getDisplay();
-        self::assertContains('Buckets metadata', $ret);
-        self::assertContains('Tables metadata', $ret);
-        self::assertContains('Configurations', $ret);
+        self::assertContains('Exporting buckets', $ret);
+        self::assertContains('Exporting tables', $ret);
+        self::assertContains('Exporting configurations', $ret);
 
         $tmp = sys_get_temp_dir() . DIRECTORY_SEPARATOR;
         $s3Client = new S3Client([
@@ -195,9 +195,9 @@ class BackupProjectTest extends \PHPUnit_Framework_TestCase
             'path' => $this->s3path
         ]);
         $ret = $applicationTester->getDisplay();
-        self::assertContains('Buckets metadata', $ret);
-        self::assertContains('Tables metadata', $ret);
-        self::assertContains('Configurations', $ret);
+        self::assertContains('Exporting buckets', $ret);
+        self::assertContains('Exporting tables', $ret);
+        self::assertContains('Exporting configurations', $ret);
 
         $tmp = sys_get_temp_dir() . DIRECTORY_SEPARATOR;
         $s3Client = new S3Client([
