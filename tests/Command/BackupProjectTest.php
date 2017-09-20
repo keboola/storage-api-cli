@@ -3,11 +3,13 @@
 namespace Keboola\DockerBundle\Tests\Command;
 
 use Aws\S3\S3Client;
+use Keboola\Csv\CsvFile;
 use Keboola\StorageApi\Cli\Command\BackupProject;
 use Keboola\StorageApi\Cli\Console\Application;
 use Keboola\StorageApi\Client;
 use Keboola\StorageApi\Components;
 use Keboola\StorageApi\Exception;
+use Keboola\StorageApi\Metadata;
 use Keboola\StorageApi\Options\Components\Configuration;
 use Keboola\StorageApi\Options\Components\ConfigurationRow;
 use Symfony\Component\Console\Tester\ApplicationTester;
@@ -23,10 +25,13 @@ class BackupProjectTest extends \PHPUnit_Framework_TestCase
         $component = new Components($client);
         try {
             $component->deleteConfiguration('transformation', 'sapi-php-test');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             if ($e->getCode() != 404) {
                 throw $e;
             }
+        }
+        foreach ($client->listBuckets() as $bucket) {
+            $client->dropBucket($bucket["id"], ["force" => true]);
         }
         $this->s3path = 'cli-client-test/';
     }
@@ -235,11 +240,91 @@ class BackupProjectTest extends \PHPUnit_Framework_TestCase
         self::assertEquals([], $targetConfiguration->rows[0]->configuration->dummyArray);
     }
 
+
+    public function testExecuteMetadata()
+    {
+        $client = new Client(['token' => TEST_STORAGE_API_TOKEN]);
+        $client->createBucket("main", Client::STAGE_IN);
+        $client->createTable("in.c-main", "sample", new CsvFile(__DIR__ . "/../data/sample.csv"));
+        $metadata = new Metadata($client);
+        $metadata->postBucketMetadata("in.c-main", "system", [
+            [
+                "key" => "bucketKey",
+                "value" => "bucketValue"
+            ]
+        ]);
+        $metadata->postTableMetadata("in.c-main.sample", "system", [
+            [
+                "key" => "tableKey",
+                "value" => "tableValue"
+            ]
+        ]);
+        $metadata->postColumnMetadata("in.c-main.sample.col1", "system", [
+            [
+                "key" => "columnKey",
+                "value" => "columnValue"
+            ]
+        ]);
+
+        putenv('AWS_ACCESS_KEY_ID=' . TEST_AWS_ACCESS_KEY_ID);
+        putenv('AWS_SECRET_ACCESS_KEY=' . TEST_AWS_SECRET_ACCESS_KEY);
+        $application = new Application();
+        $application->setAutoExit(false);
+        $application->add(new BackupProject());
+        $applicationTester = new ApplicationTester($application);
+        $applicationTester->run([
+            'backup-project',
+            '--token' => TEST_STORAGE_API_TOKEN,
+            '--structure-only' => true,
+            'bucket' => TEST_S3_BUCKET,
+            'region' => TEST_AWS_REGION,
+            'path' => $this->s3path
+        ]);
+
+        $tmp = sys_get_temp_dir() . DIRECTORY_SEPARATOR;
+        $s3Client = new S3Client([
+            'version' => 'latest',
+            'region' => TEST_AWS_REGION,
+            'credentials' => [
+                'key' => TEST_AWS_ACCESS_KEY_ID,
+                'secret' => TEST_AWS_SECRET_ACCESS_KEY,
+            ]
+        ]);
+
+        $targetFile = $tmp . 'buckets.json';
+        $s3Client->getObject([
+            'Bucket' => TEST_S3_BUCKET,
+            'Key' => $this->s3path . 'buckets.json',
+            'SaveAs' => $targetFile
+        ]);
+        $data = json_decode(file_get_contents($targetFile), true);
+        $this->assertEquals("bucketKey", $data[0]["metadata"][0]["key"]);
+        $this->assertEquals("bucketValue", $data[0]["metadata"][0]["value"]);
+
+        $targetFile = $tmp . 'tables.json';
+        $s3Client->getObject([
+            'Bucket' => TEST_S3_BUCKET,
+            'Key' => $this->s3path . 'tables.json',
+            'SaveAs' => $targetFile
+        ]);
+        $data = json_decode(file_get_contents($targetFile), true);
+        $this->assertEquals("tableKey", $data[0]["metadata"][0]["key"]);
+        $this->assertEquals("tableValue", $data[0]["metadata"][0]["value"]);
+        $this->assertEquals("columnKey", $data[0]["columnMedatada"][0]["key"]);
+        $this->assertEquals("columnValue", $data[0]["columnMedatada"][0]["value"]);
+    }
+
     public function tearDown()
     {
         $client = new Client(['token' => TEST_STORAGE_API_TOKEN]);
         $component = new Components($client);
-        $component->deleteConfiguration('transformation', 'sapi-php-test');
+        try {
+            $component->deleteConfiguration('transformation', 'sapi-php-test');
+        } catch (\Exception $e) {
+            if ($e->getCode() != 404) {
+                throw $e;
+            }
+        }
 
         $s3Client = new S3Client([
             'version' => 'latest',
@@ -265,6 +350,10 @@ class BackupProjectTest extends \PHPUnit_Framework_TestCase
                     'Delete' => ['Objects' => $deleteObjects]
                 ]
             );
+        }
+
+        foreach ($client->listBuckets() as $bucket) {
+            $client->dropBucket($bucket["id"], ["force" => true]);
         }
     }
 }
