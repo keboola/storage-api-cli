@@ -310,8 +310,8 @@ class BackupProjectTest extends \PHPUnit_Framework_TestCase
         $data = json_decode(file_get_contents($targetFile), true);
         $this->assertEquals("tableKey", $data[0]["metadata"][0]["key"]);
         $this->assertEquals("tableValue", $data[0]["metadata"][0]["value"]);
-        $this->assertEquals("columnKey", $data[0]["columnMedatada"][0]["key"]);
-        $this->assertEquals("columnValue", $data[0]["columnMedatada"][0]["value"]);
+        $this->assertEquals("columnKey", $data[0]["columnMetadata"]["col1"][0]["key"]);
+        $this->assertEquals("columnValue", $data[0]["columnMetadata"]["col1"][0]["value"]);
     }
 
     public function tearDown()
