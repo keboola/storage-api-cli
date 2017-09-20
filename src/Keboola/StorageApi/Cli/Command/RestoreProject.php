@@ -12,6 +12,7 @@ namespace Keboola\StorageApi\Cli\Command;
 use Aws\S3\S3Client;
 use Keboola\Csv\CsvFile;
 use Keboola\StorageApi\Components;
+use Keboola\StorageApi\Metadata;
 use Keboola\StorageApi\Options\Components\Configuration;
 use Keboola\StorageApi\Options\Components\ConfigurationRow;
 use Keboola\StorageApi\Options\FileUploadOptions;
@@ -57,12 +58,13 @@ class RestoreProject extends Command
         $basePath = rtrim($basePath, '/') . '/';
 
         $client = $this->getSapiClient();
+        $metadataClient = new Metadata($client);
 
         $tmp = new Temp();
         $tmp->initRunFolder();
 
         if (!$limit || $input->getOption('data')) {
-            $output->write($this->format('Downloading buckets metadata'));
+            $output->write($this->format('Downloading buckets'));
             $s3->getObject(
                 [
                     'Bucket' => $bucket,
@@ -128,11 +130,18 @@ class RestoreProject extends Command
                 if (count($bucketInfo["attributes"])) {
                     $client->replaceBucketAttributes($bucketInfo["id"], $bucketInfo["attributes"]);
                 }
+                if (isset($bucketInfo["metadata"]) && count($bucketInfo["metadata"])) {
+                    foreach ($this->prepareMetadata($bucketInfo["metadata"]) as $provider => $metadata) {
+                        $metadataClient->postBucketMetadata($bucketInfo["id"], $provider, $metadata);
+                    }
+                }
+
+
                 $output->writeln($this->check());
             }
 
 
-            $output->write($this->format('Downloading tables metadata'));
+            $output->write($this->format('Downloading tables'));
             $s3->getObject(
                 [
                     'Bucket' => $bucket,
@@ -325,12 +334,24 @@ class RestoreProject extends Command
                 if (isset($table["attributes"]) && count($table["attributes"])) {
                     $client->replaceTableAttributes($table["id"], $table["attributes"]);
                 }
+                if (isset($table["metadata"]) && count($table["metadata"])) {
+                    foreach ($this->prepareMetadata($table["metadata"]) as $provider => $metadata) {
+                        $metadataClient->postTableMetadata($table["id"], $provider, $metadata);
+                    }
+                }
+                if (isset($table["columnMetadata"]) && count($table["columnMetadata"])) {
+                    foreach ($table["columnMetadata"] as $column => $columnMetadata) {
+                        foreach ($this->prepareMetadata($columnMetadata) as $provider => $metadata) {
+                            $metadataClient->postColumnMetadata($table["id"] . "." . $column, $provider, $metadata);
+                        }
+                    }
+                }
             }
             $output->writeln($this->check());
         }
 
         if (!$limit || $input->getOption('configurations')) {
-            $output->write($this->format('Downloading configuration metadata'));
+            $output->write($this->format('Downloading configurations'));
             $s3->getObject(
                 [
                     'Bucket' => $bucket,
@@ -424,5 +445,16 @@ class RestoreProject extends Command
     private function check()
     {
         return '<info>ok</info>';
+    }
+
+    private function prepareMetadata($rawMetadata) {
+        $result = [];
+        foreach ($rawMetadata as $item) {
+            $result[$item["provider"]][] = [
+                "key" => $item["key"],
+                "value" => $item["value"]
+            ];
+        }
+        return $result;
     }
 }
