@@ -47,21 +47,21 @@ class BackupProject extends Command
         $tables = $sapiClient->listTables(null, [
             'include' => 'attributes,columns,buckets,metadata,columnMetadata'
         ]);
-        $output->write($this->format('Exporting tables'));
+        $output->write("Exporting tables\n");
         $s3->putObject([
             'Bucket' => $bucket,
             'Key' => $basePath . 'tables.json',
             'Body' => json_encode($tables),
         ]);
 
-        $output->write($this->format('Exporting buckets'));
+        $output->write("Exporting buckets\n");
         $s3->putObject([
             'Bucket' => $bucket,
             'Key' => $basePath . 'buckets.json',
             'Body' => json_encode($sapiClient->listBuckets(["include" => "attributes,metadata"])),
         ]);
 
-        $output->write($this->format('Exporting configurations'));
+        $output->write("Exporting configurations\n");
         $this->exportConfigs($sapiClient, $s3, $bucket, $basePath, $input->getOption('include-versions'));
 
         $tablesCount = count($tables);
@@ -73,12 +73,12 @@ class BackupProject extends Command
             $currentTable = $i + 1;
 
             if ($onlyStructure && $table['bucket']['stage'] !== 'sys') {
-                $output->write($this->format("Skipping table $currentTable/$tablesCount - {$table['id']} (sys bucket)"));
+                $output->write("Skipping table $currentTable/$tablesCount - {$table['id']} (sys bucket)\n");
             } elseif (!$table['isAlias']) {
-                $output->write($this->format("Exporting table $currentTable/$tablesCount - {$table['id']}"));
+                $output->write("Exporting table $currentTable/$tablesCount - {$table['id']}\n");
                 $this->exportTable($table['id'], $s3, $bucket, $basePath);
             } else {
-                $output->write($this->format("Skipping table $currentTable/$tablesCount - {$table['id']} (alias)"));
+                $output->write("Skipping table $currentTable/$tablesCount - {$table['id']} (alias)\n");
             }
         }
     }
@@ -222,10 +222,5 @@ class BackupProject extends Command
             fclose($fh);
             $fs->remove($tmpFilePath);
         }
-    }
-
-    private function format($message)
-    {
-        return sprintf('%-50s', $message);
     }
 }
