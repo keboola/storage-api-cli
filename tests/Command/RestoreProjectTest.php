@@ -391,6 +391,22 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
         self::assertTrue($client->tableExists("in.c-bucket.Account"));
     }
 
+    public function testRestoreMetadata()
+    {
+        $applicationTester = $this->runCommand(self::S3_PATH . 'metadata/');
+        self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
+        $client = $this->getClient();
+        self::assertTrue($client->tableExists("in.c-bucket.Account"));
+        $table = $client->getTable("in.c-bucket.Account");
+        self::assertEquals("tableKey", $table["metadata"][0]["key"]);
+        self::assertEquals("tableValue", $table["metadata"][0]["value"]);
+        self::assertEquals("columnKey", $table["columnMetadata"]["Id"][0]["key"]);
+        self::assertEquals("columnValue", $table["columnMetadata"]["Id"][0]["value"]);
+        $bucket = $client->listBuckets(["include" => "metadata"])[0];
+        self::assertEquals("bucketKey", $bucket["metadata"][0]["key"]);
+        self::assertEquals("bucketValue", $bucket["metadata"][0]["value"]);
+    }
+
     protected function runCommand($path, $ignoreStorageBackend = true, $onlyConfigurations = false, $onlyData = false)
     {
         putenv('AWS_ACCESS_KEY_ID=' . TEST_AWS_ACCESS_KEY_ID);
