@@ -447,7 +447,8 @@ class RestoreProject extends Command
         return '<info>ok</info>';
     }
 
-    private function prepareMetadata($rawMetadata) {
+    private function prepareMetadata($rawMetadata)
+    {
         $result = [];
         foreach ($rawMetadata as $item) {
             $result[$item["provider"]][] = [
