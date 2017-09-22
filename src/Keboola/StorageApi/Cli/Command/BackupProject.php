@@ -40,7 +40,11 @@ class BackupProject extends Command
         ]);
         $bucket = $input->getArgument('bucket');
         $basePath = $input->getArgument('path');
-        $basePath = rtrim($basePath, '/') . '/';
+        if ($basePath == '' || $basePath == '/') {
+            $basePath = '';
+        } else {
+            $basePath = rtrim($basePath, '/') . '/';
+        }
 
         $sapiClient = $this->getSapiClient();
 

@@ -316,6 +316,49 @@ class BackupProjectTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals("columnValue", $data[0]["columnMetadata"]["col1"][0]["value"]);
     }
 
+    public function testExecuteWithoutPath()
+    {
+        $client = new Client(['token' => TEST_STORAGE_API_TOKEN]);
+        $client->createBucket("main", Client::STAGE_IN);
+        $client->createTable("in.c-main", "sample", new CsvFile(__DIR__ . "/../data/sample.csv"));
+
+        putenv('AWS_ACCESS_KEY_ID=' . TEST_BACKUP_AWS_ACCESS_KEY_ID);
+        putenv('AWS_SECRET_ACCESS_KEY=' . TEST_BACKUP_AWS_SECRET_ACCESS_KEY);
+        $application = new Application();
+        $application->setAutoExit(false);
+        $application->add(new BackupProject());
+        $applicationTester = new ApplicationTester($application);
+        $applicationTester->run([
+            'backup-project',
+            '--token' => TEST_STORAGE_API_TOKEN,
+            '--structure-only' => true,
+            'bucket' => TEST_BACKUP_S3_BUCKET,
+            'region' => TEST_AWS_REGION,
+            'path' => ''
+        ]);
+        self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
+
+        $s3Client = new S3Client([
+            'version' => 'latest',
+            'region' => TEST_AWS_REGION,
+            'credentials' => [
+                'key' => TEST_BACKUP_AWS_ACCESS_KEY_ID,
+                'secret' => TEST_BACKUP_AWS_SECRET_ACCESS_KEY,
+            ]
+        ]);
+
+        $keys = array_map(function ($key) {
+            return $key["Key"];
+        }, $s3Client->listObjects([
+            'Bucket' => TEST_BACKUP_S3_BUCKET
+        ])->toArray()["Contents"]);
+
+        self::assertTrue(in_array('buckets.json', $keys));
+        self::assertTrue(in_array('tables.json', $keys));
+        self::assertTrue(in_array('configurations.json', $keys));
+        self::assertCount(3, $keys);
+    }
+
     public function tearDown()
     {
         $client = new Client(['token' => TEST_STORAGE_API_TOKEN]);
