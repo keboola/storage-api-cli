@@ -47,7 +47,6 @@ or with parameters:
 php sapi-client.phar list-buckets --token=your-token
 ```
 
-
 ## Usage
 If you run the client without parameters (`docker run quay.io/keboola/storage-api-cli`), help will be displayed.
 
@@ -95,7 +94,6 @@ You can also display help for any command by running it with the `--help` parame
 docker run quay.io/keboola/storage-api-cli export-table --help
 ```
 
-
 ### export-table
 
 Export table command accepts the same options as the `/v2/storage/tables/{table_id}/export-async` call in [Storage API](http://docs.keboola.apiary.io/#tables) with the exception of deprecated `days` option. 
@@ -129,44 +127,50 @@ These options can be combined freely. `whereValues` and `columns` options accept
 Simply export the table to `table.csv`:
 
 ```
-docker run quay.io/keboola/storage-api-cli --token=your_sapi_token export-table in.c-main.table table.csv
+docker run --volume=/home/my-user/my-data:/data quay.io/keboola/storage-api-cli --token=your_sapi_token export-table \
+in.c-main.table /data/table.csv
 ```
+
+*Please note, that the Docker container can only access folders within the container, so you need to mount local folder. 
+In the example above, the local folder `/home/my-user/my-data` is mounted as `/data` into the container. 
+The table is then exported to this folder.* 
 
 Export columns `Name` and `Id`:
 
 ```
-docker run quay.io/keboola/storage-api-cli --token=your_sapi_token export-table in.c-main.table table.csv \ 
---columns=Name --columns=Id
+docker run --volume=/home/my-user/my-data:/data quay.io/keboola/storage-api-cli --token=your_sapi_token export-table \
+in.c-main.table /data/table.csv --columns=Name --columns=Id
 ```
 
 Export first 100 rows:
 
 ```
-docker run quay.io/keboola/storage-api-cli --token=your_sapi_token export-table in.c-main.table table.csv \
---limit=1
+docker run --volume=/home/my-user/my-data:/data quay.io/keboola/storage-api-cli --token=your_sapi_token export-table \
+in.c-main.table /data/table.csv --limit=1
 ```
 (note: sorting is not defined and depends on the storage backend)
 
 Export records where `AccountId = 001C000000ofWffIAE`:
 
 ```
-docker run quay.io/keboola/storage-api-cli --token=your_sapi_token export-table in.c-main.table table.csv \
---whereColumn=AccountId --whereValues=001C000000ofWffIAE --whereOperator=eq
+docker run --volume=/home/my-user/my-data:/data quay.io/keboola/storage-api-cli --token=your_sapi_token export-table \
+in.c-main.table /data/table.csv --whereColumn=AccountId --whereValues=001C000000ofWffIAE --whereOperator=eq
 ```
 (note: all three of the `where*` options need to be defined and `whereColumn` only accepts indexed columns)
 
 Export records where `AccountId != (001C000000ofWffIAE, 001C000000ofWffIAA)`:
 
 ```
-docker run quay.io/keboola/storage-api-cli --token=your_sapi_token export-table in.c-main.table table.csv \
---whereColumn=AccountId --whereValues=001C000000ofWffIAE --whereValues=001C000000ofWffIAA --whereOperator=ne
+docker run --volume=/home/my-user/my-data:/data quay.io/keboola/storage-api-cli --token=your_sapi_token export-table \
+in.c-main.table /data/table.csv --whereColumn=AccountId --whereValues=001C000000ofWffIAE --whereValues=001C000000ofWffIAA \
+--whereOperator=ne
 ```
 
 Export records modified in last 2 days::
 
 ```
-docker run quay.io/keboola/storage-api-cli --token=your_sapi_token export-table in.c-main.table table.csv \
---whereColumn=AccountId --changedSince="-2 days"
+docker run --volume=/home/my-user/my-data:/data quay.io/keboola/storage-api-cli --token=your_sapi_token export-table \
+in.c-main.table /data/table.csv --whereColumn=AccountId --changedSince="-2 days"
 ```
 (note: `changedSince` accepts any datetime description that can be parsed by [strtotime PHP function](http://php.net/manual/en/function.strtotime.php)) 
 
