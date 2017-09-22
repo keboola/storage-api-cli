@@ -14,7 +14,7 @@ docker run quay.io/keboola/storage-api-cli
 or with parameters:
 
 ```
-docker run -i -t quay.io/keboola/storage-api-cli list-buckets --token=your-token
+docker run quay.io/keboola/storage-api-cli list-buckets --token=your-token
 ```
 
 ## Running PHAR (DEPRECATED)
