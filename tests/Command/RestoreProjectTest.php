@@ -14,7 +14,7 @@ use Symfony\Component\Console\Tester\ApplicationTester;
 
 class RestoreProjectTest extends \PHPUnit_Framework_TestCase
 {
-    const S3_PATH = 'cli-client-restore-test/';
+    const S3_PATH = '';
 
     /**
      * @var Temp
@@ -409,8 +409,8 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
 
     protected function runCommand($path, $ignoreStorageBackend = true, $onlyConfigurations = false, $onlyData = false)
     {
-        putenv('AWS_ACCESS_KEY_ID=' . TEST_AWS_ACCESS_KEY_ID);
-        putenv('AWS_SECRET_ACCESS_KEY=' . TEST_AWS_SECRET_ACCESS_KEY);
+        putenv('AWS_ACCESS_KEY_ID=' . TEST_RESTORE_AWS_ACCESS_KEY_ID);
+        putenv('AWS_SECRET_ACCESS_KEY=' . TEST_RESTORE_AWS_SECRET_ACCESS_KEY);
         $application = new Application();
         $application->setAutoExit(false);
         $application->add(new RestoreProject());
@@ -421,7 +421,7 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
             '--ignore-storage-backend' => $ignoreStorageBackend,
             '--configurations' => $onlyConfigurations,
             '--data' => $onlyData,
-            'bucket' => TEST_S3_BUCKET,
+            'bucket' => TEST_RESTORE_S3_BUCKET,
             'region' => TEST_AWS_REGION,
             'path' => $path
         ]);

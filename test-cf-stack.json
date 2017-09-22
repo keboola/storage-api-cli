@@ -1,7 +1,19 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
-  "Description": "Cloudformation template for testing storage-api-cli",
+  "Description": "CloudFormation template for testing storage-api-cli",
   "Resources": {
+    "RestoreBucket": {
+      "Type": "AWS::S3::Bucket",
+      "DeletionPolicy": "Delete",
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "keboola-storage-api-cli-tests"
+          }
+        ]
+      }
+    },
     "BackupBucket": {
       "Type": "AWS::S3::Bucket",
       "DeletionPolicy": "Delete",
@@ -14,7 +26,7 @@
         ]
       }
     },
-    "BackupBucketUser": {
+    "RestoreUser": {
       "Type": "AWS::IAM::User",
       "DeletionPolicy": "Delete",
       "Properties": {
@@ -25,78 +37,112 @@
             "PolicyDocument": {
               "Statement": [
                 {
+                  "Action": [
+                    "s3:ListBucket",
+                    "s3:GetObject",
+                    "s3:PutObject",
+                    "s3:DeleteObject",
+                    "s3:ListObjects"
+                  ],
                   "Effect": "Allow",
-                  "Action": "s3:*",
                   "Resource": [
                     {
                       "Fn::Join": [
-                        "", 
-                        [ "arn:aws:s3:::", 
-                          {
-                            "Ref": "BackupBucket"
-                          },
-                          "/*"
-                        ]
+                        "", [ "arn:aws:s3:::", {
+                          "Ref": "RestoreBucket"
+                        } , "/*" ]
                       ]
                     },
                     {
                       "Fn::Join": [
-                        "", 
-                        [ "arn:aws:s3:::", 
-                          {
-                            "Ref": "BackupBucket"
-                          }
-                        ]
+                        "", [ "arn:aws:s3:::", {
+                          "Ref": "RestoreBucket"
+                        } ]
                       ]
                     }
                   ]
                 }
               ]
+
             }
           }        
         ]
       },
       "DependsOn": [
-        "BackupBucket"
+        "RestoreBucket"
       ]
     },
-    "AccessKey": {
-      "Type": "AWS::IAM::AccessKey",
+    "BackupUser": {
+      "Type": "AWS::IAM::User",
       "DeletionPolicy": "Delete",
       "Properties": {
-          "UserName": {
-              "Ref": "BackupBucketUser"
+        "Path": "/",
+        "Policies": [
+          {
+            "PolicyName": "Owner",
+            "PolicyDocument": {
+              "Statement": [
+                {
+                  "Action": [
+                    "s3:ListBucket",
+                    "s3:GetObject",
+                    "s3:PutObject",
+                    "s3:DeleteObject",
+                    "s3:ListObjects"
+                  ],
+                  "Effect": "Allow",
+                  "Resource": [
+                    {
+                      "Fn::Join": [
+                        "", [ "arn:aws:s3:::", {
+                          "Ref": "BackupBucket"
+                        } , "/*" ]
+                      ]
+                    },
+                    {
+                      "Fn::Join": [
+                        "", [ "arn:aws:s3:::", {
+                          "Ref": "BackupBucket"
+                        } ]
+                      ]
+                    }
+                  ]
+                }
+              ]
+
+            }
           }
+        ]
       },
       "DependsOn": [
-        "BackupBucketUser"
-      ]      
+        "BackupBucket"
+      ]
     }
   },
   "Outputs": {
-    "BucketName": {
+    "RestoreBucket": {
+        "Value": {
+            "Ref": "RestoreBucket"
+        }
+    },
+    "BackupBucket": {
         "Value": {
             "Ref": "BackupBucket"
         }
     },
-    "Credentials": {
+    "RestoreUser": {
         "Value": {
-           "Ref": "BackupBucketUser"
+           "Ref": "RestoreUser"
+        }
+    },
+    "BackupUser": {
+        "Value": {
+           "Ref": "BackupUser"
         }
     },
     "Region": {
         "Value": {
             "Ref": "AWS::Region"
-        }
-    },
-    "AccessKeyId": {
-        "Value": {
-            "Ref": "AccessKey"
-        }
-    },
-    "AccessKeySecret": {
-        "Value": {
-            "Fn::GetAtt": ["AccessKey", "SecretAccessKey"]
         }
     }
   }

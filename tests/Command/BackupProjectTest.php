@@ -62,8 +62,8 @@ class BackupProjectTest extends \PHPUnit_Framework_TestCase
         );
         $component->addConfigurationRow($row);
 
-        putenv('AWS_ACCESS_KEY_ID=' . TEST_AWS_ACCESS_KEY_ID);
-        putenv('AWS_SECRET_ACCESS_KEY=' . TEST_AWS_SECRET_ACCESS_KEY);
+        putenv('AWS_ACCESS_KEY_ID=' . TEST_BACKUP_AWS_ACCESS_KEY_ID);
+        putenv('AWS_SECRET_ACCESS_KEY=' . TEST_BACKUP_AWS_SECRET_ACCESS_KEY);
         $application = new Application();
         $application->setAutoExit(false);
         $application->add(new BackupProject());
@@ -72,9 +72,9 @@ class BackupProjectTest extends \PHPUnit_Framework_TestCase
             'backup-project',
             '--token' => TEST_STORAGE_API_TOKEN,
             '--structure-only' => true,
-            'bucket' => TEST_S3_BUCKET,
+            'bucket' => TEST_BACKUP_S3_BUCKET,
             'region' => TEST_AWS_REGION,
-            'path' => $this->s3path
+            'path' => 'backup'
         ]);
         $ret = $applicationTester->getDisplay();
         self::assertContains('Exporting buckets', $ret);
@@ -86,14 +86,14 @@ class BackupProjectTest extends \PHPUnit_Framework_TestCase
             'version' => 'latest',
             'region' => TEST_AWS_REGION,
             'credentials' => [
-                'key' => TEST_AWS_ACCESS_KEY_ID,
-                'secret' => TEST_AWS_SECRET_ACCESS_KEY,
+                'key' => TEST_BACKUP_AWS_ACCESS_KEY_ID,
+                'secret' => TEST_BACKUP_AWS_SECRET_ACCESS_KEY,
             ]
         ]);
         $targetFile = $tmp . 'configurations.json';
         $s3Client->getObject([
-            'Bucket' => TEST_S3_BUCKET,
-            'Key' => $this->s3path . 'configurations.json',
+            'Bucket' => TEST_BACKUP_S3_BUCKET,
+            'Key' => 'backup/configurations.json',
             'SaveAs' => $targetFile
         ]);
         $targetContents = file_get_contents($targetFile);
@@ -120,8 +120,8 @@ class BackupProjectTest extends \PHPUnit_Framework_TestCase
         $configurationId = $targetConfiguration['id'];
         $targetFile = $tmp . $configurationId . 'configurations.json';
         $s3Client->getObject([
-            'Bucket' => TEST_S3_BUCKET,
-            'Key' => $this->s3path . 'configurations/transformation/' . $configurationId . '.json',
+            'Bucket' => TEST_BACKUP_S3_BUCKET,
+            'Key' => 'backup/configurations/transformation/' . $configurationId . '.json',
             'SaveAs' => $targetFile
         ]);
         $targetContents = file_get_contents($targetFile);
@@ -185,8 +185,8 @@ class BackupProjectTest extends \PHPUnit_Framework_TestCase
         );
         $component->addConfigurationRow($row);
 
-        putenv('AWS_ACCESS_KEY_ID=' . TEST_AWS_ACCESS_KEY_ID);
-        putenv('AWS_SECRET_ACCESS_KEY=' . TEST_AWS_SECRET_ACCESS_KEY);
+        putenv('AWS_ACCESS_KEY_ID=' . TEST_BACKUP_AWS_ACCESS_KEY_ID);
+        putenv('AWS_SECRET_ACCESS_KEY=' . TEST_BACKUP_AWS_SECRET_ACCESS_KEY);
         $application = new Application();
         $application->setAutoExit(false);
         $application->add(new BackupProject());
@@ -195,10 +195,11 @@ class BackupProjectTest extends \PHPUnit_Framework_TestCase
             'backup-project',
             '--token' => TEST_STORAGE_API_TOKEN,
             '--structure-only' => true,
-            'bucket' => TEST_S3_BUCKET,
+            'bucket' => TEST_BACKUP_S3_BUCKET,
             'region' => TEST_AWS_REGION,
-            'path' => $this->s3path
+            'path' => 'backup'
         ]);
+        self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
         $ret = $applicationTester->getDisplay();
         self::assertContains('Exporting buckets', $ret);
         self::assertContains('Exporting tables', $ret);
@@ -209,14 +210,14 @@ class BackupProjectTest extends \PHPUnit_Framework_TestCase
             'version' => 'latest',
             'region' => TEST_AWS_REGION,
             'credentials' => [
-                'key' => TEST_AWS_ACCESS_KEY_ID,
-                'secret' => TEST_AWS_SECRET_ACCESS_KEY,
+                'key' => TEST_BACKUP_AWS_ACCESS_KEY_ID,
+                'secret' => TEST_BACKUP_AWS_SECRET_ACCESS_KEY,
             ]
         ]);
         $targetFile = $tmp . 'configurations.json';
         $s3Client->getObject([
-            'Bucket' => TEST_S3_BUCKET,
-            'Key' => $this->s3path . 'configurations.json',
+            'Bucket' => TEST_BACKUP_S3_BUCKET,
+            'Key' => 'backup/configurations.json',
             'SaveAs' => $targetFile
         ]);
         $targetContents = file_get_contents($targetFile);
@@ -229,8 +230,8 @@ class BackupProjectTest extends \PHPUnit_Framework_TestCase
         $configurationId = $targetConfiguration->id;
         $targetFile = $tmp . $configurationId . 'configurations.json';
         $s3Client->getObject([
-            'Bucket' => TEST_S3_BUCKET,
-            'Key' => $this->s3path . 'configurations/transformation/' . $configurationId . '.json',
+            'Bucket' => TEST_BACKUP_S3_BUCKET,
+            'Key' => 'backup/configurations/transformation/' . $configurationId . '.json',
             'SaveAs' => $targetFile
         ]);
         $targetContents = file_get_contents($targetFile);
@@ -266,8 +267,8 @@ class BackupProjectTest extends \PHPUnit_Framework_TestCase
             ]
         ]);
 
-        putenv('AWS_ACCESS_KEY_ID=' . TEST_AWS_ACCESS_KEY_ID);
-        putenv('AWS_SECRET_ACCESS_KEY=' . TEST_AWS_SECRET_ACCESS_KEY);
+        putenv('AWS_ACCESS_KEY_ID=' . TEST_BACKUP_AWS_ACCESS_KEY_ID);
+        putenv('AWS_SECRET_ACCESS_KEY=' . TEST_BACKUP_AWS_SECRET_ACCESS_KEY);
         $application = new Application();
         $application->setAutoExit(false);
         $application->add(new BackupProject());
@@ -276,25 +277,26 @@ class BackupProjectTest extends \PHPUnit_Framework_TestCase
             'backup-project',
             '--token' => TEST_STORAGE_API_TOKEN,
             '--structure-only' => true,
-            'bucket' => TEST_S3_BUCKET,
+            'bucket' => TEST_BACKUP_S3_BUCKET,
             'region' => TEST_AWS_REGION,
-            'path' => $this->s3path
+            'path' => 'backup'
         ]);
+        self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
 
         $tmp = sys_get_temp_dir() . DIRECTORY_SEPARATOR;
         $s3Client = new S3Client([
             'version' => 'latest',
             'region' => TEST_AWS_REGION,
             'credentials' => [
-                'key' => TEST_AWS_ACCESS_KEY_ID,
-                'secret' => TEST_AWS_SECRET_ACCESS_KEY,
+                'key' => TEST_BACKUP_AWS_ACCESS_KEY_ID,
+                'secret' => TEST_BACKUP_AWS_SECRET_ACCESS_KEY,
             ]
         ]);
 
         $targetFile = $tmp . 'buckets.json';
         $s3Client->getObject([
-            'Bucket' => TEST_S3_BUCKET,
-            'Key' => $this->s3path . 'buckets.json',
+            'Bucket' => TEST_BACKUP_S3_BUCKET,
+            'Key' => 'backup/buckets.json',
             'SaveAs' => $targetFile
         ]);
         $data = json_decode(file_get_contents($targetFile), true);
@@ -303,8 +305,8 @@ class BackupProjectTest extends \PHPUnit_Framework_TestCase
 
         $targetFile = $tmp . 'tables.json';
         $s3Client->getObject([
-            'Bucket' => TEST_S3_BUCKET,
-            'Key' => $this->s3path . 'tables.json',
+            'Bucket' => TEST_BACKUP_S3_BUCKET,
+            'Key' => 'backup/tables.json',
             'SaveAs' => $targetFile
         ]);
         $data = json_decode(file_get_contents($targetFile), true);
@@ -330,23 +332,21 @@ class BackupProjectTest extends \PHPUnit_Framework_TestCase
             'version' => 'latest',
             'region' => TEST_AWS_REGION,
             'credentials' => [
-                'key' => TEST_AWS_ACCESS_KEY_ID,
-                'secret' => TEST_AWS_SECRET_ACCESS_KEY,
+                'key' => TEST_BACKUP_AWS_ACCESS_KEY_ID,
+                'secret' => TEST_BACKUP_AWS_SECRET_ACCESS_KEY,
             ]
         ]);
-        $keys = $s3Client->listObjects(['Bucket' => TEST_S3_BUCKET]);
+        $keys = $s3Client->listObjects(['Bucket' => TEST_BACKUP_S3_BUCKET]);
         $keys = $keys->toArray()['Contents'];
         $deleteObjects = [];
         foreach ($keys as $key) {
-            if (substr($key['Key'], 0, strlen($this->s3path)) == $this->s3path) {
-                $deleteObjects[] = $key;
-            }
+            $deleteObjects[] = $key;
         }
 
         if (count($deleteObjects) > 0) {
             $s3Client->deleteObjects(
                 [
-                    'Bucket' => TEST_S3_BUCKET,
+                    'Bucket' => TEST_BACKUP_S3_BUCKET,
                     'Delete' => ['Objects' => $deleteObjects]
                 ]
             );
