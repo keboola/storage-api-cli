@@ -1,3 +1,15 @@
+## 1.0.0
+ * [Feat] Drop support for PHAR, Docker image version only
+ 
+## 0.9.1
+ * [Fix] Empty path in `backup-project` command
+ 
+## 0.9.0
+ * [Feat] Support for metadata in `backup-project` and `project-restore` commands
+
+## 0.8.0
+ * [Feat] CLI in Docker 
+
 ## 0.7.0
  * [Feat] Drop support for PHP 5.5, add support for PHP 7.1
 
