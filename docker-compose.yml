@@ -49,7 +49,7 @@ services:
       - TEST_STORAGE_API_TOKEN
       - TEST_AWS_REGION
 
-  dev:
+  sh:
     build: .
     image: keboola/storage-api-cli
     volumes:

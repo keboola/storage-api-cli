@@ -4,7 +4,7 @@ ENV DEBIAN_FRONTEND noninteractive
 ENV COMPOSER_ALLOW_SUPERUSER 1
 
 # Deps
-RUN apk add --no-cache wget git unzip
+RUN apk add --no-cache wget git unzip gzip
 
 COPY . /code/
 WORKDIR /code/
