@@ -178,8 +178,8 @@ export-table in.c-main.table /data/table.csv --whereColumn=AccountId --changedSi
 Export records modified in until 2 days ago:
 
 ```
-docker run quay.io/keboola/storage-api-cli --token=your_sapi_token export-table in.c-main.table \
-table.csv --whereColumn=AccountId --changedUntil="-2 days"
+docker run --volume=/home/my-user/my-data:/data quay.io/keboola/storage-api-cli --token=your_sapi_token \
+export-table in.c-main.table /data/table.csv --whereColumn=AccountId --changedUntil="-2 days"
 ```
 (note: `changedUntil` accepts any datetime description that can be parsed by [strtotime PHP function](http://php.net/manual/en/function.strtotime.php)) 
 
