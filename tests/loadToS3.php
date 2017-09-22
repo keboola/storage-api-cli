@@ -9,7 +9,7 @@ error_reporting(E_ALL);
 
 $basedir = dirname(__FILE__);
 
-require_once $basedir . '/../bootstrap.php';
+require_once $basedir . '/bootstrap.php';
 
 echo "Loading fixtures to S3\n";
 

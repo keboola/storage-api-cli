@@ -29,6 +29,7 @@ services:
       - TEST_RESTORE_S3_BUCKET
       - TEST_STORAGE_API_SECONDARY_TOKEN
       - TEST_STORAGE_API_TOKEN
+      - TEST_AWS_REGION
 
   tests-ci:
     build: .
@@ -46,10 +47,13 @@ services:
       - TEST_RESTORE_S3_BUCKET
       - TEST_STORAGE_API_SECONDARY_TOKEN
       - TEST_STORAGE_API_TOKEN
+      - TEST_AWS_REGION
 
   dev:
     build: .
     image: keboola/storage-api-cli
+    volumes:
+      - .:/code
     working_dir: /code
     entrypoint: sh -c
     tty: true
@@ -63,3 +67,4 @@ services:
       - TEST_RESTORE_S3_BUCKET
       - TEST_STORAGE_API_SECONDARY_TOKEN
       - TEST_STORAGE_API_TOKEN
+      - TEST_AWS_REGION
