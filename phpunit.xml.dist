@@ -6,15 +6,12 @@
          convertNoticesToExceptions="true"
          convertWarningsToExceptions="true"
          processIsolation="false"
-         stopOnFailure="false"
+         stopOnError="true"
+         stopOnFailure="true"
          syntaxCheck="false"
-         bootstrap="bootstrap.php">
+         bootstrap="tests/bootstrap.php">
 
-    <php>
-        <server name="KERNEL_DIR" value="vendor/keboola/syrup/app/" />
-    </php>
-
-    <testsuite name="storage-api-cli">
+    <testsuite name="Storage API CLI Test Suite">
         <directory>tests</directory>
     </testsuite>
 

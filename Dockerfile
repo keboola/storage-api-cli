@@ -1,18 +1,18 @@
-FROM php:7.1-cli
+FROM php:7.1-alpine
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV COMPOSER_ALLOW_SUPERUSER 1
 
 # Deps
-RUN apt-get update && apt-get install -y --no-install-recommends \
-  	  git \
-  	  unzip \
-    && rm -r /var/lib/apt/lists/* \
-    && cd /root/ \
-    && curl -sS https://getcomposer.org/installer | php \
-    && ln -s /root/composer.phar /usr/local/bin/composer
+RUN apk add --no-cache wget git unzip gzip
 
 COPY . /code/
 WORKDIR /code/
-RUN composer install --no-interaction
-ENTRYPOINT ["/code/bin/sapi-client"]
+
+RUN ./composer.sh \
+  && rm composer.sh \
+  && mv composer.phar /usr/local/bin/composer \
+  && composer install --no-interaction \
+  && apk del wget git unzip
+
+ENTRYPOINT ["/code/bin/cli"]

@@ -20,6 +20,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class Application extends BaseApplication
 {
+    const VERSION = '1.0.0';
     /**
      * @var \Keboola\StorageApi\Client
      */
@@ -43,7 +44,7 @@ class Application extends BaseApplication
 
     public function __construct()
     {
-        parent::__construct('Keboola Storage API CLI', '@package_version@');
+        parent::__construct('Keboola Storage API CLI', self::VERSION);
 
         $this->getDefinition()
             ->addOption(new InputOption('token', null, InputOption::VALUE_REQUIRED, "Storage API Token"));

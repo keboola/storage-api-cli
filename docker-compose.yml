@@ -1,20 +1,61 @@
 version: '2'
 
 services:
-  app:
+  cli:
+    build: .
+    image: keboola/storage-api-cli
+    tty: true
+    stdin_open: true
+    working_dir: /code
+    environment:
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY
+
+  tests:
+    build: .
+    image: keboola/storage-api-cli
+    entrypoint: /code/phpunit.sh
+    tty: true
+    stdin_open: true
+    volumes:
+      - .:/code
+    working_dir: /code
+    environment:
+      - TEST_BACKUP_AWS_ACCESS_KEY_ID
+      - TEST_BACKUP_AWS_SECRET_ACCESS_KEY
+      - TEST_BACKUP_S3_BUCKET
+      - TEST_RESTORE_AWS_ACCESS_KEY_ID
+      - TEST_RESTORE_AWS_SECRET_ACCESS_KEY
+      - TEST_RESTORE_S3_BUCKET
+      - TEST_STORAGE_API_SECONDARY_TOKEN
+      - TEST_STORAGE_API_TOKEN
+      - TEST_AWS_REGION
+
+  tests-ci:
+    build: .
+    image: keboola/storage-api-cli
+    entrypoint: ./phpunit.sh
+    working_dir: /code
+    tty: true
+    stdin_open: true
+    environment:
+      - TEST_BACKUP_AWS_ACCESS_KEY_ID
+      - TEST_BACKUP_AWS_SECRET_ACCESS_KEY
+      - TEST_BACKUP_S3_BUCKET
+      - TEST_RESTORE_AWS_ACCESS_KEY_ID
+      - TEST_RESTORE_AWS_SECRET_ACCESS_KEY
+      - TEST_RESTORE_S3_BUCKET
+      - TEST_STORAGE_API_SECONDARY_TOKEN
+      - TEST_STORAGE_API_TOKEN
+      - TEST_AWS_REGION
+
+  sh:
     build: .
     image: keboola/storage-api-cli
     volumes:
       - .:/code
-    tty: true
-    stdin_open: true
-
-  tests:
-    build: .
-    volumes:
-      - ./.git:/code/.git    
-    entrypoint:
-      - /code/phpunit.sh
+    working_dir: /code
+    entrypoint: sh -c
     tty: true
     stdin_open: true
     environment:
@@ -26,23 +67,4 @@ services:
       - TEST_RESTORE_S3_BUCKET
       - TEST_STORAGE_API_SECONDARY_TOKEN
       - TEST_STORAGE_API_TOKEN
-
-  tests-local:
-    build: .
-    volumes:
-      - .:/code
-    entrypoint:
-      - /bin/bash 
-      - -c
-      - "composer install --no-interaction && /code/phpunit.sh"
-    tty: true
-    stdin_open: true
-    environment:
-      - TEST_BACKUP_AWS_ACCESS_KEY_ID
-      - TEST_BACKUP_AWS_SECRET_ACCESS_KEY
-      - TEST_BACKUP_S3_BUCKET
-      - TEST_RESTORE_AWS_ACCESS_KEY_ID
-      - TEST_RESTORE_AWS_SECRET_ACCESS_KEY
-      - TEST_RESTORE_S3_BUCKET
-      - TEST_STORAGE_API_SECONDARY_TOKEN
-      - TEST_STORAGE_API_TOKEN
+      - TEST_AWS_REGION

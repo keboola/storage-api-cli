@@ -2,14 +2,13 @@
 
 [![Build Status](https://travis-ci.org/keboola/storage-api-cli.png?branch=master)](https://travis-ci.org/keboola/storage-api-cli)
 
-Storage API CLI is a simple command line wrapper for [Keboola Storage REST API](http://docs.keboola.apiary.io/). The CLI is available as a PHP 
-[PHAR](http://php.net/manual/en/intro.phar.php) package or as a [Docker](https://www.docker.com/) image.
+Storage API CLI is a simple command line wrapper for [Keboola Storage REST API](http://docs.keboola.apiary.io/). The CLI is available as a [Docker](https://www.docker.com/) image.
 
 ## Running in Docker
-The client is packaged in a docker image [keboola/storage-api-cli](https://quay.io/repository/keboola/storage-api-cli). All you need to do is simply run it:
+The client is packaged in a Docker image [keboola/storage-api-cli](https://quay.io/repository/keboola/storage-api-cli). All you need to do is simply run it:
 
 ```
-docker run -i -t quay.io/keboola/storage-api-cli
+docker run quay.io/keboola/storage-api-cli
 ```
 
 or with parameters:
@@ -18,7 +17,10 @@ or with parameters:
 docker run -i -t quay.io/keboola/storage-api-cli list-buckets --token=your-token
 ```
 
-## Running PHAR
+## Running PHAR (DEPRECATED)
+
+Since version 1.0.0 running PHAR versions is deprecated. Use the Docker image instead.
+
 Download the latest version from [https://s3.amazonaws.com/keboola-storage-api-cli/builds/sapi-client.phar](https://s3.amazonaws.com/keboola-storage-api-cli/builds/sapi-client.phar) e.g:
 
 ```
@@ -28,11 +30,12 @@ curl -sS --fail https://s3.amazonaws.com/keboola-storage-api-cli/builds/sapi-cli
 From there, you may place it anywhere that will make it easier for you to access (such as /usr/local/bin) and chmod it to 755.
 You can even rename it to just sapi-client to avoid having to type the .phar extension every time.
 
-Storage API CLI requires gzip and curl and PHP 5.6 or newer, 
-for PHP 5.5 you can use [https://s3.amazonaws.com/keboola-storage-api-cli/builds/sapi-client.0.6.0.phar](https://s3.amazonaws.com/keboola-storage-api-cli/builds/sapi-client.0.6.0.phar) (5.5 version is no longer supported),
-for PHP 5.4 you can use [https://s3.amazonaws.com/keboola-storage-api-cli/builds/sapi-client.0.2.9.phar](https://s3.amazonaws.com/keboola-storage-api-cli/builds/sapi-client.0.2.9.phar),
-for PHP 5.3 you can use [https://s3.amazonaws.com/keboola-storage-api-cli/builds/sapi-client.0.1.9.phar](https://s3.amazonaws.com/keboola-storage-api-cli/builds/sapi-client.0.1.9.phar).
+Storage API CLI requires gzip and curl and PHP 5.6 or newer
 
+- latest PHAR version: [https://s3.amazonaws.com/keboola-storage-api-cli/builds/sapi-client.0.6.0.phar](https://s3.amazonaws.com/keboola-storage-api-cli/builds/sapi-client.0.9.1.phar)
+- last version to support PHP 5.5: [https://s3.amazonaws.com/keboola-storage-api-cli/builds/sapi-client.0.6.0.phar](https://s3.amazonaws.com/keboola-storage-api-cli/builds/sapi-client.0.6.0.phar)
+- last version to support PHP 5.4: [https://s3.amazonaws.com/keboola-storage-api-cli/builds/sapi-client.0.2.9.phar](https://s3.amazonaws.com/keboola-storage-api-cli/builds/sapi-client.0.2.9.phar)
+- last version to support PHP 5.3: [https://s3.amazonaws.com/keboola-storage-api-cli/builds/sapi-client.0.1.9.phar](https://s3.amazonaws.com/keboola-storage-api-cli/builds/sapi-client.0.1.9.phar)
 
 ```
 php sapi-client.phar
@@ -45,11 +48,11 @@ php sapi-client.phar list-buckets --token=your-token
 ```
 
 
-### Usage
-If you run the client without parameters (`docker run -i -t quay.io/keboola/storage-api-cli` or `php sapi-client.phar`, help will be displayed.
+## Usage
+If you run the client without parameters (`docker run quay.io/keboola/storage-api-cli`), help will be displayed.
 
 ```
-Keboola Storage API CLI version 0.7.0
+Keboola Storage API CLI version 1.0.0
 
 Usage:
   command [options] [arguments]
@@ -89,14 +92,9 @@ Available commands:
 You can also display help for any command by running it with the `--help` parameter, e.g:
 
 ```
-docker run -i -t quay.io/keboola/storage-api-cli export-table --help
+docker run quay.io/keboola/storage-api-cli export-table --help
 ```
 
-or
-
-```
-php sapi-client.phar export-table --help
-```
 
 ### export-table
 
@@ -131,20 +129,20 @@ These options can be combined freely. `whereValues` and `columns` options accept
 Simply export the table to `table.csv`:
 
 ```
-php sapi-client.phar --token=your_sapi_token export-table in.c-main.table table.csv
+docker run quay.io/keboola/storage-api-cli --token=your_sapi_token export-table in.c-main.table table.csv
 ```
 
 Export columns `Name` and `Id`:
 
 ```
-php sapi-client.phar --token=your_sapi_token export-table in.c-main.table table.csv \ 
+docker run quay.io/keboola/storage-api-cli --token=your_sapi_token export-table in.c-main.table table.csv \ 
 --columns=Name --columns=Id
 ```
 
 Export first 100 rows:
 
 ```
-php sapi-client.phar --token=your_sapi_token export-table in.c-main.table table.csv \
+docker run quay.io/keboola/storage-api-cli --token=your_sapi_token export-table in.c-main.table table.csv \
 --limit=1
 ```
 (note: sorting is not defined and depends on the storage backend)
@@ -152,7 +150,7 @@ php sapi-client.phar --token=your_sapi_token export-table in.c-main.table table.
 Export records where `AccountId = 001C000000ofWffIAE`:
 
 ```
-php sapi-client.phar --token=your_sapi_token export-table in.c-main.table table.csv \
+docker run quay.io/keboola/storage-api-cli --token=your_sapi_token export-table in.c-main.table table.csv \
 --whereColumn=AccountId --whereValues=001C000000ofWffIAE --whereOperator=eq
 ```
 (note: all three of the `where*` options need to be defined and `whereColumn` only accepts indexed columns)
@@ -160,14 +158,14 @@ php sapi-client.phar --token=your_sapi_token export-table in.c-main.table table.
 Export records where `AccountId != (001C000000ofWffIAE, 001C000000ofWffIAA)`:
 
 ```
-php sapi-client.phar --token=your_sapi_token export-table in.c-main.table table.csv \
+docker run quay.io/keboola/storage-api-cli --token=your_sapi_token export-table in.c-main.table table.csv \
 --whereColumn=AccountId --whereValues=001C000000ofWffIAE --whereValues=001C000000ofWffIAA --whereOperator=ne
 ```
 
 Export records modified in last 2 days::
 
 ```
-php sapi-client.phar --token=your_sapi_token export-table in.c-main.table table.csv \
+docker run quay.io/keboola/storage-api-cli --token=your_sapi_token export-table in.c-main.table table.csv \
 --whereColumn=AccountId --changedSince="-2 days"
 ```
 (note: `changedSince` accepts any datetime description that can be parsed by [strtotime PHP function](http://php.net/manual/en/function.strtotime.php)) 
@@ -175,35 +173,48 @@ php sapi-client.phar --token=your_sapi_token export-table in.c-main.table table.
 Export records modified in until 2 days ago:
 
 ```
-php sapi-client.phar --token=your_sapi_token export-table in.c-main.table table.csv \
+docker run quay.io/keboola/storage-api-cli --token=your_sapi_token export-table in.c-main.table table.csv \
 --whereColumn=AccountId --changedUntil="-2 days"
 ```
 (note: `changedUntil` accepts any datetime description that can be parsed by [strtotime PHP function](http://php.net/manual/en/function.strtotime.php)) 
 
 ## Development
 
+### Clone project
+
 ```
 git clone git@github.com:keboola/storage-api-cli.git
 cd storage-api-cli
-composer install
+docker-compose install
 ```
 
-Run tests with:
+### AWS and KBC Resources
+
+- Use [test-cf-stack.json](./test-cf-stack.json) to set up a CloudFormation stack with all required resources
+- Create two empty Keboola Connection projects 
+- Create `.env` file with the following environment variables
+
+```
+TEST_BACKUP_AWS_ACCESS_KEY_ID=
+TEST_BACKUP_AWS_SECRET_ACCESS_KEY=
+TEST_BACKUP_S3_BUCKET=
+TEST_RESTORE_AWS_ACCESS_KEY_ID=
+TEST_RESTORE_AWS_SECRET_ACCESS_KEY=
+TEST_RESTORE_S3_BUCKET=
+TEST_AWS_REGION=eu-
+TEST_STORAGE_API_TOKEN=
+TEST_STORAGE_API_SECONDARY_TOKEN=
+
+```  
+
+- Load fixtures to S3
+
+```
+docker-compose run sh 'php /code/tests/loadToS3.php'
+```
+
+- Run tests 
 
 ``` 
-docker-compose run 
-
-## Build
-Follow these steps to create a PHAR package of the current version:
-
-```
-curl -LSs http://box-project.github.io/box2/installer.php | php -dphar.readonly=0 ./box.phar build -v
-```
-
-`sapi-client.phar` archive will be created, you can execute it `./sapi-client.phar`
-
-Follow these steps to create a docker image of the current version:
-
-```
-docker-compose build app
+docker-compose run tests
 ```
