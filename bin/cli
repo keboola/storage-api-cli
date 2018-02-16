@@ -9,6 +9,15 @@ if (!file_exists($autoloadPath)) {
     exit(1);
 }
 
+set_error_handler(function ($errno, $errstr, $errfile, $errline, array $errcontext): bool {
+    if (!(error_reporting() & $errno)) {
+        // respect error_reporting() level
+        // libraries used in custom components may emit notices that cannot be fixed
+        return false;
+    }
+    throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
+});
+
 require_once $autoloadPath;
 
 use Keboola\StorageApi\Cli\Console\Application;
