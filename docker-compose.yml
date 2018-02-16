@@ -14,7 +14,8 @@ services:
   tests:
     build: .
     image: keboola/storage-api-cli
-    entrypoint: /code/phpunit.sh
+    entrypoint: []
+    command: ./phpunit.sh
     tty: true
     stdin_open: true
     volumes:
