@@ -137,6 +137,90 @@ class BackupProjectTest extends \PHPUnit_Framework_TestCase
         self::assertNotContains('versions', $targetConfiguration['rows'][0]);
     }
 
+    /**
+     * @dataProvider largeConfigurationsProvider
+     * @param int $configurationRowsCount
+     * @throws \Exception
+     */
+    public function testLargeConfigurations(int $configurationRowsCount)
+    {
+        $client = new Client(['token' => TEST_STORAGE_API_TOKEN]);
+        $config = new Configuration();
+        $config->setComponentId('transformation');
+        $config->setDescription('Test Configuration');
+        $config->setConfigurationId('sapi-php-test');
+        $config->setName('test-configuration');
+        $component = new Components($client);
+        $configData = $component->addConfiguration($config);
+        $config->setConfigurationId($configData['id']);
+
+        $largeRowConfiguration = [
+            'values' => []
+        ];
+        $valuesCount = 100;
+        for ($i = 0; $i < $valuesCount; $i++) {
+            $largeRowConfiguration['values'][] = sha1(random_bytes(128));
+        }
+
+        for ($i = 0; $i < $configurationRowsCount; $i++) {
+            $row = new ConfigurationRow($config);
+            $row->setChangeDescription('Row 1');
+            $row->setConfiguration($largeRowConfiguration);
+            $component->addConfigurationRow($row);
+        }
+
+        putenv('AWS_ACCESS_KEY_ID=' . TEST_BACKUP_AWS_ACCESS_KEY_ID);
+        putenv('AWS_SECRET_ACCESS_KEY=' . TEST_BACKUP_AWS_SECRET_ACCESS_KEY);
+        $application = new Application();
+        $application->setAutoExit(false);
+        $application->add(new BackupProject());
+        $applicationTester = new ApplicationTester($application);
+        $applicationTester->run([
+            'backup-project',
+            '--token' => TEST_STORAGE_API_TOKEN,
+            '--structure-only' => true,
+            'bucket' => TEST_BACKUP_S3_BUCKET,
+            'region' => TEST_AWS_REGION,
+            'path' => 'backup'
+        ]);
+
+
+        $tmp = sys_get_temp_dir() . DIRECTORY_SEPARATOR;
+        $s3Client = new S3Client([
+            'version' => 'latest',
+            'region' => TEST_AWS_REGION,
+            'credentials' => [
+                'key' => TEST_BACKUP_AWS_ACCESS_KEY_ID,
+                'secret' => TEST_BACKUP_AWS_SECRET_ACCESS_KEY,
+            ]
+        ]);
+        $targetFile = $tmp . $config->getConfigurationId() . 'configurations.json';
+        $s3Client->getObject([
+            'Bucket' => TEST_BACKUP_S3_BUCKET,
+            'Key' => 'backup/configurations/transformation/' . $config->getConfigurationId() . '.json',
+            'SaveAs' => $targetFile
+        ]);
+        $targetContents = file_get_contents($targetFile);
+        $targetConfiguration = json_decode($targetContents, true);
+        self::assertGreaterThan(0, count($targetConfiguration));
+        self::assertEquals('test-configuration', $targetConfiguration['name']);
+        self::assertEquals('Test Configuration', $targetConfiguration['description']);
+        self::assertArrayHasKey('rows', $targetConfiguration);
+        self::assertCount($configurationRowsCount, $targetConfiguration['rows']);
+    }
+
+    public function largeConfigurationsProvider()
+    {
+        return [
+            [
+                10,
+            ],
+            [
+                30,
+            ]
+        ];
+    }
+
     public function testPreserveEmptyObjectAndArray()
     {
         $client = new Client(['token' => TEST_STORAGE_API_TOKEN]);
