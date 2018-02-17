@@ -1,6 +1,6 @@
 <?php
 
-namespace Keboola\DockerBundle\Tests\Command;
+namespace Keboola\StorageApi\Cli\Tests\Command;
 
 use Aws\S3\S3Client;
 use Keboola\Csv\CsvFile;
@@ -14,14 +14,14 @@ use Keboola\StorageApi\Options\Components\Configuration;
 use Keboola\StorageApi\Options\Components\ConfigurationRow;
 use Symfony\Component\Console\Tester\ApplicationTester;
 
-class BackupProjectTest extends \PHPUnit_Framework_TestCase
+class BackupProjectTest extends BaseTest
 {
     private $s3path;
 
     public function setUp()
     {
         parent::setUp();
-        $client = new Client(['token' => TEST_STORAGE_API_TOKEN]);
+        $client = $this->createStorageClient();
         $component = new Components($client);
         try {
             $component->deleteConfiguration('transformation', 'sapi-php-test');
@@ -38,7 +38,7 @@ class BackupProjectTest extends \PHPUnit_Framework_TestCase
 
     public function testExecuteNoVersions()
     {
-        $client = new Client(['token' => TEST_STORAGE_API_TOKEN]);
+        $client = $this->createStorageClient();
         $config = new Configuration();
         $config->setComponentId('transformation');
         $config->setDescription('Test Configuration');
@@ -144,7 +144,7 @@ class BackupProjectTest extends \PHPUnit_Framework_TestCase
      */
     public function testLargeConfigurations(int $configurationRowsCount)
     {
-        $client = new Client(['token' => TEST_STORAGE_API_TOKEN]);
+        $client = $this->createStorageClient();
         $config = new Configuration();
         $config->setComponentId('transformation');
         $config->setDescription('Test Configuration');
@@ -184,7 +184,6 @@ class BackupProjectTest extends \PHPUnit_Framework_TestCase
             'path' => 'backup'
         ]);
 
-
         $tmp = sys_get_temp_dir() . DIRECTORY_SEPARATOR;
         $s3Client = new S3Client([
             'version' => 'latest',
@@ -223,7 +222,7 @@ class BackupProjectTest extends \PHPUnit_Framework_TestCase
 
     public function testPreserveEmptyObjectAndArray()
     {
-        $client = new Client(['token' => TEST_STORAGE_API_TOKEN]);
+        $client = $this->createStorageClient();
         $config = new Configuration();
         $config->setComponentId('transformation');
         $config->setDescription('Test Configuration');
@@ -328,7 +327,7 @@ class BackupProjectTest extends \PHPUnit_Framework_TestCase
 
     public function testExecuteMetadata()
     {
-        $client = new Client(['token' => TEST_STORAGE_API_TOKEN]);
+        $client = $this->createStorageClient();
         $client->createBucket("main", Client::STAGE_IN);
         $client->createTable("in.c-main", "sample", new CsvFile(__DIR__ . "/../data/sample.csv"));
         $metadata = new Metadata($client);
@@ -402,7 +401,7 @@ class BackupProjectTest extends \PHPUnit_Framework_TestCase
 
     public function testExecuteWithoutPath()
     {
-        $client = new Client(['token' => TEST_STORAGE_API_TOKEN]);
+        $client = $this->createStorageClient();
         $client->createBucket("main", Client::STAGE_IN);
         $client->createTable("in.c-main", "sample", new CsvFile(__DIR__ . "/../data/sample.csv"));
 
@@ -445,7 +444,7 @@ class BackupProjectTest extends \PHPUnit_Framework_TestCase
 
     public function tearDown()
     {
-        $client = new Client(['token' => TEST_STORAGE_API_TOKEN]);
+        $client = $this->createStorageClient();
         $component = new Components($client);
         try {
             $component->deleteConfiguration('transformation', 'sapi-php-test');

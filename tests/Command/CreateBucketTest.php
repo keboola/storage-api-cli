@@ -1,6 +1,6 @@
 <?php
 
-namespace Keboola\DockerBundle\Tests\Command;
+namespace Keboola\StorageApi\Cli\Tests\Command;
 
 use Keboola\StorageApi\Cli\Command\CreateBucket;
 use Keboola\StorageApi\Cli\Command\PurgeProject;
@@ -8,7 +8,7 @@ use Keboola\StorageApi\Cli\Console\Application;
 use Keboola\StorageApi\Client;
 use Symfony\Component\Console\Tester\ApplicationTester;
 
-class CreateBucketTest extends \PHPUnit_Framework_TestCase
+class CreateBucketTest extends BaseTest
 {
     public function testExecute()
     {
@@ -27,7 +27,7 @@ class CreateBucketTest extends \PHPUnit_Framework_TestCase
         self::assertContains('Bucket created: in.c-clientTest', $applicationTester->getDisplay());
         self::assertEquals(0, $applicationTester->getStatusCode());
         // check for the results
-        $client = new Client(['token' => TEST_STORAGE_API_TOKEN]);
+        $client = $this->createStorageClient();
         $bucket = $client->getBucket('in.c-clientTest');
         self::assertEquals('c-clientTest', $bucket['name']);
         self::assertEquals('Client testing', $bucket['description']);

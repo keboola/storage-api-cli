@@ -1,6 +1,6 @@
 <?php
 
-namespace Keboola\DockerBundle\Tests\Command;
+namespace Keboola\StorageApi\Cli\Tests\Command;
 
 use Keboola\Csv\CsvFile;
 use Keboola\StorageApi\Cli\Command\DeleteMetadata;
@@ -11,11 +11,11 @@ use Keboola\StorageApi\Metadata;
 use Keboola\Temp\Temp;
 use Symfony\Component\Console\Tester\ApplicationTester;
 
-class DeleteMetadataTest extends \PHPUnit_Framework_TestCase
+class DeleteMetadataTest extends BaseTest
 {
     public function setUp()
     {
-        $client = new Client(['token' => TEST_STORAGE_API_TOKEN]);
+        $client = $this->createStorageClient();
         $client->createBucket("main", Client::STAGE_IN);
         $client->createBucket("meta-test", Client::STAGE_IN);
         $temp = new Temp();
@@ -60,7 +60,7 @@ class DeleteMetadataTest extends \PHPUnit_Framework_TestCase
         self::assertEquals(0, $applicationTester->getStatusCode());
 
         // check for the results
-        $client = new Client(['token' => TEST_STORAGE_API_TOKEN]);
+        $client = $this->createStorageClient();
         $metadata = new Metadata($client);
         $bucketMetadata = $metadata->listBucketMetadata('in.c-main');
         $this->compareMetadata(
@@ -107,7 +107,7 @@ class DeleteMetadataTest extends \PHPUnit_Framework_TestCase
         self::assertEquals(0, $applicationTester->getStatusCode());
 
         // check for the results
-        $client = new Client(['token' => TEST_STORAGE_API_TOKEN]);
+        $client = $this->createStorageClient();
         $metadata = new Metadata($client);
         $bucketMetadata = $metadata->listBucketMetadata('in.c-main');
         $this->compareMetadata(
@@ -145,7 +145,7 @@ class DeleteMetadataTest extends \PHPUnit_Framework_TestCase
         self::assertEquals(0, $applicationTester->getStatusCode());
 
         // check for the results
-        $client = new Client(['token' => TEST_STORAGE_API_TOKEN]);
+        $client = $this->createStorageClient();
         $metadata = new Metadata($client);
         $bucketMetadata = $metadata->listBucketMetadata('in.c-main');
         $this->compareMetadata([], $bucketMetadata);
@@ -180,7 +180,7 @@ class DeleteMetadataTest extends \PHPUnit_Framework_TestCase
         self::assertEquals(0, $applicationTester->getStatusCode());
 
         // check for the results
-        $client = new Client(['token' => TEST_STORAGE_API_TOKEN]);
+        $client = $this->createStorageClient();
         $metadata = new Metadata($client);
         $bucketMetadata = $metadata->listBucketMetadata('in.c-main');
         $this->compareMetadata([], $bucketMetadata);

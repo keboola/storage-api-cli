@@ -1,6 +1,6 @@
 <?php
 
-namespace Keboola\DockerBundle\Tests\Command;
+namespace Keboola\StorageApi\Cli\Tests\Command;
 
 use Keboola\StorageApi\Cli\Command\ListEvents;
 use Keboola\StorageApi\Cli\Command\PurgeProject;
@@ -8,11 +8,11 @@ use Keboola\StorageApi\Cli\Console\Application;
 use Keboola\StorageApi\Client;
 use Symfony\Component\Console\Tester\ApplicationTester;
 
-class ListEventsTest extends \PHPUnit_Framework_TestCase
+class ListEventsTest extends BaseTest
 {
     public function setUp()
     {
-        $client = new Client(['token' => TEST_STORAGE_API_TOKEN]);
+        $client = $this->createStorageClient();
         $client->createBucket('empty-test', 'in');
     }
 

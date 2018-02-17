@@ -45,6 +45,7 @@ class CopyBucket extends Command
         // Different token
         if ($input->getArgument('dstToken')) {
             $sapiClientDst = new Client([
+                'url' => $input->getOption('url'),
                 'token' => $input->getArgument('dstToken'),
                 'userAgent' => $this->getApplication()->userAgent(),
             ]);

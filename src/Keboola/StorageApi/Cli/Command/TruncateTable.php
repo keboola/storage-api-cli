@@ -10,6 +10,7 @@
 namespace Keboola\StorageApi\Cli\Command;
 
 use Keboola\Csv\CsvFile;
+use Keboola\StorageApi\TableExporter;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -41,10 +42,14 @@ class TruncateTable extends Command
 
         $tmpFile = $this->getTmpDir() . "/" . $input->getArgument('tableId') . ".csv";
 
-        $sapiClient->exportTable(
+        $exporter = new TableExporter($sapiClient);
+
+        $exporter->exportTable(
             $input->getArgument('tableId'),
             $tmpFile,
-            array("limit" => 1)
+            [
+                "limit" => 1,
+            ]
         );
 
         $csvFile = new CsvFile($tmpFile);

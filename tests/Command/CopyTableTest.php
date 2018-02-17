@@ -1,5 +1,5 @@
 <?php
-namespace Keboola\DockerBundle\Tests\Command;
+namespace Keboola\StorageApi\Cli\Tests\Command;
 
 use Keboola\Csv\CsvFile;
 use Keboola\StorageApi\Cli\Command\CopyTable;
@@ -9,14 +9,14 @@ use Keboola\StorageApi\Client;
 use Keboola\Temp\Temp;
 use Symfony\Component\Console\Tester\ApplicationTester;
 
-class CopyTableTest extends \PHPUnit_Framework_TestCase
+class CopyTableTest extends BaseTest
 {
     private $temp;
 
     public function setUp()
     {
         // add configs
-        $client = new Client(['token' => TEST_STORAGE_API_TOKEN]);
+        $client = $this->createStorageClient();
 
         // add table
         $client->createBucket("main", Client::STAGE_IN);
@@ -63,7 +63,7 @@ class CopyTableTest extends \PHPUnit_Framework_TestCase
             self::assertEquals(0, $applicationTester->getStatusCode());
 
             // check for the results
-            $client = new Client(['token' => TEST_STORAGE_API_TOKEN]);
+            $client = $this->createStorageClient();
 
             $table = $client->getTable($tableId . 'Copy');
             self::assertArrayHasKey('primaryKey', $table);

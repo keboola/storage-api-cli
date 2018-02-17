@@ -11,7 +11,7 @@
   "require": {
     "symfony/console": "^2.8",
     "symfony/filesystem": "^2.8",
-    "keboola/storage-api-client": "^6.0",
+    "keboola/storage-api-client": "^8.0",
     "keboola/php-temp": "^0.1",
     "keboola/symfony-console-nested-formatter-helper": "^0.1",
     "phpunit/phpunit": "^5.7",
@@ -19,5 +19,8 @@
   },
   "autoload": {
     "psr-0": {"Keboola\\StorageApi\\Cli": "src/"}
+  },
+  "autoload-dev": {
+    "psr-4": {"Keboola\\StorageApi\\Cli\\Tests\\": "tests/"}
   }
 }
