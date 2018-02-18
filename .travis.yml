@@ -4,14 +4,10 @@ services:
   - docker
 install:
   - docker-compose build
+  - docker-compose run --rm tests-ci php tests/loadToS3.php
 script:
   - docker-compose run --rm tests-ci
-after_success:
-  - docker images
-after_error:
-  - docker-compose logs
-after_failure:
-  - docker-compose logs
+  - docker run --rm keboola/storage-api-cli
 deploy:
   provider: script
   skip_cleanup: true
