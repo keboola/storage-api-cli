@@ -24,6 +24,17 @@ class RestoreProjectTest extends BaseTest
     public function setUp()
     {
         $this->temp = new Temp();
+
+        // purge project
+        $application = new Application();
+        $application->setAutoExit(false);
+        $application->add(new PurgeProject());
+        $applicationTester = new ApplicationTester($application);
+        $applicationTester->run([
+            'purge-project',
+            '--token' => TEST_STORAGE_API_TOKEN
+        ]);
+
         // clean up components configs in test project
         $client = $this->createStorageClient();
         $components = new Components($client);
@@ -228,6 +239,7 @@ class RestoreProjectTest extends BaseTest
         $applicationTester = $this->runCommand(self::S3_PATH . 'configurations/');
         self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
 
+        print $applicationTester->getDisplay();
         $client = $this->createStorageClient();
         $components = new Components($client);
         $componentsList = $components->listComponents();
@@ -426,18 +438,5 @@ class RestoreProjectTest extends BaseTest
             'path' => $path
         ]);
         return $applicationTester;
-    }
-
-    public function tearDown()
-    {
-        // purge project
-        $application = new Application();
-        $application->setAutoExit(false);
-        $application->add(new PurgeProject());
-        $applicationTester = new ApplicationTester($application);
-        $applicationTester->run([
-            'purge-project',
-            '--token' => TEST_STORAGE_API_TOKEN
-        ]);
     }
 }
