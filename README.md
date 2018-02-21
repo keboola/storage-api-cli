@@ -17,36 +17,6 @@ or with parameters:
 docker run quay.io/keboola/storage-api-cli list-buckets --token=your-token
 ```
 
-## Running PHAR (DEPRECATED)
-
-Since version 1.0.0 running PHAR versions is deprecated. Use the Docker image instead.
-
-Download the latest version from [https://s3.amazonaws.com/keboola-storage-api-cli/builds/sapi-client.phar](https://s3.amazonaws.com/keboola-storage-api-cli/builds/sapi-client.phar) e.g:
-
-```
-curl -sS --fail https://s3.amazonaws.com/keboola-storage-api-cli/builds/sapi-client.phar --output sapi-client.phar
-```
-
-From there, you may place it anywhere that will make it easier for you to access (such as /usr/local/bin) and chmod it to 755.
-You can even rename it to just sapi-client to avoid having to type the .phar extension every time.
-
-Storage API CLI requires gzip and curl and PHP 5.6 or newer
-
-- latest PHAR version: [https://s3.amazonaws.com/keboola-storage-api-cli/builds/sapi-client.0.6.0.phar](https://s3.amazonaws.com/keboola-storage-api-cli/builds/sapi-client.0.9.1.phar)
-- last version to support PHP 5.5: [https://s3.amazonaws.com/keboola-storage-api-cli/builds/sapi-client.0.6.0.phar](https://s3.amazonaws.com/keboola-storage-api-cli/builds/sapi-client.0.6.0.phar)
-- last version to support PHP 5.4: [https://s3.amazonaws.com/keboola-storage-api-cli/builds/sapi-client.0.2.9.phar](https://s3.amazonaws.com/keboola-storage-api-cli/builds/sapi-client.0.2.9.phar)
-- last version to support PHP 5.3: [https://s3.amazonaws.com/keboola-storage-api-cli/builds/sapi-client.0.1.9.phar](https://s3.amazonaws.com/keboola-storage-api-cli/builds/sapi-client.0.1.9.phar)
-
-```
-php sapi-client.phar
-```
-
-or with parameters:
-
-```
-php sapi-client.phar list-buckets --token=your-token
-```
-
 ## Usage
 If you run the client without parameters (`docker run quay.io/keboola/storage-api-cli`), help will be displayed.
 
