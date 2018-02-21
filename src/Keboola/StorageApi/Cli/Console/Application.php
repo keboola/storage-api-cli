@@ -25,7 +25,7 @@ class Application extends BaseApplication
     private const DEFAULT_SAPI_URL = 'https://connection.keboola.com';
 
     /**
-     * @var \Keboola\StorageApi\Client
+     * @var \Keboola\StorageApi\Client|null
      */
     private $sapiClient;
 

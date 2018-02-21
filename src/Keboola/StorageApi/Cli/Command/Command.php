@@ -143,4 +143,11 @@ abstract class Command extends BaseCommand
         }
         return $success;
     }
+
+    public function getUserAgent(): string
+    {
+       $application = $this->getApplication();
+       assert($application instanceof Application);
+       return $application->userAgent();
+    }
 }

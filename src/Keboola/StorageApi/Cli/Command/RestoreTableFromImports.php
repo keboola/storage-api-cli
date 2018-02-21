@@ -278,12 +278,11 @@ class RestoreTableFromImports extends Command
 
     private function fetchFileFromBackup($url, $destinationPath)
     {
-        $fh = fopen($destinationPath, 'w');
-        if (!$fh) {
-            throw new \Exception("Could not open file");
-        }
-        $request = $this->httpClient->get($url);
-        $request->setResponseBody($fh);
-        $request->send();
+        $this->httpClient->get(
+            $url,
+            [
+                'sink' => $destinationPath,
+            ]
+        );
     }
 }

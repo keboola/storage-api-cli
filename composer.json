@@ -16,6 +16,7 @@
     "symfony/filesystem": "^2.8"
   },
   "require-dev": {
+    "phpstan/phpstan-shim": "^0.9.2",
     "phpunit/phpunit": "^5.7",
     "slevomat/coding-standard": "^4.4",
     "squizlabs/php_codesniffer": "^3.0"
@@ -23,8 +24,10 @@
   "scripts": {
     "tests": "phpunit --debug",
     "phpcs": "phpcs -n --ignore=vendor --extensions=php .",
+    "phpstan": "phpstan analyse ./src ./tests --level=max --no-progress -c phpstan.neon",
     "build": [
       "@phpcs",
+      "@phpstan",
       "@tests"
     ],
     "ci": [

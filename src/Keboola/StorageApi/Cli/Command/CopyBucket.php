@@ -47,7 +47,7 @@ class CopyBucket extends Command
             $sapiClientDst = new Client([
                 'url' => $input->getOption('url'),
                 'token' => $input->getArgument('dstToken'),
-                'userAgent' => $this->getApplication()->userAgent(),
+                'userAgent' => $this->getUserAgent(),
             ]);
         } else {
             $sapiClientDst = $sapiClient;
