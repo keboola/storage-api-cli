@@ -89,7 +89,7 @@ class CopyBucketTest extends BaseTest
         // check for the results
         $client = new Client([
             'url' => TEST_STORAGE_API_URL,
-            'token' => TEST_STORAGE_API_SECONDARY_TOKEN
+            'token' => TEST_STORAGE_API_SECONDARY_TOKEN,
         ]);
         self::assertTrue($client->bucketExists('in.c-destination'));
         self::assertTrue($client->tableExists('in.c-destination.some-table'));
@@ -104,7 +104,7 @@ class CopyBucketTest extends BaseTest
         $applicationTester = new ApplicationTester($application);
         $applicationTester->run([
             'purge-project',
-            '--token' => TEST_STORAGE_API_TOKEN
+            '--token' => TEST_STORAGE_API_TOKEN,
         ]);
 
         $client = new Client([

@@ -15,7 +15,7 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class BackupProject extends Command
 {
-    const VERSION_LIMIT = 2;
+    private const VERSION_LIMIT = 2;
 
     public function configure()
     {
@@ -28,7 +28,7 @@ class BackupProject extends Command
                 new InputArgument('path', InputArgument::OPTIONAL, 'path in S3', '/'),
                 new InputArgument('region', InputArgument::OPTIONAL, 'region', 'us-east-1'),
                 new InputOption('structure-only', '-s', InputOption::VALUE_NONE, 'Backup only structure'),
-                new InputOption('include-versions', '-i', InputOption::VALUE_NONE, 'Include configuration versions in backup')
+                new InputOption('include-versions', '-i', InputOption::VALUE_NONE, 'Include configuration versions in backup'),
             ]);
     }
 
@@ -49,7 +49,7 @@ class BackupProject extends Command
         $sapiClient = $this->getSapiClient();
 
         $tables = $sapiClient->listTables(null, [
-            'include' => 'attributes,columns,buckets,metadata,columnMetadata'
+            'include' => 'attributes,columns,buckets,metadata,columnMetadata',
         ]);
         $output->write("Exporting tables\n");
         $s3->putObject([
@@ -177,7 +177,7 @@ class BackupProject extends Command
                 "key" => $fileInfo["credentials"]["AccessKeyId"],
                 "secret" => $fileInfo["credentials"]["SecretAccessKey"],
                 "token" => $fileInfo["credentials"]["SessionToken"],
-            ]
+            ],
         ]);
 
         $fs = new Filesystem();

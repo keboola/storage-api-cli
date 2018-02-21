@@ -16,8 +16,6 @@ use Symfony\Component\Console\Tester\ApplicationTester;
 
 class BackupProjectTest extends BaseTest
 {
-    private $s3path;
-
     public function setUp()
     {
         parent::setUp();
@@ -25,7 +23,7 @@ class BackupProjectTest extends BaseTest
         $component = new Components($client);
         try {
             $component->deleteConfiguration('transformation', 'sapi-php-test');
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             if ($e->getCode() != 404) {
                 throw $e;
             }
@@ -33,7 +31,6 @@ class BackupProjectTest extends BaseTest
         foreach ($client->listBuckets() as $bucket) {
             $client->dropBucket($bucket["id"], ["force" => true]);
         }
-        $this->s3path = 'cli-client-test/';
     }
 
     public function testExecuteNoVersions()
@@ -74,7 +71,7 @@ class BackupProjectTest extends BaseTest
             '--structure-only' => true,
             'bucket' => TEST_BACKUP_S3_BUCKET,
             'region' => TEST_AWS_REGION,
-            'path' => 'backup'
+            'path' => 'backup',
         ]);
         $ret = $applicationTester->getDisplay();
         self::assertContains('Exporting buckets', $ret);
@@ -88,13 +85,13 @@ class BackupProjectTest extends BaseTest
             'credentials' => [
                 'key' => TEST_BACKUP_AWS_ACCESS_KEY_ID,
                 'secret' => TEST_BACKUP_AWS_SECRET_ACCESS_KEY,
-            ]
+            ],
         ]);
         $targetFile = $tmp . 'configurations.json';
         $s3Client->getObject([
             'Bucket' => TEST_BACKUP_S3_BUCKET,
             'Key' => 'backup/configurations.json',
-            'SaveAs' => $targetFile
+            'SaveAs' => $targetFile,
         ]);
         $targetContents = file_get_contents($targetFile);
         $targetData = json_decode($targetContents, true);
@@ -122,7 +119,7 @@ class BackupProjectTest extends BaseTest
         $s3Client->getObject([
             'Bucket' => TEST_BACKUP_S3_BUCKET,
             'Key' => 'backup/configurations/transformation/' . $configurationId . '.json',
-            'SaveAs' => $targetFile
+            'SaveAs' => $targetFile,
         ]);
         $targetContents = file_get_contents($targetFile);
         $targetConfiguration = json_decode($targetContents, true);
@@ -155,7 +152,7 @@ class BackupProjectTest extends BaseTest
         $config->setConfigurationId($configData['id']);
 
         $largeRowConfiguration = [
-            'values' => []
+            'values' => [],
         ];
         $valuesCount = 100;
         for ($i = 0; $i < $valuesCount; $i++) {
@@ -181,7 +178,7 @@ class BackupProjectTest extends BaseTest
             '--structure-only' => true,
             'bucket' => TEST_BACKUP_S3_BUCKET,
             'region' => TEST_AWS_REGION,
-            'path' => 'backup'
+            'path' => 'backup',
         ]);
 
         $tmp = sys_get_temp_dir() . DIRECTORY_SEPARATOR;
@@ -191,13 +188,13 @@ class BackupProjectTest extends BaseTest
             'credentials' => [
                 'key' => TEST_BACKUP_AWS_ACCESS_KEY_ID,
                 'secret' => TEST_BACKUP_AWS_SECRET_ACCESS_KEY,
-            ]
+            ],
         ]);
         $targetFile = $tmp . $config->getConfigurationId() . 'configurations.json';
         $s3Client->getObject([
             'Bucket' => TEST_BACKUP_S3_BUCKET,
             'Key' => 'backup/configurations/transformation/' . $config->getConfigurationId() . '.json',
-            'SaveAs' => $targetFile
+            'SaveAs' => $targetFile,
         ]);
         $targetContents = file_get_contents($targetFile);
         $targetConfiguration = json_decode($targetContents, true);
@@ -216,7 +213,7 @@ class BackupProjectTest extends BaseTest
             ],
             [
                 30,
-            ]
+            ],
         ];
     }
 
@@ -231,7 +228,7 @@ class BackupProjectTest extends BaseTest
         $config->setConfiguration(
             [
                 "dummyObject" => new \stdClass(),
-                "dummyArray" => []
+                "dummyArray" => [],
             ]
         );
         $component = new Components($client);
@@ -249,7 +246,7 @@ class BackupProjectTest extends BaseTest
                 'type' => 'r',
                 'queries' => ['foo'],
                 "dummyObject" => new \stdClass(),
-                "dummyArray" => []
+                "dummyArray" => [],
             ]
         );
         $component->addConfigurationRow($row);
@@ -263,7 +260,7 @@ class BackupProjectTest extends BaseTest
                 'type' => 'r',
                 'queries' => ['bar'],
                 "dummyObject" => new \stdClass(),
-                "dummyArray" => []
+                "dummyArray" => [],
             ]
         );
         $component->addConfigurationRow($row);
@@ -280,7 +277,7 @@ class BackupProjectTest extends BaseTest
             '--structure-only' => true,
             'bucket' => TEST_BACKUP_S3_BUCKET,
             'region' => TEST_AWS_REGION,
-            'path' => 'backup'
+            'path' => 'backup',
         ]);
         self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
         $ret = $applicationTester->getDisplay();
@@ -295,13 +292,13 @@ class BackupProjectTest extends BaseTest
             'credentials' => [
                 'key' => TEST_BACKUP_AWS_ACCESS_KEY_ID,
                 'secret' => TEST_BACKUP_AWS_SECRET_ACCESS_KEY,
-            ]
+            ],
         ]);
         $targetFile = $tmp . 'configurations.json';
         $s3Client->getObject([
             'Bucket' => TEST_BACKUP_S3_BUCKET,
             'Key' => 'backup/configurations.json',
-            'SaveAs' => $targetFile
+            'SaveAs' => $targetFile,
         ]);
         $targetContents = file_get_contents($targetFile);
         $targetData = json_decode($targetContents);
@@ -315,7 +312,7 @@ class BackupProjectTest extends BaseTest
         $s3Client->getObject([
             'Bucket' => TEST_BACKUP_S3_BUCKET,
             'Key' => 'backup/configurations/transformation/' . $configurationId . '.json',
-            'SaveAs' => $targetFile
+            'SaveAs' => $targetFile,
         ]);
         $targetContents = file_get_contents($targetFile);
         $targetConfiguration = json_decode($targetContents);
@@ -334,20 +331,20 @@ class BackupProjectTest extends BaseTest
         $metadata->postBucketMetadata("in.c-main", "system", [
             [
                 "key" => "bucketKey",
-                "value" => "bucketValue"
-            ]
+                "value" => "bucketValue",
+            ],
         ]);
         $metadata->postTableMetadata("in.c-main.sample", "system", [
             [
                 "key" => "tableKey",
-                "value" => "tableValue"
-            ]
+                "value" => "tableValue",
+            ],
         ]);
         $metadata->postColumnMetadata("in.c-main.sample.col1", "system", [
             [
                 "key" => "columnKey",
-                "value" => "columnValue"
-            ]
+                "value" => "columnValue",
+            ],
         ]);
 
         putenv('AWS_ACCESS_KEY_ID=' . TEST_BACKUP_AWS_ACCESS_KEY_ID);
@@ -362,7 +359,7 @@ class BackupProjectTest extends BaseTest
             '--structure-only' => true,
             'bucket' => TEST_BACKUP_S3_BUCKET,
             'region' => TEST_AWS_REGION,
-            'path' => 'backup'
+            'path' => 'backup',
         ]);
         self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
 
@@ -373,14 +370,14 @@ class BackupProjectTest extends BaseTest
             'credentials' => [
                 'key' => TEST_BACKUP_AWS_ACCESS_KEY_ID,
                 'secret' => TEST_BACKUP_AWS_SECRET_ACCESS_KEY,
-            ]
+            ],
         ]);
 
         $targetFile = $tmp . 'buckets.json';
         $s3Client->getObject([
             'Bucket' => TEST_BACKUP_S3_BUCKET,
             'Key' => 'backup/buckets.json',
-            'SaveAs' => $targetFile
+            'SaveAs' => $targetFile,
         ]);
         $data = json_decode(file_get_contents($targetFile), true);
         $this->assertEquals("bucketKey", $data[0]["metadata"][0]["key"]);
@@ -390,7 +387,7 @@ class BackupProjectTest extends BaseTest
         $s3Client->getObject([
             'Bucket' => TEST_BACKUP_S3_BUCKET,
             'Key' => 'backup/tables.json',
-            'SaveAs' => $targetFile
+            'SaveAs' => $targetFile,
         ]);
         $data = json_decode(file_get_contents($targetFile), true);
         $this->assertEquals("tableKey", $data[0]["metadata"][0]["key"]);
@@ -417,7 +414,7 @@ class BackupProjectTest extends BaseTest
             '--structure-only' => true,
             'bucket' => TEST_BACKUP_S3_BUCKET,
             'region' => TEST_AWS_REGION,
-            'path' => ''
+            'path' => '',
         ]);
         self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
 
@@ -427,13 +424,13 @@ class BackupProjectTest extends BaseTest
             'credentials' => [
                 'key' => TEST_BACKUP_AWS_ACCESS_KEY_ID,
                 'secret' => TEST_BACKUP_AWS_SECRET_ACCESS_KEY,
-            ]
+            ],
         ]);
 
         $keys = array_map(function ($key) {
             return $key["Key"];
         }, $s3Client->listObjects([
-            'Bucket' => TEST_BACKUP_S3_BUCKET
+            'Bucket' => TEST_BACKUP_S3_BUCKET,
         ])->toArray()["Contents"]);
 
         self::assertTrue(in_array('buckets.json', $keys));
@@ -448,7 +445,7 @@ class BackupProjectTest extends BaseTest
         $component = new Components($client);
         try {
             $component->deleteConfiguration('transformation', 'sapi-php-test');
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             if ($e->getCode() != 404) {
                 throw $e;
             }
@@ -460,7 +457,7 @@ class BackupProjectTest extends BaseTest
             'credentials' => [
                 'key' => TEST_BACKUP_AWS_ACCESS_KEY_ID,
                 'secret' => TEST_BACKUP_AWS_SECRET_ACCESS_KEY,
-            ]
+            ],
         ]);
         $keys = $s3Client->listObjects(['Bucket' => TEST_BACKUP_S3_BUCKET]);
         $keys = $keys->toArray()['Contents'];
@@ -473,7 +470,7 @@ class BackupProjectTest extends BaseTest
             $s3Client->deleteObjects(
                 [
                     'Bucket' => TEST_BACKUP_S3_BUCKET,
-                    'Delete' => ['Objects' => $deleteObjects]
+                    'Delete' => ['Objects' => $deleteObjects],
                 ]
             );
         }

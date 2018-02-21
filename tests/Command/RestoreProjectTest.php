@@ -14,7 +14,7 @@ use Symfony\Component\Console\Tester\ApplicationTester;
 
 class RestoreProjectTest extends BaseTest
 {
-    const S3_PATH = '';
+    private const S3_PATH = '';
 
     /**
      * @var Temp
@@ -32,7 +32,7 @@ class RestoreProjectTest extends BaseTest
         $applicationTester = new ApplicationTester($application);
         $applicationTester->run([
             'purge-project',
-            '--token' => TEST_STORAGE_API_TOKEN
+            '--token' => TEST_STORAGE_API_TOKEN,
         ]);
 
         // clean up components configs in test project
@@ -90,13 +90,13 @@ class RestoreProjectTest extends BaseTest
                 [
                     "name" => "myKey",
                     "value" => "myValue",
-                    "protected" => false
+                    "protected" => false,
                 ],
                 [
                     "name" => "myProtectedKey",
                     "value" => "myProtectedValue",
-                    "protected" => true
-                ]
+                    "protected" => true,
+                ],
             ],
             $client->getBucket("in.c-bucket1")["attributes"]
         );
@@ -184,13 +184,13 @@ class RestoreProjectTest extends BaseTest
                 [
                     "name" => "myKey",
                     "value" => "myValue",
-                    "protected" => false
+                    "protected" => false,
                 ],
                 [
                     "name" => "myProtectedKey",
                     "value" => "myProtectedValue",
-                    "protected" => true
-                ]
+                    "protected" => true,
+                ],
             ],
             $client->getTable("in.c-bucket.Account")["attributes"]
         );
@@ -435,7 +435,7 @@ class RestoreProjectTest extends BaseTest
             '--data' => $onlyData,
             'bucket' => TEST_RESTORE_S3_BUCKET,
             'region' => TEST_AWS_REGION,
-            'path' => $path
+            'path' => $path,
         ]);
         return $applicationTester;
     }

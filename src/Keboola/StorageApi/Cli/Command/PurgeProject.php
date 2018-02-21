@@ -26,7 +26,7 @@ class PurgeProject extends Command
                 new InputOption('configurations', '-c', InputOption::VALUE_NONE, 'Purge configurations'),
                 new InputOption('aliases', '-a', InputOption::VALUE_NONE, 'Purge aliases'),
                 new InputOption('data', '-d', InputOption::VALUE_NONE, 'Purge tables, aliases and buckets'),
-                new InputOption('file-uploads', '-f', InputOption::VALUE_NONE, 'Purge file uploads')
+                new InputOption('file-uploads', '-f', InputOption::VALUE_NONE, 'Purge file uploads'),
             ]);
     }
 

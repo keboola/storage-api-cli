@@ -20,7 +20,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class Application extends BaseApplication
 {
-    const VERSION = '1.0.0';
+    private const VERSION = '1.0.0';
 
     private const DEFAULT_SAPI_URL = 'https://connection.keboola.com';
 

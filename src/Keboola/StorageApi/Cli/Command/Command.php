@@ -132,7 +132,7 @@ abstract class Command extends BaseCommand
         $client = new \GuzzleHttp\Client();
         try {
             $res = $client->request('GET', 'https://connection.keboola.com');
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             $output->writeln('<error>Cannot communicate securely: ' . $e->getMessage() . '</error>');
             $success = false;
         }

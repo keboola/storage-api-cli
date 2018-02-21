@@ -37,7 +37,7 @@ class RestoreProject extends Command
                 new InputArgument('region', InputArgument::OPTIONAL, 'region', 'us-east-1'),
                 new InputOption('ignore-storage-backend', '-i', InputOption::VALUE_NONE, 'Restore all tables to the default backend'),
                 new InputOption('configurations', '-c', InputOption::VALUE_NONE, 'Restore only configurations'),
-                new InputOption('data', '-d', InputOption::VALUE_NONE, 'Restore only tables, aliases and buckets')
+                new InputOption('data', '-d', InputOption::VALUE_NONE, 'Restore only tables, aliases and buckets'),
             ]);
     }
 
@@ -69,7 +69,7 @@ class RestoreProject extends Command
                 [
                     'Bucket' => $bucket,
                     'Key' => $basePath . 'buckets.json',
-                    'SaveAs' => $tmp->getTmpFolder() . 'buckets.json'
+                    'SaveAs' => $tmp->getTmpFolder() . 'buckets.json',
                 ]
             );
             $buckets = json_decode(file_get_contents($tmp->getTmpFolder() . 'buckets.json'), true);
@@ -146,7 +146,7 @@ class RestoreProject extends Command
                 [
                     'Bucket' => $bucket,
                     'Key' => $basePath . 'tables.json',
-                    'SaveAs' => $tmp->getTmpFolder() . '/tables.json'
+                    'SaveAs' => $tmp->getTmpFolder() . '/tables.json',
                 ]
             );
             $output->writeln($this->check());
@@ -178,7 +178,7 @@ class RestoreProject extends Command
                 $slices = $s3->listObjects(
                     [
                         'Bucket' => $bucket,
-                        'Prefix' => $prefix
+                        'Prefix' => $prefix,
                     ]
                 );
 
@@ -196,7 +196,7 @@ class RestoreProject extends Command
                         [
                             'Bucket' => $bucket,
                             'Key' => $slices["Contents"][0]["Key"],
-                            'SaveAs' => $fileName
+                            'SaveAs' => $fileName,
                         ]
                     );
                     $fileUploadOptions = new FileUploadOptions();
@@ -207,14 +207,14 @@ class RestoreProject extends Command
                         $tableId,
                         [
                             "name" => $table["name"],
-                            "dataFileId" => $fileId
+                            "dataFileId" => $fileId,
                         ]
                     );
                 } else {
                     // sliced file, requires some more work
                     // prepare manifest and prepare upload params
                     $manifest = [
-                        "entries" => []
+                        "entries" => [],
                     ];
                     $fileUploadOptions = new FileUploadOptions();
                     $fileUploadOptions
@@ -229,10 +229,10 @@ class RestoreProject extends Command
                             "credentials" => [
                                 "key" => $uploadParams["credentials"]["AccessKeyId"],
                                 "secret" => $uploadParams["credentials"]["SecretAccessKey"],
-                                "token" => $uploadParams["credentials"]["SessionToken"]
+                                "token" => $uploadParams["credentials"]["SessionToken"],
                             ],
                             "region" => $fileUploadInfo["region"],
-                            "version" => "2006-03-01"
+                            "version" => "2006-03-01",
                         ]
                     );
                     $fs = new Filesystem();
@@ -245,13 +245,13 @@ class RestoreProject extends Command
                             [
                                 'Bucket' => $bucket,
                                 'Key' => $slice["Key"],
-                                'SaveAs' => $fileName
+                                'SaveAs' => $fileName,
                             ]
                         );
 
                         $manifest["entries"][] = [
                             "url" => "s3://" . $uploadParams["bucket"] . "/" . $uploadParams["key"] . ".part_" . $part . ".csv.gz",
-                            "mandatory" => true
+                            "mandatory" => true,
                         ];
 
                         $handle = fopen($fileName, 'r+');
@@ -356,7 +356,7 @@ class RestoreProject extends Command
                 [
                     'Bucket' => $bucket,
                     'Key' => $basePath . 'configurations.json',
-                    'SaveAs' => $tmp->getTmpFolder() . '/configurations.json'
+                    'SaveAs' => $tmp->getTmpFolder() . '/configurations.json',
                 ]
             );
             $configurations = json_decode(file_get_contents($tmp->getTmpFolder() . '/configurations.json'), true);
@@ -374,7 +374,7 @@ class RestoreProject extends Command
                         [
                             'Bucket' => $bucket,
                             'Key' => $basePath . "configurations/{$componentWithConfigurations["id"]}/{$componentConfiguration["id"]}.json",
-                            'SaveAs' => $tmp->getTmpFolder() . "/configurations-{$componentWithConfigurations["id"]}-{$componentConfiguration["id"]}.json"
+                            'SaveAs' => $tmp->getTmpFolder() . "/configurations-{$componentWithConfigurations["id"]}-{$componentConfiguration["id"]}.json",
                         ]
                     );
 
@@ -453,7 +453,7 @@ class RestoreProject extends Command
         foreach ($rawMetadata as $item) {
             $result[$item["provider"]][] = [
                 "key" => $item["key"],
-                "value" => $item["value"]
+                "value" => $item["value"],
             ];
         }
         return $result;

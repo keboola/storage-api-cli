@@ -68,7 +68,7 @@ class TruncateTableTest extends BaseTest
         $applicationTester = new ApplicationTester($application);
         $applicationTester->run([
             'purge-project',
-            '--token' => TEST_STORAGE_API_TOKEN
+            '--token' => TEST_STORAGE_API_TOKEN,
         ]);
     }
 }
