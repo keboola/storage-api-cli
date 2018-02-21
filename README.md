@@ -193,5 +193,5 @@ docker-compose run --rm dev php tests/loadToS3.php
 - Run tests 
 
 ``` 
-docker-compose run dev php ./vendor/bin/phpunit
+docker-compose run dev composer tests
 ```
