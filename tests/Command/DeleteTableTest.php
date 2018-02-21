@@ -1,6 +1,6 @@
 <?php
 
-namespace Keboola\DockerBundle\Tests\Command;
+namespace Keboola\StorageApi\Cli\Tests\Command;
 
 use Keboola\Csv\CsvFile;
 use Keboola\StorageApi\Cli\Command\DeleteTable;
@@ -11,11 +11,11 @@ use Keboola\Temp\Temp;
 use Symfony\Component\Console\Tester\ApplicationTester;
 use Symfony\Component\Filesystem\Filesystem;
 
-class DeleteTableTest extends \PHPUnit_Framework_TestCase
+class DeleteTableTest extends BaseTest
 {
     public function setUp()
     {
-        $client = new Client(['token' => TEST_STORAGE_API_TOKEN]);
+        $client = $this->createStorageClient();
         $client->createBucket('test', 'in');
         $temp = new Temp();
         $fs = new Filesystem();
@@ -41,7 +41,7 @@ class DeleteTableTest extends \PHPUnit_Framework_TestCase
 
         self::assertEquals(0, $applicationTester->getStatusCode());
         // check for the results
-        $client = new Client(['token' => TEST_STORAGE_API_TOKEN]);
+        $client = $this->createStorageClient();
         self::assertFalse($client->tableExists('in.c-test.some-table'));
     }
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Keboola\DockerBundle\Tests\Command;
+namespace Keboola\StorageApi\Cli\Tests\Command;
 
 use Keboola\Csv\CsvFile;
 use Keboola\StorageApi\Cli\Command\CopyBucket;
@@ -12,11 +12,11 @@ use Keboola\Temp\Temp;
 use Symfony\Component\Console\Tester\ApplicationTester;
 use Symfony\Component\Filesystem\Filesystem;
 
-class CopyBucketTest extends \PHPUnit_Framework_TestCase
+class CopyBucketTest extends BaseTest
 {
     public function setUp()
     {
-        $client = new Client(['token' => TEST_STORAGE_API_TOKEN]);
+        $client = $this->createStorageClient();
         $client->createBucket('test', 'in');
         $temp = new Temp();
         $fs = new Filesystem();
@@ -45,14 +45,14 @@ class CopyBucketTest extends \PHPUnit_Framework_TestCase
         self::assertContains('Table in.c-test.some-table copied', $applicationTester->getDisplay());
         self::assertEquals(0, $applicationTester->getStatusCode());
         // check for the results
-        $client = new Client(['token' => TEST_STORAGE_API_TOKEN]);
+        $client = $this->createStorageClient();
         self::assertTrue($client->bucketExists('in.c-destination'));
         self::assertTrue($client->tableExists('in.c-destination.some-table'));
     }
 
     public function testExecuteExists()
     {
-        $client = new Client(['token' => TEST_STORAGE_API_TOKEN]);
+        $client = $this->createStorageClient();
         $client->createBucket('destination', 'in');
         $application = new Application();
         $application->setAutoExit(false);
@@ -87,7 +87,10 @@ class CopyBucketTest extends \PHPUnit_Framework_TestCase
         self::assertContains('Table in.c-test.some-table copied', $applicationTester->getDisplay());
         self::assertEquals(0, $applicationTester->getStatusCode());
         // check for the results
-        $client = new Client(['token' => TEST_STORAGE_API_SECONDARY_TOKEN]);
+        $client = new Client([
+            'url' => TEST_STORAGE_API_URL,
+            'token' => TEST_STORAGE_API_SECONDARY_TOKEN
+        ]);
         self::assertTrue($client->bucketExists('in.c-destination'));
         self::assertTrue($client->tableExists('in.c-destination.some-table'));
     }
@@ -104,7 +107,10 @@ class CopyBucketTest extends \PHPUnit_Framework_TestCase
             '--token' => TEST_STORAGE_API_TOKEN
         ]);
 
-        $client = new Client(['token' => TEST_STORAGE_API_SECONDARY_TOKEN]);
+        $client = new Client([
+            'url' => TEST_STORAGE_API_URL,
+            'token' => TEST_STORAGE_API_SECONDARY_TOKEN,
+        ]);
         try {
             $client->dropBucket('in.c-destination', ['force' => true]);
         } catch (ClientException $e) {

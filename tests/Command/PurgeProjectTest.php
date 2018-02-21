@@ -1,6 +1,6 @@
 <?php
 
-namespace Keboola\DockerBundle\Tests\Command;
+namespace Keboola\StorageApi\Cli\Tests\Command;
 
 use Keboola\Csv\CsvFile;
 use Keboola\StorageApi\Cli\Command\PurgeProject;
@@ -14,7 +14,7 @@ use Keboola\Temp\Temp;
 use Symfony\Component\Console\Tester\ApplicationTester;
 use Symfony\Component\Filesystem\Filesystem;
 
-class PurgeProjectTest extends \PHPUnit_Framework_TestCase
+class PurgeProjectTest extends BaseTest
 {
     /**
      * @var Temp
@@ -24,7 +24,7 @@ class PurgeProjectTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         // add configs
-        $client = new Client(['token' => TEST_STORAGE_API_TOKEN]);
+        $client = $this->createStorageClient();
         $config = new Configuration();
         $config->setComponentId('transformation');
         $config->setDescription('Test Configuration');
@@ -88,7 +88,7 @@ class PurgeProjectTest extends \PHPUnit_Framework_TestCase
         ]);
 
         // check for the results
-        $client = new Client(['token' => TEST_STORAGE_API_TOKEN]);
+        $client = $this->createStorageClient();
         $components = new Components($client);
         self::assertCount(0, $client->listTables());
         self::assertCount(0, $client->listBuckets());
@@ -110,7 +110,7 @@ class PurgeProjectTest extends \PHPUnit_Framework_TestCase
         ]);
 
         // check stats
-        $client = new Client(['token' => TEST_STORAGE_API_TOKEN]);
+        $client = $this->createStorageClient();
         $components = new Components($client);
         self::assertCount(2, $client->listTables());
         self::assertCount(2, $client->listBuckets());
@@ -120,7 +120,7 @@ class PurgeProjectTest extends \PHPUnit_Framework_TestCase
 
     public function testPurgeFileUploads()
     {
-        $client = new Client(['token' => TEST_STORAGE_API_TOKEN]);
+        $client = $this->createStorageClient();
         $fileUploadOptions = new FileUploadOptions();
         $fileUploadOptions->setFileName("test");
         $fs = new Filesystem();
@@ -142,7 +142,7 @@ class PurgeProjectTest extends \PHPUnit_Framework_TestCase
         ]);
 
         // check stats
-        $client = new Client(['token' => TEST_STORAGE_API_TOKEN]);
+        $client = $this->createStorageClient();
         $components = new Components($client);
         self::assertCount(2, $client->listTables());
         self::assertCount(2, $client->listBuckets());
@@ -164,7 +164,7 @@ class PurgeProjectTest extends \PHPUnit_Framework_TestCase
         ]);
 
         // check stats
-        $client = new Client(['token' => TEST_STORAGE_API_TOKEN]);
+        $client = $this->createStorageClient();
         $components = new Components($client);
         self::assertCount(0, $client->listTables());
         self::assertCount(0, $client->listBuckets());
@@ -186,7 +186,7 @@ class PurgeProjectTest extends \PHPUnit_Framework_TestCase
         ]);
 
         // check stats
-        $client = new Client(['token' => TEST_STORAGE_API_TOKEN]);
+        $client = $this->createStorageClient();
         $components = new Components($client);
         self::assertCount(1, $client->listTables());
         self::assertCount(2, $client->listBuckets());

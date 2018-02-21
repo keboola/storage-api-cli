@@ -21,6 +21,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 class Application extends BaseApplication
 {
     const VERSION = '1.0.0';
+
+    private const DEFAULT_SAPI_URL = 'https://connection.keboola.com';
+
     /**
      * @var \Keboola\StorageApi\Client
      */
@@ -50,7 +53,7 @@ class Application extends BaseApplication
             ->addOption(new InputOption('token', null, InputOption::VALUE_REQUIRED, "Storage API Token"));
 
         $this->getDefinition()
-            ->addOption(new InputOption('url', null, InputOption::VALUE_REQUIRED, "Storage API URL"));
+            ->addOption(new InputOption('url', null, InputOption::VALUE_REQUIRED, "Storage API URL", self::DEFAULT_SAPI_URL));
     }
 
     public function doRun(InputInterface $input, OutputInterface $output)
@@ -66,9 +69,7 @@ class Application extends BaseApplication
             $this->sapiClient = null;
         }
 
-        if ($input->getParameterOption('--url')) {
-            $this->sapiUrl = $input->getParameterOption('--url');
-        }
+        $this->sapiUrl = $input->getParameterOption('--url', self::DEFAULT_SAPI_URL);
 
         $this->output = $output;
         return parent::doRun($input, $output);

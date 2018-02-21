@@ -1,6 +1,6 @@
 <?php
 
-namespace Keboola\DockerBundle\Tests\Command;
+namespace Keboola\StorageApi\Cli\Tests\Command;
 
 use Keboola\Csv\CsvFile;
 use Keboola\StorageApi\Cli\Command\DeleteBucket;
@@ -11,11 +11,11 @@ use Keboola\Temp\Temp;
 use Symfony\Component\Console\Tester\ApplicationTester;
 use Symfony\Component\Filesystem\Filesystem;
 
-class DeleteBucketTest extends \PHPUnit_Framework_TestCase
+class DeleteBucketTest extends BaseTest
 {
     public function setUp()
     {
-        $client = new Client(['token' => TEST_STORAGE_API_TOKEN]);
+        $client = $this->createStorageClient();
         $client->createBucket('empty-test', 'in');
         $client->createBucket('test', 'in');
         $temp = new Temp();
@@ -42,7 +42,7 @@ class DeleteBucketTest extends \PHPUnit_Framework_TestCase
 
         self::assertEquals(0, $applicationTester->getStatusCode());
         // check for the results
-        $client = new Client(['token' => TEST_STORAGE_API_TOKEN]);
+        $client = $this->createStorageClient();
         self::assertFalse($client->bucketExists('in.c-empty-test'));
         self::assertTrue($client->bucketExists('in.c-test'));
     }
@@ -62,7 +62,7 @@ class DeleteBucketTest extends \PHPUnit_Framework_TestCase
         self::assertEquals(1, $applicationTester->getStatusCode());
         self::assertContains('not empty', $applicationTester->getDisplay());
         // check for the results
-        $client = new Client(['token' => TEST_STORAGE_API_TOKEN]);
+        $client = $this->createStorageClient();
         self::assertTrue($client->bucketExists('in.c-empty-test'));
         self::assertTrue($client->bucketExists('in.c-test'));
     }
@@ -82,7 +82,7 @@ class DeleteBucketTest extends \PHPUnit_Framework_TestCase
 
         self::assertEquals(0, $applicationTester->getStatusCode());
         // check for the results
-        $client = new Client(['token' => TEST_STORAGE_API_TOKEN]);
+        $client = $this->createStorageClient();
         self::assertTrue($client->bucketExists('in.c-empty-test'));
         self::assertFalse($client->bucketExists('in.c-test'));
     }

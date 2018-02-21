@@ -14,7 +14,8 @@ services:
   tests:
     build: .
     image: keboola/storage-api-cli
-    entrypoint: /code/phpunit.sh
+    entrypoint: []
+    command: ./phpunit.sh
     tty: true
     stdin_open: true
     volumes:
@@ -29,12 +30,14 @@ services:
       - TEST_RESTORE_S3_BUCKET
       - TEST_STORAGE_API_SECONDARY_TOKEN
       - TEST_STORAGE_API_TOKEN
+      - TEST_STORAGE_API_URL
       - TEST_AWS_REGION
 
   tests-ci:
     build: .
     image: keboola/storage-api-cli
-    entrypoint: ./phpunit.sh
+    command: ./phpunit.sh
+    entrypoint: []
     working_dir: /code
     tty: true
     stdin_open: true
@@ -47,6 +50,7 @@ services:
       - TEST_RESTORE_S3_BUCKET
       - TEST_STORAGE_API_SECONDARY_TOKEN
       - TEST_STORAGE_API_TOKEN
+      - TEST_STORAGE_API_URL
       - TEST_AWS_REGION
 
   sh:
@@ -67,4 +71,5 @@ services:
       - TEST_RESTORE_S3_BUCKET
       - TEST_STORAGE_API_SECONDARY_TOKEN
       - TEST_STORAGE_API_TOKEN
+      - TEST_STORAGE_API_URL
       - TEST_AWS_REGION

@@ -20,6 +20,7 @@ function exceptions_error_handler($severity, $message, $filename, $lineno)
 
 require_once ROOT_PATH . '/../vendor/autoload.php';
 
+defined('TEST_STORAGE_API_URL') || define('TEST_STORAGE_API_URL', getenv('TEST_STORAGE_API_URL'));
 defined('TEST_STORAGE_API_TOKEN') || define('TEST_STORAGE_API_TOKEN', getenv('TEST_STORAGE_API_TOKEN') ?: 'your_token');
 defined('TEST_STORAGE_API_SECONDARY_TOKEN') || define('TEST_STORAGE_API_SECONDARY_TOKEN', getenv('TEST_STORAGE_API_SECONDARY_TOKEN') ?: 'your_token');
 defined('TEST_BACKUP_AWS_ACCESS_KEY_ID') || define('TEST_BACKUP_AWS_ACCESS_KEY_ID', getenv('TEST_BACKUP_AWS_ACCESS_KEY_ID') ?: 'your_token');

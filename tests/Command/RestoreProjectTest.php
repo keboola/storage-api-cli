@@ -1,6 +1,6 @@
 <?php
 
-namespace Keboola\DockerBundle\Tests\Command;
+namespace Keboola\StorageApi\Cli\Tests\Command;
 
 use Aws\S3\S3Client;
 use Keboola\StorageApi\Cli\Command\PurgeProject;
@@ -12,7 +12,7 @@ use Keboola\StorageApi\TableExporter;
 use Keboola\Temp\Temp;
 use Symfony\Component\Console\Tester\ApplicationTester;
 
-class RestoreProjectTest extends \PHPUnit_Framework_TestCase
+class RestoreProjectTest extends BaseTest
 {
     const S3_PATH = '';
 
@@ -24,8 +24,19 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->temp = new Temp();
+
+        // purge project
+        $application = new Application();
+        $application->setAutoExit(false);
+        $application->add(new PurgeProject());
+        $applicationTester = new ApplicationTester($application);
+        $applicationTester->run([
+            'purge-project',
+            '--token' => TEST_STORAGE_API_TOKEN
+        ]);
+
         // clean up components configs in test project
-        $client = $this->getClient();
+        $client = $this->createStorageClient();
         $components = new Components($client);
         $componentList = $components->listComponents();
         foreach ($componentList as $componentItem) {
@@ -42,7 +53,7 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
     {
         $applicationTester = $this->runCommand(self::S3_PATH . 'buckets/');
         self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
-        $client = $this->getClient();
+        $client = $this->createStorageClient();
         $buckets = $client->listBuckets();
         self::assertCount(2, $buckets);
         self::assertEquals("in.c-bucket1", $buckets[0]["id"]);
@@ -53,7 +64,7 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
     {
         $applicationTester = $this->runCommand(self::S3_PATH . 'buckets-multiple-backends/');
         self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
-        $client = $this->getClient();
+        $client = $this->createStorageClient();
         $buckets = $client->listBuckets();
         self::assertCount(3, $buckets);
         self::assertTrue($client->bucketExists("in.c-snowflake"));
@@ -73,7 +84,7 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
     {
         $applicationTester = $this->runCommand(self::S3_PATH . 'buckets/');
         self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
-        $client = $this->getClient();
+        $client = $this->createStorageClient();
         self::assertEquals(
             [
                 [
@@ -95,7 +106,7 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
     {
         $applicationTester = $this->runCommand(self::S3_PATH . 'table-with-header/');
         self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
-        $client = $this->getClient();
+        $client = $this->createStorageClient();
         self::assertTrue($client->tableExists("in.c-bucket.Account"));
         $tableExporter = new TableExporter($client);
         $file = $this->temp->createFile("account.csv");
@@ -110,7 +121,7 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
     {
         $applicationTester = $this->runCommand(self::S3_PATH . 'table-without-header/');
         self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
-        $client = $this->getClient();
+        $client = $this->createStorageClient();
         self::assertTrue($client->tableExists("in.c-bucket.Account"));
         $tableExporter = new TableExporter($client);
         $file = $this->temp->createFile("account.csv");
@@ -126,7 +137,7 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
     {
         $applicationTester = $this->runCommand(self::S3_PATH . 'table-multiple-slices/');
         self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
-        $client = $this->getClient();
+        $client = $this->createStorageClient();
         self::assertTrue($client->tableExists("in.c-bucket.Account"));
         $tableExporter = new TableExporter($client);
         $file = $this->temp->createFile("account.csv");
@@ -141,7 +152,7 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
     {
         $applicationTester = $this->runCommand(self::S3_PATH . 'table-multiple-slices-shared-prefix/');
         self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
-        $client = $this->getClient();
+        $client = $this->createStorageClient();
         self::assertTrue($client->tableExists("in.c-bucket.Account"));
         self::assertTrue($client->tableExists("in.c-bucket.Account2"));
 
@@ -167,7 +178,7 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
     {
         $applicationTester = $this->runCommand(self::S3_PATH . 'table-properties');
         self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
-        $client = $this->getClient();
+        $client = $this->createStorageClient();
         self::assertEquals(
             [
                 [
@@ -189,7 +200,7 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
     {
         $applicationTester = $this->runCommand(self::S3_PATH . 'table-properties/');
         self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
-        $client = $this->getClient();
+        $client = $this->createStorageClient();
         $accountTable = $client->getTable("in.c-bucket.Account");
         $account2Table = $client->getTable("in.c-bucket.Account2");
         self::assertEquals(["Id", "Name"], $accountTable["indexedColumns"]);
@@ -202,7 +213,7 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
     {
         $applicationTester = $this->runCommand(self::S3_PATH . 'alias');
         self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
-        $client = $this->getClient();
+        $client = $this->createStorageClient();
         $aliasTable = $client->getTable("out.c-bucket.Account");
         self::assertEquals(true, $aliasTable["isAlias"]);
         self::assertEquals(true, $aliasTable["aliasColumnsAutoSync"]);
@@ -214,7 +225,7 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
     {
         $applicationTester = $this->runCommand(self::S3_PATH . 'alias-filtered');
         self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
-        $client = $this->getClient();
+        $client = $this->createStorageClient();
         $aliasTable = $client->getTable("out.c-bucket.Account");
         self::assertEquals(true, $aliasTable["isAlias"]);
         self::assertEquals(false, $aliasTable["aliasColumnsAutoSync"]);
@@ -228,7 +239,8 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
         $applicationTester = $this->runCommand(self::S3_PATH . 'configurations/');
         self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
 
-        $client = $this->getClient();
+        print $applicationTester->getDisplay();
+        $client = $this->createStorageClient();
         $components = new Components($client);
         $componentsList = $components->listComponents();
         self::assertCount(2, $componentsList);
@@ -253,7 +265,7 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
         $applicationTester = $this->runCommand(self::S3_PATH . 'configurations-no-versions');
         self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
 
-        $client = $this->getClient();
+        $client = $this->createStorageClient();
         $components = new Components($client);
         $componentsList = $components->listComponents();
 
@@ -279,7 +291,7 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
         $applicationTester = $this->runCommand(self::S3_PATH . 'configuration-orchestration/');
         self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
 
-        $client = $this->getClient();
+        $client = $this->createStorageClient();
         $components = new Components($client);
         $componentsList = $components->listComponents();
         self::assertCount(0, $componentsList);
@@ -290,7 +302,7 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
         $applicationTester = $this->runCommand(self::S3_PATH . 'configuration-empty-object/');
         self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
 
-        $client = $this->getClient();
+        $client = $this->createStorageClient();
 
         // empty array and object in config
         $file = $this->temp->createFile('config.json');
@@ -305,7 +317,7 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
         $applicationTester = $this->runCommand(self::S3_PATH . 'configuration-rows/');
         self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
 
-        $client = $this->getClient();
+        $client = $this->createStorageClient();
         $components = new Components($client);
         $componentsList = $components->listComponents();
 
@@ -340,7 +352,7 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
 
         // empty array and object in config
         $file = $this->temp->createFile('config.json');
-        $client = $this->getClient();
+        $client = $this->createStorageClient();
         $client->apiGet('storage/components/transformation/configs/1/rows', $file->getPathname());
         $config = json_decode(file_get_contents($file->getPathname()));
         self::assertEquals(new \stdClass(), $config[0]->configuration->input[0]->datatypes);
@@ -351,7 +363,7 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
     {
         $applicationTester = $this->runCommand(self::S3_PATH . 'table-with-header/', false, true, false);
         self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
-        $client = $this->getClient();
+        $client = $this->createStorageClient();
         self::assertFalse($client->tableExists("in.c-bucket.Account"));
     }
 
@@ -359,7 +371,7 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
     {
         $applicationTester = $this->runCommand(self::S3_PATH . 'configurations/', false, false, true);
         self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
-        $client = $this->getClient();
+        $client = $this->createStorageClient();
         $components = new Components($client);
         $componentsList = $components->listComponents();
         self::assertCount(0, $componentsList);
@@ -369,7 +381,7 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
     {
         $applicationTester = $this->runCommand(self::S3_PATH . 'bucket-without-prefix/');
         self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
-        $client = $this->getClient();
+        $client = $this->createStorageClient();
         $buckets = $client->listBuckets();
         self::assertCount(0, $buckets);
     }
@@ -378,7 +390,7 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
     {
         $applicationTester = $this->runCommand(self::S3_PATH . 'table-without-prefix/');
         self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
-        $client = $this->getClient();
+        $client = $this->createStorageClient();
         $buckets = $client->listBuckets();
         self::assertCount(0, $buckets);
     }
@@ -387,7 +399,7 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
     {
         $applicationTester = $this->runCommand(self::S3_PATH . 'table-empty/');
         self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
-        $client = $this->getClient();
+        $client = $this->createStorageClient();
         self::assertTrue($client->tableExists("in.c-bucket.Account"));
     }
 
@@ -395,7 +407,7 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
     {
         $applicationTester = $this->runCommand(self::S3_PATH . 'metadata/');
         self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
-        $client = $this->getClient();
+        $client = $this->createStorageClient();
         self::assertTrue($client->tableExists("in.c-bucket.Account"));
         $table = $client->getTable("in.c-bucket.Account");
         self::assertEquals("tableKey", $table["metadata"][0]["key"]);
@@ -426,23 +438,5 @@ class RestoreProjectTest extends \PHPUnit_Framework_TestCase
             'path' => $path
         ]);
         return $applicationTester;
-    }
-
-    public function tearDown()
-    {
-        // purge project
-        $application = new Application();
-        $application->setAutoExit(false);
-        $application->add(new PurgeProject());
-        $applicationTester = new ApplicationTester($application);
-        $applicationTester->run([
-            'purge-project',
-            '--token' => TEST_STORAGE_API_TOKEN
-        ]);
-    }
-
-    public function getClient()
-    {
-        return new Client(['token' => TEST_STORAGE_API_TOKEN]);
     }
 }

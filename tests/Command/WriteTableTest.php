@@ -1,6 +1,6 @@
 <?php
 
-namespace Keboola\DockerBundle\Tests\Command;
+namespace Keboola\StorageApi\Cli\Tests\Command;
 
 use Keboola\Csv\CsvFile;
 use Keboola\StorageApi\Cli\Command\PurgeProject;
@@ -12,7 +12,7 @@ use Keboola\Temp\Temp;
 use Symfony\Component\Console\Tester\ApplicationTester;
 use Symfony\Component\Filesystem\Filesystem;
 
-class WriteTableTest extends \PHPUnit_Framework_TestCase
+class WriteTableTest extends BaseTest
 {
     /**
      * @var Temp
@@ -22,7 +22,7 @@ class WriteTableTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->temp = new Temp('sapi-cli-test');
-        $client = new Client(['token' => TEST_STORAGE_API_TOKEN]);
+        $client = $this->createStorageClient();
         $client->createBucket('test', 'in');
         $fs = new Filesystem();
         $fileName = $this->temp->getTmpFolder() . DIRECTORY_SEPARATOR . 'someData.csv';
@@ -50,7 +50,7 @@ class WriteTableTest extends \PHPUnit_Framework_TestCase
         self::assertContains('Import done', $applicationTester->getDisplay());
         self::assertEquals(0, $applicationTester->getStatusCode());
         // check for the results
-        $client = new Client(['token' => TEST_STORAGE_API_TOKEN]);
+        $client = $this->createStorageClient();
         $exporter = new TableExporter($client);
         $fileName = $this->temp->getTmpFolder() . DIRECTORY_SEPARATOR . 'destination.csv';
         $exporter->exportTable('in.c-test.some-table', $fileName, []);
@@ -83,7 +83,7 @@ class WriteTableTest extends \PHPUnit_Framework_TestCase
         self::assertContains('Import done', $applicationTester->getDisplay());
         self::assertEquals(0, $applicationTester->getStatusCode());
         // check for the results
-        $client = new Client(['token' => TEST_STORAGE_API_TOKEN]);
+        $client = $this->createStorageClient();
         $exporter = new TableExporter($client);
         $fileName = $this->temp->getTmpFolder() . DIRECTORY_SEPARATOR . 'destination.csv';
         $exporter->exportTable('in.c-test.some-table', $fileName, []);
@@ -117,7 +117,7 @@ class WriteTableTest extends \PHPUnit_Framework_TestCase
         self::assertContains('Import done', $applicationTester->getDisplay());
         self::assertEquals(0, $applicationTester->getStatusCode());
         // check for the results
-        $client = new Client(['token' => TEST_STORAGE_API_TOKEN]);
+        $client = $this->createStorageClient();
         $exporter = new TableExporter($client);
         $fileName = $this->temp->getTmpFolder() . DIRECTORY_SEPARATOR . 'destination.csv';
         $exporter->exportTable('in.c-test.some-table', $fileName, []);

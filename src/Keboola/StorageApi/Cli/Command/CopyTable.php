@@ -67,6 +67,7 @@ class CopyTable extends Command
             $output->writeln("Setting destination token");
 
             $sapiClientDst = new Client([
+                'url' => $input->getOption('url'),
                 'token' => $input->getArgument('dstToken'),
                 'userAgent' => $this->getApplication()->userAgent(),
             ]);
