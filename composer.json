@@ -17,6 +17,18 @@
     "phpunit/phpunit": "^5.7",
     "squizlabs/php_codesniffer": "^3.0"
   },
+  "scripts": {
+    "tests": "phpunit --debug",
+    "phpcs": "phpcs -n --standard=psr2 --ignore=vendor --extensions=php .",
+    "build": [
+      "@phpcs",
+      "@tests"
+    ],
+    "ci": [
+      "@composer validate --no-check-all --strict",
+      "@build"
+    ]
+  },
   "autoload": {
     "psr-0": {"Keboola\\StorageApi\\Cli": "src/"}
   },

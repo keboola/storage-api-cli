@@ -3,7 +3,6 @@ services:
   app:
     build: .
     image: keboola/storage-api-cli
-    command: ./phpunit.sh
     entrypoint: []
     environment:
       - TEST_BACKUP_AWS_ACCESS_KEY_ID
@@ -19,7 +18,7 @@ services:
   dev:
     image: keboola/storage-api-cli
     entrypoint: []
-    command: ./phpunit.sh
+    command: composer tests
     volumes:
       - .:/code
     environment:
