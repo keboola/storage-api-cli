@@ -146,8 +146,8 @@ abstract class Command extends BaseCommand
 
     public function getUserAgent(): string
     {
-       $application = $this->getApplication();
-       assert($application instanceof Application);
-       return $application->userAgent();
+        $application = $this->getApplication();
+        assert($application instanceof Application);
+        return $application->userAgent();
     }
 }
