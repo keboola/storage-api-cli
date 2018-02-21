@@ -39,6 +39,7 @@
     "psr-4": {"Keboola\\StorageApi\\Cli\\Tests\\": "tests/"}
   },
   "config": {
+    "process-timeout": 0,
     "sort-packages": true
   }
 }
