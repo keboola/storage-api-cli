@@ -160,7 +160,8 @@ export-table in.c-main.table /data/table.csv --whereColumn=AccountId --changedUn
 ```
 git clone git@github.com:keboola/storage-api-cli.git
 cd storage-api-cli
-docker-compose install
+docker-compose build
+docker-compose run --rm dev composer install
 ```
 
 ### AWS and KBC Resources
@@ -186,11 +187,11 @@ TEST_STORAGE_API_SECONDARY_TOKEN=
 - Load fixtures to S3
 
 ```
-docker-compose run sh 'php /code/tests/loadToS3.php'
+docker-compose run --rm dev php tests/loadToS3.php
 ```
 
 - Run tests 
 
 ``` 
-docker-compose run tests
+docker-compose run dev php ./vendor/bin/phpunit
 ```
