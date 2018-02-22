@@ -205,7 +205,7 @@ class BackupProjectTest extends BaseTest
         self::assertCount($configurationRowsCount, $targetConfiguration['rows']);
     }
 
-    public function largeConfigurationsProvider()
+    public function largeConfigurationsProvider(): array
     {
         return [
             [

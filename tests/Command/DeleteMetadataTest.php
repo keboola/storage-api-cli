@@ -228,7 +228,7 @@ class DeleteMetadataTest extends BaseTest
         self::assertEquals(1, $applicationTester->getStatusCode());
     }
 
-    private function compareMetadata($expected, $actual): void
+    private function compareMetadata(array $expected, array $actual): void
     {
         self::assertEquals(count($expected), count($actual));
         foreach ($actual as &$actualRow) {

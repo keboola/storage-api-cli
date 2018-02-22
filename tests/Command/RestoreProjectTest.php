@@ -419,7 +419,7 @@ class RestoreProjectTest extends BaseTest
         self::assertEquals("bucketValue", $bucket["metadata"][0]["value"]);
     }
 
-    protected function runCommand($path, $ignoreStorageBackend = true, $onlyConfigurations = false, $onlyData = false)
+    protected function runCommand(string $path, bool $ignoreStorageBackend = true, bool $onlyConfigurations = false, bool $onlyData = false): ApplicationTester
     {
         putenv('AWS_ACCESS_KEY_ID=' . TEST_RESTORE_AWS_ACCESS_KEY_ID);
         putenv('AWS_SECRET_ACCESS_KEY=' . TEST_RESTORE_AWS_SECRET_ACCESS_KEY);

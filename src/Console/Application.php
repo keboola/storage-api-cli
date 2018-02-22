@@ -13,7 +13,9 @@ use Keboola\StorageApi\Client;
 use Keboola\StorageApi\Cli\Command;
 use Keboola\Symfony\Console\Helper\NestedFormatterHelper\NestedFormatterHelper;
 use Symfony\Component\Console\Application as BaseApplication;
+use Symfony\Component\Console\Command\Command as BaseCommand;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
+use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -56,7 +58,7 @@ class Application extends BaseApplication
             ->addOption(new InputOption('url', null, InputOption::VALUE_REQUIRED, "Storage API URL", self::DEFAULT_SAPI_URL));
     }
 
-    public function doRun(InputInterface $input, OutputInterface $output)
+    public function doRun(InputInterface $input, OutputInterface $output): int
     {
         $output->getFormatter()
             ->setStyle('success', new OutputFormatterStyle('green'));
@@ -96,17 +98,20 @@ class Application extends BaseApplication
         return $this->sapiClient;
     }
 
-    private function getRunId()
+    private function getRunId(): string
     {
         return getenv('KBC_RUN_ID') ? getenv('KBC_RUN_ID') : getenv('KBC_RUNID');
     }
 
-    public function userAgent()
+    public function userAgent(): string
     {
         return "{$this->getName()}/{$this->getVersion()}";
     }
 
-    public function getDefaultCommands()
+    /**
+     * @return BaseCommand[]
+     */
+    public function getDefaultCommands(): array
     {
         return array_merge(array(
             new Command\ListBuckets(),
@@ -128,7 +133,7 @@ class Application extends BaseApplication
         ), parent::getDefaultCommands());
     }
 
-    protected function getDefaultHelperSet()
+    protected function getDefaultHelperSet(): HelperSet
     {
         $helperSet = parent::getDefaultHelperSet();
         $helperSet->set(new NestedFormatterHelper());

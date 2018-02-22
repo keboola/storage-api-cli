@@ -154,7 +154,7 @@ class BackupProject extends Command
     }
 
 
-    private function exportTable($tableId, S3Client $targetS3, $targetBucket, $targetBasePath): void
+    private function exportTable(string $tableId, S3Client $targetS3, string $targetBucket, string $targetBasePath): void
     {
         $client = $this->getSapiClient();
         $fileId = $client->exportTableAsync($tableId, [

@@ -41,7 +41,7 @@ class RestoreProject extends Command
             ]);
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): ?int
     {
         $s3 = new S3Client([
             'version' => 'latest',
@@ -437,17 +437,17 @@ class RestoreProject extends Command
         $output->writeln(" - features of the original project");
     }
 
-    private function format($message)
+    private function format(string $message): string
     {
         return sprintf('%-50s', $message);
     }
 
-    private function check()
+    private function check(): string
     {
         return '<info>ok</info>';
     }
 
-    private function prepareMetadata($rawMetadata)
+    private function prepareMetadata(array $rawMetadata): array
     {
         $result = [];
         foreach ($rawMetadata as $item) {

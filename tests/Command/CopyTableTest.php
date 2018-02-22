@@ -11,6 +11,9 @@ use Symfony\Component\Console\Tester\ApplicationTester;
 
 class CopyTableTest extends BaseTest
 {
+    /**
+     * @var Temp
+     */
     private $temp;
 
     public function setUp(): void

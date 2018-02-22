@@ -20,8 +20,14 @@ use Symfony\Component\Filesystem\Filesystem;
 class RestoreTableFromImports extends Command
 {
 
+    /**
+     * @var int
+     */
     private $importEventsCount = 0;
 
+    /**
+     * @var int
+     */
     private $importedEventsCount = 0;
 
     /**
@@ -34,10 +40,19 @@ class RestoreTableFromImports extends Command
      */
     private $input;
 
+    /**
+     * @var bool
+     */
     private $isDryRun = false;
 
+    /**
+     * @var string
+     */
     private $createdTableId = null;
 
+    /**
+     * @var string
+     */
     private $restoreDate = null;
 
     /**
@@ -138,17 +153,17 @@ class RestoreTableFromImports extends Command
         }
     }
 
-    private function isImportEvent($event)
+    private function isImportEvent(array $event): bool
     {
         return $event['event'] == 'storage.tableImportDone';
     }
 
-    private function isFullLoadEvent($event)
+    private function isFullLoadEvent(array $event): bool
     {
         return isset($event['params']['incremental']) && $event['params']['incremental'] == false;
     }
 
-    private function isEventBeforeRestoreDate($event)
+    private function isEventBeforeRestoreDate(array $event): bool
     {
         if (!$this->restoreDate) {
             return true;
@@ -257,7 +272,7 @@ class RestoreTableFromImports extends Command
         $this->output->writeln("event $event[id]: end. {$this->importedEventsCount}/{$this->importEventsCount}");
     }
 
-    private function createTable(CsvFile $csvFile, $options)
+    private function createTable(CsvFile $csvFile, array $options): string
     {
         $sapiClient = $this->getSapiClient();
         $sourceTableInfo = $sapiClient->getTable($this->input->getArgument('sourceTableId'));
@@ -276,7 +291,7 @@ class RestoreTableFromImports extends Command
         );
     }
 
-    private function fetchFileFromBackup($url, $destinationPath): void
+    private function fetchFileFromBackup(string $url, string $destinationPath): void
     {
         $this->httpClient->get(
             $url,

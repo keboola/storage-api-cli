@@ -93,12 +93,12 @@ class PurgeProject extends Command
         }
     }
 
-    private function format($message)
+    private function format(string $message): string
     {
         return sprintf('%-50s', $message);
     }
 
-    private function check()
+    private function check(): string
     {
         return '<info>ok</info>';
     }
