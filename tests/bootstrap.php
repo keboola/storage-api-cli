@@ -2,15 +2,15 @@
 
 require __DIR__ . '/../vendor/autoload.php';
 
-set_error_handler('exceptions_error_handler');
-function exceptions_error_handler($severity, $message, $filename, $lineno)
-{
-    if (!(error_reporting() & $severity)) {
-        // This error code is not included in error_reporting
-        return;
+error_reporting(E_ALL);
+set_error_handler(function ($errno, $errstr, $errfile, $errline, array $errcontext): bool {
+    if (!(error_reporting() & $errno)) {
+        // respect error_reporting() level
+        // libraries used in custom components may emit notices that cannot be fixed
+        return false;
     }
-    throw new ErrorException($message, 0, $severity, $filename, $lineno);
-}
+    throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
+});
 
 define('TEST_STORAGE_API_URL', getenv('TEST_STORAGE_API_URL'));
 define('TEST_STORAGE_API_TOKEN', getenv('TEST_STORAGE_API_TOKEN') ?: 'your_token');
