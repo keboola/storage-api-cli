@@ -46,12 +46,12 @@ class RestoreTableFromImports extends Command
     private $isDryRun = false;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $createdTableId = null;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $restoreDate = null;
 
