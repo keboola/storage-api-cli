@@ -13,7 +13,7 @@ use Symfony\Component\Console\Tester\ApplicationTester;
 
 class DeleteMetadataTest extends BaseTest
 {
-    public function setUp()
+    public function setUp(): void
     {
         $client = $this->createStorageClient();
         $client->createBucket("main", Client::STAGE_IN);
@@ -42,7 +42,7 @@ class DeleteMetadataTest extends BaseTest
         );
     }
 
-    public function testExecuteColumn()
+    public function testExecuteColumn(): void
     {
         $application = new Application();
         $application->setAutoExit(false);
@@ -89,7 +89,7 @@ class DeleteMetadataTest extends BaseTest
         $this->compareMetadata([], $columnMetadata);
     }
 
-    public function testExecuteTable()
+    public function testExecuteTable(): void
     {
         $application = new Application();
         $application->setAutoExit(false);
@@ -127,7 +127,7 @@ class DeleteMetadataTest extends BaseTest
         $this->compareMetadata([], $columnMetadata);
     }
 
-    public function testExecuteBucket()
+    public function testExecuteBucket(): void
     {
         $application = new Application();
         $application->setAutoExit(false);
@@ -162,7 +162,7 @@ class DeleteMetadataTest extends BaseTest
         $this->compareMetadata([], $columnMetadata);
     }
 
-    public function testExecuteProject()
+    public function testExecuteProject(): void
     {
         $application = new Application();
         $application->setAutoExit(false);
@@ -194,7 +194,7 @@ class DeleteMetadataTest extends BaseTest
         $this->compareMetadata([], $columnMetadata);
     }
 
-    public function testExecuteInvalid()
+    public function testExecuteInvalid(): void
     {
         $application = new Application();
         $application->setAutoExit(false);
@@ -211,7 +211,7 @@ class DeleteMetadataTest extends BaseTest
         self::assertEquals(1, $applicationTester->getStatusCode());
     }
 
-    public function testExecuteNotFound()
+    public function testExecuteNotFound(): void
     {
         $application = new Application();
         $application->setAutoExit(false);
@@ -228,7 +228,7 @@ class DeleteMetadataTest extends BaseTest
         self::assertEquals(1, $applicationTester->getStatusCode());
     }
 
-    private function compareMetadata($expected, $actual)
+    private function compareMetadata($expected, $actual): void
     {
         self::assertEquals(count($expected), count($actual));
         foreach ($actual as &$actualRow) {
@@ -238,7 +238,7 @@ class DeleteMetadataTest extends BaseTest
         self::assertEquals($expected, $actual);
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         // run command
         $application = new Application();

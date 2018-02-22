@@ -43,10 +43,7 @@ abstract class Command extends BaseCommand
     }
 
 
-    /**
-     * @return Client
-     */
-    public function getSapiClient()
+    public function getSapiClient(): Client
     {
         if ($this->sapiClient === null) {
             $application = $this->getApplication();
@@ -66,7 +63,7 @@ abstract class Command extends BaseCommand
      *
      * @return string
      */
-    public function getTmpDir()
+    public function getTmpDir(): string
     {
         if ($this->tmpDir == "") {
             $fs = new Filesystem();
@@ -80,7 +77,7 @@ abstract class Command extends BaseCommand
     /**
      * Deletes temporary dir and all its contents
      */
-    public function destroyTmpDir()
+    public function destroyTmpDir(): void
     {
         if ($this->tmpDir != "") {
             $fs = new Filesystem();
@@ -89,7 +86,7 @@ abstract class Command extends BaseCommand
         $this->tmpDir = "";
     }
 
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         if (!$this->checkRequirements($output)) {
             throw new \RuntimeException("Requirements not satisfied - exiting.");
@@ -98,26 +95,17 @@ abstract class Command extends BaseCommand
         $this->getSapiClient();
     }
 
-    /**
-     * @return FormatterHelper
-     */
-    public function getFormatterHelper()
+    public function getFormatterHelper(): FormatterHelper
     {
         return $this->getHelper('formatter');
     }
 
-    /**
-     * @return QuestionHelper
-     */
-    public function getQuestionHelper()
+    public function getQuestionHelper(): QuestionHelper
     {
         return $this->getHelper('question');
     }
 
-    /**
-     * @return NestedFormatterHelper
-     */
-    public function getNestedFormatterHelper()
+    public function getNestedFormatterHelper(): NestedFormatterHelper
     {
         return $this->getHelper('nestedFormatter');
     }

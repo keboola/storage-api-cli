@@ -14,7 +14,7 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class CopyBucketTest extends BaseTest
 {
-    public function setUp()
+    public function setUp(): void
     {
         $client = $this->createStorageClient();
         $client->createBucket('test', 'in');
@@ -28,7 +28,7 @@ class CopyBucketTest extends BaseTest
         unset($temp);
     }
 
-    public function testExecute()
+    public function testExecute(): void
     {
         $application = new Application();
         $application->setAutoExit(false);
@@ -50,7 +50,7 @@ class CopyBucketTest extends BaseTest
         self::assertTrue($client->tableExists('in.c-destination.some-table'));
     }
 
-    public function testExecuteExists()
+    public function testExecuteExists(): void
     {
         $client = $this->createStorageClient();
         $client->createBucket('destination', 'in');
@@ -69,7 +69,7 @@ class CopyBucketTest extends BaseTest
         self::assertEquals(1, $applicationTester->getStatusCode());
     }
 
-    public function testExecuteDifferentProject()
+    public function testExecuteDifferentProject(): void
     {
         $application = new Application();
         $application->setAutoExit(false);
@@ -95,7 +95,7 @@ class CopyBucketTest extends BaseTest
         self::assertTrue($client->tableExists('in.c-destination.some-table'));
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         // run command
         $application = new Application();

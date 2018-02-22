@@ -16,7 +16,7 @@ use Symfony\Component\Console\Input\InputOption;
 
 class DeleteBucket extends Command
 {
-    public function configure()
+    public function configure(): void
     {
         $this
             ->setName('delete-bucket')
@@ -27,7 +27,7 @@ class DeleteBucket extends Command
             ));
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): void
     {
         $sapiClient = $this->getSapiClient();
         if (!$sapiClient->bucketExists($input->getArgument('bucketId'))) {

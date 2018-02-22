@@ -10,7 +10,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class DeleteMetadata extends Command
 {
 
-    public function configure()
+    public function configure(): void
     {
         $this
             ->setName('delete-metadata')
@@ -21,7 +21,7 @@ class DeleteMetadata extends Command
             ));
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): void
     {
         $sapiClient = $this->getSapiClient();
         $result = [];
@@ -111,7 +111,7 @@ class DeleteMetadata extends Command
         return [$columnId => count($columnMeta)];
     }
 
-    private function dumpResult(array $result, OutputInterface $output)
+    private function dumpResult(array $result, OutputInterface $output): void
     {
         foreach ($result as $key => $value) {
             if (is_array($value)) {

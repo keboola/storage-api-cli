@@ -18,7 +18,7 @@ use Symfony\Component\Console\Input\InputOption;
 class WriteTable extends Command
 {
 
-    public function configure()
+    public function configure(): void
     {
         $this
             ->setName('write-table')
@@ -34,7 +34,7 @@ class WriteTable extends Command
             ));
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): void
     {
         $sapiClient = $this->getSapiClient();
         if (!$sapiClient->tableExists($input->getArgument('tableId'))) {

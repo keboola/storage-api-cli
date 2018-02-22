@@ -13,7 +13,7 @@ class CopyTableTest extends BaseTest
 {
     private $temp;
 
-    public function setUp()
+    public function setUp(): void
     {
         // add configs
         $client = $this->createStorageClient();
@@ -39,7 +39,7 @@ class CopyTableTest extends BaseTest
         self::assertCount(3, $client->listTables());
     }
 
-    public function testExecute()
+    public function testExecute(): void
     {
         $tablesPk = [
             'in.c-main.testNoPk' => [],
@@ -71,7 +71,7 @@ class CopyTableTest extends BaseTest
         }
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         // run command
         $application = new Application();

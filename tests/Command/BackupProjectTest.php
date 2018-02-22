@@ -16,7 +16,7 @@ use Symfony\Component\Console\Tester\ApplicationTester;
 
 class BackupProjectTest extends BaseTest
 {
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $client = $this->createStorageClient();
@@ -33,7 +33,7 @@ class BackupProjectTest extends BaseTest
         }
     }
 
-    public function testExecuteNoVersions()
+    public function testExecuteNoVersions(): void
     {
         $client = $this->createStorageClient();
         $config = new Configuration();
@@ -139,7 +139,7 @@ class BackupProjectTest extends BaseTest
      * @param int $configurationRowsCount
      * @throws \Exception
      */
-    public function testLargeConfigurations(int $configurationRowsCount)
+    public function testLargeConfigurations(int $configurationRowsCount): void
     {
         $client = $this->createStorageClient();
         $config = new Configuration();
@@ -217,7 +217,7 @@ class BackupProjectTest extends BaseTest
         ];
     }
 
-    public function testPreserveEmptyObjectAndArray()
+    public function testPreserveEmptyObjectAndArray(): void
     {
         $client = $this->createStorageClient();
         $config = new Configuration();
@@ -322,7 +322,7 @@ class BackupProjectTest extends BaseTest
     }
 
 
-    public function testExecuteMetadata()
+    public function testExecuteMetadata(): void
     {
         $client = $this->createStorageClient();
         $client->createBucket("main", Client::STAGE_IN);
@@ -396,7 +396,7 @@ class BackupProjectTest extends BaseTest
         $this->assertEquals("columnValue", $data[0]["columnMetadata"]["col1"][0]["value"]);
     }
 
-    public function testExecuteWithoutPath()
+    public function testExecuteWithoutPath(): void
     {
         $client = $this->createStorageClient();
         $client->createBucket("main", Client::STAGE_IN);
@@ -439,7 +439,7 @@ class BackupProjectTest extends BaseTest
         self::assertCount(3, $keys);
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         $client = $this->createStorageClient();
         $component = new Components($client);

@@ -45,7 +45,7 @@ class RestoreTableFromImports extends Command
      */
     private $httpClient;
 
-    public function configure()
+    public function configure(): void
     {
         $this
             ->setName('restore-table-from-imports')
@@ -63,7 +63,7 @@ class RestoreTableFromImports extends Command
             ');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): void
     {
         $this->input = $input;
         $this->output = $output;
@@ -156,7 +156,7 @@ class RestoreTableFromImports extends Command
         return strtotime($event['created']) < $this->restoreDate;
     }
 
-    private function processEvent(array $event)
+    private function processEvent(array $event): void
     {
         $this->output->writeln("event $event[id]: start");
         $this->output->writeln("created: $event[created]");
@@ -276,7 +276,7 @@ class RestoreTableFromImports extends Command
         );
     }
 
-    private function fetchFileFromBackup($url, $destinationPath)
+    private function fetchFileFromBackup($url, $destinationPath): void
     {
         $this->httpClient->get(
             $url,

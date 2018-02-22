@@ -18,7 +18,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class CopyTable extends Command
 {
-    public function configure()
+    public function configure(): void
     {
         $this
             ->setName('copy-table')
@@ -30,7 +30,7 @@ class CopyTable extends Command
             ));
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): void
     {
         $sapiClient = $this->getSapiClient();
         if (!$sapiClient->tableExists($input->getArgument('sourceTableId'))) {

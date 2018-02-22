@@ -19,7 +19,7 @@ class TruncateTableTest extends BaseTest
      */
     private $temp;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->temp = new Temp('sapi-cli-test');
         $client = $this->createStorageClient();
@@ -31,7 +31,7 @@ class TruncateTableTest extends BaseTest
         $client->createTable('in.c-test', 'some-table', $csv);
     }
 
-    public function testExecute()
+    public function testExecute(): void
     {
         $application = new Application();
         $application->setAutoExit(false);
@@ -59,7 +59,7 @@ class TruncateTableTest extends BaseTest
         self::assertCount(1, $results);
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         // run command
         $application = new Application();

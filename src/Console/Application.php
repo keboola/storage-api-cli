@@ -75,10 +75,7 @@ class Application extends BaseApplication
         return parent::doRun($input, $output);
     }
 
-    /**
-     * @return Client
-     */
-    public function getStorageApiClient()
+    public function getStorageApiClient(): Client
     {
         if (!$this->sapiClient) {
             if (!$this->sapiToken) {

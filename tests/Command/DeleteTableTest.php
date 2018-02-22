@@ -13,7 +13,7 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class DeleteTableTest extends BaseTest
 {
-    public function setUp()
+    public function setUp(): void
     {
         $client = $this->createStorageClient();
         $client->createBucket('test', 'in');
@@ -27,7 +27,7 @@ class DeleteTableTest extends BaseTest
         unset($temp);
     }
 
-    public function testExecute()
+    public function testExecute(): void
     {
         $application = new Application();
         $application->setAutoExit(false);
@@ -45,7 +45,7 @@ class DeleteTableTest extends BaseTest
         self::assertFalse($client->tableExists('in.c-test.some-table'));
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         // run command
         $application = new Application();

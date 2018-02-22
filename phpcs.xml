@@ -3,7 +3,7 @@
     <rule ref="PSR2"/>
     <exclude-pattern>vendor/</exclude-pattern>
     <config name="installed_paths" value="vendor/slevomat/coding-standard/"/>
-   <!-- <rule ref="SlevomatCodingStandard.TypeHints.TypeHintDeclaration">
+    <rule ref="SlevomatCodingStandard.TypeHints.TypeHintDeclaration">
         <properties>
             <property name="traversableTypeHints" type="array" value="" />
             <property name="usefulAnnotations" type="array" value="@dataProvider"/>
@@ -11,7 +11,7 @@
         <exclude name="SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingTraversableParameterTypeHintSpecification"/>
         <exclude name="SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingTraversablePropertyTypeHintSpecification"/>
         <exclude name="SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingTraversableReturnTypeHintSpecification"/>
-    </rule>-->
+    </rule>
 
     <!--<rule ref="SlevomatCodingStandard.TypeHints.DeclareStrictTypes">
         <properties>

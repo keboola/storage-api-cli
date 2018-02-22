@@ -13,7 +13,7 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class DeleteBucketTest extends BaseTest
 {
-    public function setUp()
+    public function setUp(): void
     {
         $client = $this->createStorageClient();
         $client->createBucket('empty-test', 'in');
@@ -28,7 +28,7 @@ class DeleteBucketTest extends BaseTest
         unset($temp);
     }
 
-    public function testExecuteEmpty()
+    public function testExecuteEmpty(): void
     {
         $application = new Application();
         $application->setAutoExit(false);
@@ -47,7 +47,7 @@ class DeleteBucketTest extends BaseTest
         self::assertTrue($client->bucketExists('in.c-test'));
     }
 
-    public function testExecuteNonEmpty()
+    public function testExecuteNonEmpty(): void
     {
         $application = new Application();
         $application->setAutoExit(false);
@@ -67,7 +67,7 @@ class DeleteBucketTest extends BaseTest
         self::assertTrue($client->bucketExists('in.c-test'));
     }
 
-    public function testExecuteNonEmptyForce()
+    public function testExecuteNonEmptyForce(): void
     {
         $application = new Application();
         $application->setAutoExit(false);
@@ -87,7 +87,7 @@ class DeleteBucketTest extends BaseTest
         self::assertFalse($client->bucketExists('in.c-test'));
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         // run command
         $application = new Application();

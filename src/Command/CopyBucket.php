@@ -16,7 +16,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class CopyBucket extends Command
 {
-    public function configure()
+    public function configure(): void
     {
         $this
             ->setName('copy-bucket')
@@ -29,7 +29,7 @@ class CopyBucket extends Command
             ));
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): void
     {
         $sapiClient = $this->getSapiClient();
 

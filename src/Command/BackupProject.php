@@ -17,7 +17,7 @@ class BackupProject extends Command
 {
     private const VERSION_LIMIT = 2;
 
-    public function configure()
+    public function configure(): void
     {
         $this
             ->setName('backup-project')
@@ -32,7 +32,7 @@ class BackupProject extends Command
             ]);
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): void
     {
         $s3 = new S3Client([
             'version' => 'latest',
@@ -87,14 +87,7 @@ class BackupProject extends Command
         }
     }
 
-    /**
-     * @param Client $sapiClient
-     * @param S3Client $s3
-     * @param string $targetBucket
-     * @param string $targetBasePath
-     * @param bool $saveVersions
-     */
-    private function exportConfigs(Client $sapiClient, S3Client $s3, $targetBucket, $targetBasePath, $saveVersions)
+    private function exportConfigs(Client $sapiClient, S3Client $s3, string $targetBucket, string $targetBasePath, bool $saveVersions): void
     {
         $limit = self::VERSION_LIMIT;
         $tmp = new Temp();
@@ -161,7 +154,7 @@ class BackupProject extends Command
     }
 
 
-    private function exportTable($tableId, S3Client $targetS3, $targetBucket, $targetBasePath)
+    private function exportTable($tableId, S3Client $targetS3, $targetBucket, $targetBasePath): void
     {
         $client = $this->getSapiClient();
         $fileId = $client->exportTableAsync($tableId, [

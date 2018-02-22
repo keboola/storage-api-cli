@@ -16,7 +16,7 @@ use Symfony\Component\Console\Input\InputOption;
 class ListBuckets extends Command
 {
 
-    public function configure()
+    public function configure(): void
     {
         $this
             ->setName('list-buckets')
@@ -24,7 +24,7 @@ class ListBuckets extends Command
             ->addOption('include-tables', 't', InputOption::VALUE_NONE, "Include also tables in list");
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): void
     {
         $output->writeln("Buckets:");
         foreach ($this->getSapiClient()->listBuckets() as $bucket) {

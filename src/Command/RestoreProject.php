@@ -25,7 +25,7 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class RestoreProject extends Command
 {
-    public function configure()
+    public function configure(): void
     {
         $this
             ->setName('restore-project')

@@ -17,7 +17,7 @@ use Symfony\Component\Console\Input\InputOption;
 
 class PurgeProject extends Command
 {
-    public function configure()
+    public function configure(): void
     {
         $this
             ->setName('purge-project')
@@ -30,7 +30,7 @@ class PurgeProject extends Command
             ]);
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): void
     {
         $client = $this->getSapiClient();
 
