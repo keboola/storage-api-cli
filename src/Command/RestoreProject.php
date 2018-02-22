@@ -435,6 +435,7 @@ class RestoreProject extends Command
         $output->writeln(" - configuration versions");
         $output->writeln(" - orchestrations");
         $output->writeln(" - features of the original project");
+        return 0;
     }
 
     private function format(string $message): string
