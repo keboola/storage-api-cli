@@ -23,6 +23,7 @@
   },
   "scripts": {
     "tests": "phpunit --debug",
+    "phpcbf": "phpcbf -n --ignore=vendor --extensions=php .",
     "phpcs": "phpcs -n --ignore=vendor --extensions=php .",
     "phpstan": "phpstan analyse ./src ./tests --level=max --no-progress -c phpstan.neon",
     "build": [
