@@ -88,9 +88,6 @@ abstract class Command extends BaseCommand
 
     protected function initialize(InputInterface $input, OutputInterface $output): void
     {
-        if (!$this->checkRequirements($output)) {
-            throw new \RuntimeException("Requirements not satisfied - exiting.");
-        }
         // require sapi client
         $this->getSapiClient();
     }
@@ -108,28 +105,6 @@ abstract class Command extends BaseCommand
     public function getNestedFormatterHelper(): NestedFormatterHelper
     {
         return $this->getHelper('nestedFormatter');
-    }
-
-    private function checkRequirements(OutputInterface $output)
-    {
-        $success = true;
-        if (!function_exists('curl_version')) {
-            $output->writeln("<error>cURL is not installed or not enabled.</error>");
-            $success = false;
-        }
-        $client = new \GuzzleHttp\Client();
-        try {
-            $res = $client->request('GET', 'https://connection.keboola.com');
-        } catch (\Throwable $e) {
-            $output->writeln('<error>Cannot communicate securely: ' . $e->getMessage() . '</error>');
-            $success = false;
-        }
-        exec('gzip -h 2>&1', $commandOutput, $res);
-        if ($res !== 0) {
-            $output->writeln('<error>gzip is not installed: ' . implode("\n", $commandOutput) . '</error>');
-            $success = false;
-        }
-        return $success;
     }
 
     public function getUserAgent(): string
