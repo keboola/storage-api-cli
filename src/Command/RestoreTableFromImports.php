@@ -20,8 +20,14 @@ use Symfony\Component\Filesystem\Filesystem;
 class RestoreTableFromImports extends Command
 {
 
+    /**
+     * @var int
+     */
     private $importEventsCount = 0;
 
+    /**
+     * @var int
+     */
     private $importedEventsCount = 0;
 
     /**
@@ -34,10 +40,19 @@ class RestoreTableFromImports extends Command
      */
     private $input;
 
+    /**
+     * @var bool
+     */
     private $isDryRun = false;
 
+    /**
+     * @var string|null
+     */
     private $createdTableId = null;
 
+    /**
+     * @var string|null
+     */
     private $restoreDate = null;
 
     /**
@@ -45,7 +60,7 @@ class RestoreTableFromImports extends Command
      */
     private $httpClient;
 
-    public function configure()
+    public function configure(): void
     {
         $this
             ->setName('restore-table-from-imports')
@@ -63,7 +78,7 @@ class RestoreTableFromImports extends Command
             ');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): void
     {
         $this->input = $input;
         $this->output = $output;
@@ -138,17 +153,17 @@ class RestoreTableFromImports extends Command
         }
     }
 
-    private function isImportEvent($event)
+    private function isImportEvent(array $event): bool
     {
         return $event['event'] == 'storage.tableImportDone';
     }
 
-    private function isFullLoadEvent($event)
+    private function isFullLoadEvent(array $event): bool
     {
         return isset($event['params']['incremental']) && $event['params']['incremental'] == false;
     }
 
-    private function isEventBeforeRestoreDate($event)
+    private function isEventBeforeRestoreDate(array $event): bool
     {
         if (!$this->restoreDate) {
             return true;
@@ -156,7 +171,7 @@ class RestoreTableFromImports extends Command
         return strtotime($event['created']) < $this->restoreDate;
     }
 
-    private function processEvent(array $event)
+    private function processEvent(array $event): void
     {
         $this->output->writeln("event $event[id]: start");
         $this->output->writeln("created: $event[created]");
@@ -257,7 +272,7 @@ class RestoreTableFromImports extends Command
         $this->output->writeln("event $event[id]: end. {$this->importedEventsCount}/{$this->importEventsCount}");
     }
 
-    private function createTable(CsvFile $csvFile, $options)
+    private function createTable(CsvFile $csvFile, array $options): string
     {
         $sapiClient = $this->getSapiClient();
         $sourceTableInfo = $sapiClient->getTable($this->input->getArgument('sourceTableId'));
@@ -276,14 +291,13 @@ class RestoreTableFromImports extends Command
         );
     }
 
-    private function fetchFileFromBackup($url, $destinationPath)
+    private function fetchFileFromBackup(string $url, string $destinationPath): void
     {
-        $fh = fopen($destinationPath, 'w');
-        if (!$fh) {
-            throw new \Exception("Could not open file");
-        }
-        $request = $this->httpClient->get($url);
-        $request->setResponseBody($fh);
-        $request->send();
+        $this->httpClient->get(
+            $url,
+            [
+                'sink' => $destinationPath,
+            ]
+        );
     }
 }

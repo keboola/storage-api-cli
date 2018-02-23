@@ -16,7 +16,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class DeleteTable extends Command
 {
 
-    public function configure()
+    public function configure(): void
     {
         $this
             ->setName('delete-table')
@@ -26,7 +26,7 @@ class DeleteTable extends Command
             ));
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): void
     {
         $sapiClient = $this->getSapiClient();
         if (!$sapiClient->tableExists($input->getArgument('tableId'))) {

@@ -18,7 +18,7 @@ class ExportTableTest extends BaseTest
      */
     private $temp;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->temp = new Temp('sapi-cli-test');
         $client = $this->createStorageClient();
@@ -30,7 +30,7 @@ class ExportTableTest extends BaseTest
         $client->createTable('in.c-test', 'some-table', $csv);
     }
 
-    public function testExecute()
+    public function testExecute(): void
     {
         $application = new Application();
         $application->setAutoExit(false);
@@ -56,7 +56,7 @@ class ExportTableTest extends BaseTest
         self::assertEquals([1 => 'foo', 2 => 'bar', 3 => 'baz', 'id' => 'name'], $results);
     }
 
-    public function testExecuteExtended()
+    public function testExecuteExtended(): void
     {
         $application = new Application();
         $application->setAutoExit(false);
@@ -85,7 +85,7 @@ class ExportTableTest extends BaseTest
         self::assertEquals([1 => 'foo', 3 => 'baz', 'id' => 'name'], $results);
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         // run command
         $application = new Application();
@@ -94,7 +94,7 @@ class ExportTableTest extends BaseTest
         $applicationTester = new ApplicationTester($application);
         $applicationTester->run([
             'purge-project',
-            '--token' => TEST_STORAGE_API_TOKEN
+            '--token' => TEST_STORAGE_API_TOKEN,
         ]);
     }
 }

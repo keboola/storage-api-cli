@@ -13,7 +13,7 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class ListBucketsTest extends BaseTest
 {
-    public function setUp()
+    public function setUp(): void
     {
         $client = $this->createStorageClient();
         $client->createBucket('empty-test', 'in');
@@ -28,7 +28,7 @@ class ListBucketsTest extends BaseTest
         unset($temp);
     }
 
-    public function testExecute()
+    public function testExecute(): void
     {
         $application = new Application();
         $application->setAutoExit(false);
@@ -46,7 +46,7 @@ class ListBucketsTest extends BaseTest
         self::assertNotContains('some-table', $applicationTester->getDisplay());
     }
 
-    public function testExecuteInclude()
+    public function testExecuteInclude(): void
     {
         $application = new Application();
         $application->setAutoExit(false);
@@ -65,7 +65,7 @@ class ListBucketsTest extends BaseTest
         self::assertContains('some-table', $applicationTester->getDisplay());
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         // run command
         $application = new Application();
@@ -74,7 +74,7 @@ class ListBucketsTest extends BaseTest
         $applicationTester = new ApplicationTester($application);
         $applicationTester->run([
             'purge-project',
-            '--token' => TEST_STORAGE_API_TOKEN
+            '--token' => TEST_STORAGE_API_TOKEN,
         ]);
     }
 }

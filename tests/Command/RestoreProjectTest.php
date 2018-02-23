@@ -14,14 +14,14 @@ use Symfony\Component\Console\Tester\ApplicationTester;
 
 class RestoreProjectTest extends BaseTest
 {
-    const S3_PATH = '';
+    private const S3_PATH = '';
 
     /**
      * @var Temp
      */
     private $temp;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->temp = new Temp();
 
@@ -32,7 +32,7 @@ class RestoreProjectTest extends BaseTest
         $applicationTester = new ApplicationTester($application);
         $applicationTester->run([
             'purge-project',
-            '--token' => TEST_STORAGE_API_TOKEN
+            '--token' => TEST_STORAGE_API_TOKEN,
         ]);
 
         // clean up components configs in test project
@@ -49,7 +49,7 @@ class RestoreProjectTest extends BaseTest
         }
     }
 
-    public function testRestoreBuckets()
+    public function testRestoreBuckets(): void
     {
         $applicationTester = $this->runCommand(self::S3_PATH . 'buckets/');
         self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
@@ -60,7 +60,7 @@ class RestoreProjectTest extends BaseTest
         self::assertEquals("in.c-bucket2", $buckets[1]["id"]);
     }
 
-    public function testRestoreBucketsIgnoreStorageBackend()
+    public function testRestoreBucketsIgnoreStorageBackend(): void
     {
         $applicationTester = $this->runCommand(self::S3_PATH . 'buckets-multiple-backends/');
         self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
@@ -72,7 +72,7 @@ class RestoreProjectTest extends BaseTest
         self::assertTrue($client->bucketExists("in.c-mysql"));
     }
 
-    public function testBackendMissingError()
+    public function testBackendMissingError(): void
     {
         $applicationTester = $this->runCommand(self::S3_PATH . 'buckets-multiple-backends/', false);
         self::assertEquals(1, $applicationTester->getStatusCode());
@@ -80,7 +80,7 @@ class RestoreProjectTest extends BaseTest
         self::assertContains('Missing', $ret);
     }
 
-    public function testRestoreBucketAttributes()
+    public function testRestoreBucketAttributes(): void
     {
         $applicationTester = $this->runCommand(self::S3_PATH . 'buckets/');
         self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
@@ -90,19 +90,19 @@ class RestoreProjectTest extends BaseTest
                 [
                     "name" => "myKey",
                     "value" => "myValue",
-                    "protected" => false
+                    "protected" => false,
                 ],
                 [
                     "name" => "myProtectedKey",
                     "value" => "myProtectedValue",
-                    "protected" => true
-                ]
+                    "protected" => true,
+                ],
             ],
             $client->getBucket("in.c-bucket1")["attributes"]
         );
     }
 
-    public function testRestoreTableWithHeader()
+    public function testRestoreTableWithHeader(): void
     {
         $applicationTester = $this->runCommand(self::S3_PATH . 'table-with-header/');
         self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
@@ -117,7 +117,7 @@ class RestoreProjectTest extends BaseTest
         self::assertContains('"001C000000xYbhhIAD","Keboola 2"', $fileContents);
     }
 
-    public function testRestoreTableWithoutHeader()
+    public function testRestoreTableWithoutHeader(): void
     {
         $applicationTester = $this->runCommand(self::S3_PATH . 'table-without-header/');
         self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
@@ -133,7 +133,7 @@ class RestoreProjectTest extends BaseTest
     }
 
 
-    public function testRestoreTableFromMultipleSlices()
+    public function testRestoreTableFromMultipleSlices(): void
     {
         $applicationTester = $this->runCommand(self::S3_PATH . 'table-multiple-slices/');
         self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
@@ -148,7 +148,7 @@ class RestoreProjectTest extends BaseTest
         self::assertContains('"001C000000xYbhhIAD","Keboola 2"', $fileContents);
     }
 
-    public function testRestoreTableFromMultipleSlicesSharedPrefix()
+    public function testRestoreTableFromMultipleSlicesSharedPrefix(): void
     {
         $applicationTester = $this->runCommand(self::S3_PATH . 'table-multiple-slices-shared-prefix/');
         self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
@@ -174,7 +174,7 @@ class RestoreProjectTest extends BaseTest
         self::assertCount(4, explode("\n", $fileContents));
     }
 
-    public function testRestoreTableAttributes()
+    public function testRestoreTableAttributes(): void
     {
         $applicationTester = $this->runCommand(self::S3_PATH . 'table-properties');
         self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
@@ -184,19 +184,19 @@ class RestoreProjectTest extends BaseTest
                 [
                     "name" => "myKey",
                     "value" => "myValue",
-                    "protected" => false
+                    "protected" => false,
                 ],
                 [
                     "name" => "myProtectedKey",
                     "value" => "myProtectedValue",
-                    "protected" => true
-                ]
+                    "protected" => true,
+                ],
             ],
             $client->getTable("in.c-bucket.Account")["attributes"]
         );
     }
 
-    public function testRestoreTableIndexesAndPrimaryKeys()
+    public function testRestoreTableIndexesAndPrimaryKeys(): void
     {
         $applicationTester = $this->runCommand(self::S3_PATH . 'table-properties/');
         self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
@@ -209,7 +209,7 @@ class RestoreProjectTest extends BaseTest
         self::assertEquals(["Id", "Name"], $account2Table["indexedColumns"]);
     }
 
-    public function testRestoreAlias()
+    public function testRestoreAlias(): void
     {
         $applicationTester = $this->runCommand(self::S3_PATH . 'alias');
         self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
@@ -221,7 +221,7 @@ class RestoreProjectTest extends BaseTest
         self::assertEquals("in.c-bucket.Account", $aliasTable["sourceTable"]["id"]);
     }
 
-    public function testRestoreFilteredAlias()
+    public function testRestoreFilteredAlias(): void
     {
         $applicationTester = $this->runCommand(self::S3_PATH . 'alias-filtered');
         self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
@@ -234,7 +234,7 @@ class RestoreProjectTest extends BaseTest
         self::assertEquals(["column" => "Name", "operator" => "eq", "values" => ["Keboola"]], $aliasTable["aliasFilter"]);
     }
 
-    public function testRestoreConfigurations()
+    public function testRestoreConfigurations(): void
     {
         $applicationTester = $this->runCommand(self::S3_PATH . 'configurations/');
         self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
@@ -260,7 +260,7 @@ class RestoreProjectTest extends BaseTest
     }
 
 
-    public function testRestoreConfigurationsWithoutVersions()
+    public function testRestoreConfigurationsWithoutVersions(): void
     {
         $applicationTester = $this->runCommand(self::S3_PATH . 'configurations-no-versions');
         self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
@@ -286,7 +286,7 @@ class RestoreProjectTest extends BaseTest
         self::assertEquals(["key" => "value"], $config["state"]);
     }
 
-    public function testDoNotRestoreOrchestrationConfigurations()
+    public function testDoNotRestoreOrchestrationConfigurations(): void
     {
         $applicationTester = $this->runCommand(self::S3_PATH . 'configuration-orchestration/');
         self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
@@ -297,7 +297,7 @@ class RestoreProjectTest extends BaseTest
         self::assertCount(0, $componentsList);
     }
 
-    public function testRestoreEmptyObjectInConfiguration()
+    public function testRestoreEmptyObjectInConfiguration(): void
     {
         $applicationTester = $this->runCommand(self::S3_PATH . 'configuration-empty-object/');
         self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
@@ -312,7 +312,7 @@ class RestoreProjectTest extends BaseTest
         self::assertEquals([], $config->configuration->emptyArray);
     }
 
-    public function testRestoreConfigurationRows()
+    public function testRestoreConfigurationRows(): void
     {
         $applicationTester = $this->runCommand(self::S3_PATH . 'configuration-rows/');
         self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
@@ -345,7 +345,7 @@ class RestoreProjectTest extends BaseTest
         self::assertEquals("Ratings", $config["rows"][1]["configuration"]["name"]);
     }
 
-    public function testRestoreEmptyObjectInConfigurationRow()
+    public function testRestoreEmptyObjectInConfigurationRow(): void
     {
         $applicationTester = $this->runCommand(self::S3_PATH . 'configuration-rows/');
         self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
@@ -359,7 +359,7 @@ class RestoreProjectTest extends BaseTest
         self::assertEquals([], $config[0]->configuration->queries);
     }
 
-    public function testRestoreOnlyConfigurations()
+    public function testRestoreOnlyConfigurations(): void
     {
         $applicationTester = $this->runCommand(self::S3_PATH . 'table-with-header/', false, true, false);
         self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
@@ -367,7 +367,7 @@ class RestoreProjectTest extends BaseTest
         self::assertFalse($client->tableExists("in.c-bucket.Account"));
     }
 
-    public function testRestoreOnlyData()
+    public function testRestoreOnlyData(): void
     {
         $applicationTester = $this->runCommand(self::S3_PATH . 'configurations/', false, false, true);
         self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
@@ -377,7 +377,7 @@ class RestoreProjectTest extends BaseTest
         self::assertCount(0, $componentsList);
     }
 
-    public function testRestoreBucketWithoutPrefix()
+    public function testRestoreBucketWithoutPrefix(): void
     {
         $applicationTester = $this->runCommand(self::S3_PATH . 'bucket-without-prefix/');
         self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
@@ -386,7 +386,7 @@ class RestoreProjectTest extends BaseTest
         self::assertCount(0, $buckets);
     }
 
-    public function testRestoreTableWithoutPrefix()
+    public function testRestoreTableWithoutPrefix(): void
     {
         $applicationTester = $this->runCommand(self::S3_PATH . 'table-without-prefix/');
         self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
@@ -395,7 +395,7 @@ class RestoreProjectTest extends BaseTest
         self::assertCount(0, $buckets);
     }
 
-    public function testRestoreTableEmpty()
+    public function testRestoreTableEmpty(): void
     {
         $applicationTester = $this->runCommand(self::S3_PATH . 'table-empty/');
         self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
@@ -403,7 +403,7 @@ class RestoreProjectTest extends BaseTest
         self::assertTrue($client->tableExists("in.c-bucket.Account"));
     }
 
-    public function testRestoreMetadata()
+    public function testRestoreMetadata(): void
     {
         $applicationTester = $this->runCommand(self::S3_PATH . 'metadata/');
         self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
@@ -419,7 +419,7 @@ class RestoreProjectTest extends BaseTest
         self::assertEquals("bucketValue", $bucket["metadata"][0]["value"]);
     }
 
-    protected function runCommand($path, $ignoreStorageBackend = true, $onlyConfigurations = false, $onlyData = false)
+    protected function runCommand(string $path, bool $ignoreStorageBackend = true, bool $onlyConfigurations = false, bool $onlyData = false): ApplicationTester
     {
         putenv('AWS_ACCESS_KEY_ID=' . TEST_RESTORE_AWS_ACCESS_KEY_ID);
         putenv('AWS_SECRET_ACCESS_KEY=' . TEST_RESTORE_AWS_SECRET_ACCESS_KEY);
@@ -435,7 +435,7 @@ class RestoreProjectTest extends BaseTest
             '--data' => $onlyData,
             'bucket' => TEST_RESTORE_S3_BUCKET,
             'region' => TEST_AWS_REGION,
-            'path' => $path
+            'path' => $path,
         ]);
         return $applicationTester;
     }

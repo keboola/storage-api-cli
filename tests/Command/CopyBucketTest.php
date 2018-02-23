@@ -14,7 +14,7 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class CopyBucketTest extends BaseTest
 {
-    public function setUp()
+    public function setUp(): void
     {
         $client = $this->createStorageClient();
         $client->createBucket('test', 'in');
@@ -28,7 +28,7 @@ class CopyBucketTest extends BaseTest
         unset($temp);
     }
 
-    public function testExecute()
+    public function testExecute(): void
     {
         $application = new Application();
         $application->setAutoExit(false);
@@ -50,7 +50,7 @@ class CopyBucketTest extends BaseTest
         self::assertTrue($client->tableExists('in.c-destination.some-table'));
     }
 
-    public function testExecuteExists()
+    public function testExecuteExists(): void
     {
         $client = $this->createStorageClient();
         $client->createBucket('destination', 'in');
@@ -69,7 +69,7 @@ class CopyBucketTest extends BaseTest
         self::assertEquals(1, $applicationTester->getStatusCode());
     }
 
-    public function testExecuteDifferentProject()
+    public function testExecuteDifferentProject(): void
     {
         $application = new Application();
         $application->setAutoExit(false);
@@ -89,13 +89,13 @@ class CopyBucketTest extends BaseTest
         // check for the results
         $client = new Client([
             'url' => TEST_STORAGE_API_URL,
-            'token' => TEST_STORAGE_API_SECONDARY_TOKEN
+            'token' => TEST_STORAGE_API_SECONDARY_TOKEN,
         ]);
         self::assertTrue($client->bucketExists('in.c-destination'));
         self::assertTrue($client->tableExists('in.c-destination.some-table'));
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         // run command
         $application = new Application();
@@ -104,7 +104,7 @@ class CopyBucketTest extends BaseTest
         $applicationTester = new ApplicationTester($application);
         $applicationTester->run([
             'purge-project',
-            '--token' => TEST_STORAGE_API_TOKEN
+            '--token' => TEST_STORAGE_API_TOKEN,
         ]);
 
         $client = new Client([

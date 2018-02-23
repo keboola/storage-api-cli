@@ -19,7 +19,7 @@ class WriteTableTest extends BaseTest
      */
     private $temp;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->temp = new Temp('sapi-cli-test');
         $client = $this->createStorageClient();
@@ -31,7 +31,7 @@ class WriteTableTest extends BaseTest
         $client->createTable('in.c-test', 'some-table', $csv);
     }
 
-    public function testExecute()
+    public function testExecute(): void
     {
         $application = new Application();
         $application->setAutoExit(false);
@@ -63,7 +63,7 @@ class WriteTableTest extends BaseTest
         self::assertEquals([4 => 'fooBar', 5 => 'barBaz', 6 => 'bazFoo', 'id' => 'name'], $results);
     }
 
-    public function testExecuteIncremental()
+    public function testExecuteIncremental(): void
     {
         $application = new Application();
         $application->setAutoExit(false);
@@ -96,7 +96,7 @@ class WriteTableTest extends BaseTest
         self::assertEquals([1 => 'foo', 2 => 'bar', 4 => 'fooBar', 5 => 'barBaz', 'id' => 'name'], $results);
     }
 
-    public function testExecuteExtendedDelimiter()
+    public function testExecuteExtendedDelimiter(): void
     {
         $application = new Application();
         $application->setAutoExit(false);
@@ -130,7 +130,7 @@ class WriteTableTest extends BaseTest
         self::assertEquals([1 => 'foo', 2 => 'bar', 4 => 'fooBar', 5 => 'barBaz', 'id' => 'name'], $results);
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         // run command
         $application = new Application();
@@ -139,7 +139,7 @@ class WriteTableTest extends BaseTest
         $applicationTester = new ApplicationTester($application);
         $applicationTester->run([
             'purge-project',
-            '--token' => TEST_STORAGE_API_TOKEN
+            '--token' => TEST_STORAGE_API_TOKEN,
         ]);
     }
 }

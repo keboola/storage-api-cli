@@ -19,14 +19,14 @@ class CreateTableTest extends BaseTest
      */
     private $temp;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->temp = new Temp();
         $client = $this->createStorageClient();
         $client->createBucket('test', 'in');
     }
 
-    public function testExecute()
+    public function testExecute(): void
     {
         $fs = new Filesystem();
         $fileName = $this->temp->getTmpFolder() . DIRECTORY_SEPARATOR . 'someData.csv';
@@ -59,7 +59,7 @@ class CreateTableTest extends BaseTest
         self::assertEquals([1 => 'foo', 2 => 'bar', 'id' => 'name'], $results);
     }
 
-    public function testExecuteDelimiter()
+    public function testExecuteDelimiter(): void
     {
         $fs = new Filesystem();
         $fileName = $this->temp->getTmpFolder() . DIRECTORY_SEPARATOR . 'someData.csv';
@@ -93,7 +93,7 @@ class CreateTableTest extends BaseTest
         self::assertEquals([1 => 'foo', 2 => 'bar', 'id' => 'name'], $results);
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         // run command
         $application = new Application();
@@ -102,7 +102,7 @@ class CreateTableTest extends BaseTest
         $applicationTester = new ApplicationTester($application);
         $applicationTester->run([
             'purge-project',
-            '--token' => TEST_STORAGE_API_TOKEN
+            '--token' => TEST_STORAGE_API_TOKEN,
         ]);
     }
 }

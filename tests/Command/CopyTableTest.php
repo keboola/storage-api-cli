@@ -11,9 +11,12 @@ use Symfony\Component\Console\Tester\ApplicationTester;
 
 class CopyTableTest extends BaseTest
 {
+    /**
+     * @var Temp
+     */
     private $temp;
 
-    public function setUp()
+    public function setUp(): void
     {
         // add configs
         $client = $this->createStorageClient();
@@ -39,7 +42,7 @@ class CopyTableTest extends BaseTest
         self::assertCount(3, $client->listTables());
     }
 
-    public function testExecute()
+    public function testExecute(): void
     {
         $tablesPk = [
             'in.c-main.testNoPk' => [],
@@ -71,7 +74,7 @@ class CopyTableTest extends BaseTest
         }
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         // run command
         $application = new Application();
@@ -80,7 +83,7 @@ class CopyTableTest extends BaseTest
         $applicationTester = new ApplicationTester($application);
         $applicationTester->run([
             'purge-project',
-            '--token' => TEST_STORAGE_API_TOKEN
+            '--token' => TEST_STORAGE_API_TOKEN,
         ]);
     }
 }

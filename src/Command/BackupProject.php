@@ -15,9 +15,9 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class BackupProject extends Command
 {
-    const VERSION_LIMIT = 2;
+    private const VERSION_LIMIT = 2;
 
-    public function configure()
+    public function configure(): void
     {
         $this
             ->setName('backup-project')
@@ -28,11 +28,11 @@ class BackupProject extends Command
                 new InputArgument('path', InputArgument::OPTIONAL, 'path in S3', '/'),
                 new InputArgument('region', InputArgument::OPTIONAL, 'region', 'us-east-1'),
                 new InputOption('structure-only', '-s', InputOption::VALUE_NONE, 'Backup only structure'),
-                new InputOption('include-versions', '-i', InputOption::VALUE_NONE, 'Include configuration versions in backup')
+                new InputOption('include-versions', '-i', InputOption::VALUE_NONE, 'Include configuration versions in backup'),
             ]);
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): void
     {
         $s3 = new S3Client([
             'version' => 'latest',
@@ -49,7 +49,7 @@ class BackupProject extends Command
         $sapiClient = $this->getSapiClient();
 
         $tables = $sapiClient->listTables(null, [
-            'include' => 'attributes,columns,buckets,metadata,columnMetadata'
+            'include' => 'attributes,columns,buckets,metadata,columnMetadata',
         ]);
         $output->write("Exporting tables\n");
         $s3->putObject([
@@ -87,14 +87,7 @@ class BackupProject extends Command
         }
     }
 
-    /**
-     * @param Client $sapiClient
-     * @param S3Client $s3
-     * @param string $targetBucket
-     * @param string $targetBasePath
-     * @param bool $saveVersions
-     */
-    private function exportConfigs(Client $sapiClient, S3Client $s3, $targetBucket, $targetBasePath, $saveVersions)
+    private function exportConfigs(Client $sapiClient, S3Client $s3, string $targetBucket, string $targetBasePath, bool $saveVersions): void
     {
         $limit = self::VERSION_LIMIT;
         $tmp = new Temp();
@@ -161,7 +154,7 @@ class BackupProject extends Command
     }
 
 
-    private function exportTable($tableId, S3Client $targetS3, $targetBucket, $targetBasePath)
+    private function exportTable(string $tableId, S3Client $targetS3, string $targetBucket, string $targetBasePath): void
     {
         $client = $this->getSapiClient();
         $fileId = $client->exportTableAsync($tableId, [
@@ -177,7 +170,7 @@ class BackupProject extends Command
                 "key" => $fileInfo["credentials"]["AccessKeyId"],
                 "secret" => $fileInfo["credentials"]["SecretAccessKey"],
                 "token" => $fileInfo["credentials"]["SessionToken"],
-            ]
+            ],
         ]);
 
         $fs = new Filesystem();

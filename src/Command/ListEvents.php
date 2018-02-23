@@ -17,7 +17,7 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 class ListEvents extends Command
 {
 
-    public function configure()
+    public function configure(): void
     {
         $this
             ->setName('list-events')
@@ -31,7 +31,7 @@ class ListEvents extends Command
             ));
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): void
     {
         $sapiClient = $this->getSapiClient();
 

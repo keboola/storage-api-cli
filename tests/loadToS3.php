@@ -20,7 +20,7 @@ $s3Client = new \Aws\S3\S3Client([
     'credentials' => [
         'key' => TEST_RESTORE_AWS_ACCESS_KEY_ID,
         'secret' => TEST_RESTORE_AWS_SECRET_ACCESS_KEY,
-    ]
+    ],
 ]);
 $s3Client->deleteMatchingObjects(TEST_RESTORE_S3_BUCKET, '*');
 

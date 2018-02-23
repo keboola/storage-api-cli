@@ -4,9 +4,9 @@ services:
   - docker
 install:
   - docker-compose build
-  - docker-compose run --rm tests-ci php tests/loadToS3.php
+  - docker-compose run --rm app php tests/loadToS3.php
 script:
-  - docker-compose run --rm tests-ci
+  - docker-compose run --rm app composer ci
   - docker run --rm keboola/storage-api-cli
 deploy:
   provider: script

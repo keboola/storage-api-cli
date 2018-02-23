@@ -10,7 +10,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class DeleteMetadata extends Command
 {
 
-    public function configure()
+    public function configure(): void
     {
         $this
             ->setName('delete-metadata')
@@ -21,7 +21,7 @@ class DeleteMetadata extends Command
             ));
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): void
     {
         $sapiClient = $this->getSapiClient();
         $result = [];
@@ -48,7 +48,7 @@ class DeleteMetadata extends Command
         $this->dumpResult($result, $output);
     }
 
-    private function deleteMetadataFromBucket($bucketId)
+    private function deleteMetadataFromBucket(string $bucketId): array
     {
 
         $sapiClient = $this->getSapiClient();
@@ -70,7 +70,7 @@ class DeleteMetadata extends Command
         return [$bucketId => count($bucketMetadata), 'tables' => $tablesResult];
     }
 
-    private function deleteMetadataFromTable($tableId)
+    private function deleteMetadataFromTable(string $tableId): array
     {
 
         $sapiClient = $this->getSapiClient();
@@ -97,7 +97,7 @@ class DeleteMetadata extends Command
         return [$tableId => count($tableMetadata), 'columns' => $columnsResult];
     }
 
-    private function deleteMetadataFromColumn($columnId, $columnMeta = null)
+    private function deleteMetadataFromColumn(string $columnId, ?array $columnMeta = null): array
     {
 
         $metadataClient = new Metadata($this->getSapiClient());
@@ -111,7 +111,7 @@ class DeleteMetadata extends Command
         return [$columnId => count($columnMeta)];
     }
 
-    private function dumpResult(array $result, OutputInterface $output)
+    private function dumpResult(array $result, OutputInterface $output): void
     {
         foreach ($result as $key => $value) {
             if (is_array($value)) {

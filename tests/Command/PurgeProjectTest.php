@@ -21,7 +21,7 @@ class PurgeProjectTest extends BaseTest
      */
     private $temp;
 
-    public function setUp()
+    public function setUp(): void
     {
         // add configs
         $client = $this->createStorageClient();
@@ -75,7 +75,7 @@ class PurgeProjectTest extends BaseTest
         self::assertCount(1, $components->listComponents());
     }
 
-    public function testExecuteFull()
+    public function testExecuteFull(): void
     {
         // run command
         $application = new Application();
@@ -84,7 +84,7 @@ class PurgeProjectTest extends BaseTest
         $applicationTester = new ApplicationTester($application);
         $applicationTester->run([
             'purge-project',
-            '--token' => TEST_STORAGE_API_TOKEN
+            '--token' => TEST_STORAGE_API_TOKEN,
         ]);
 
         // check for the results
@@ -96,7 +96,7 @@ class PurgeProjectTest extends BaseTest
         self::assertCount(0, $components->listComponents());
     }
 
-    public function testPurgeConfigurations()
+    public function testPurgeConfigurations(): void
     {
         // run command
         $application = new Application();
@@ -106,7 +106,7 @@ class PurgeProjectTest extends BaseTest
         $applicationTester->run([
             'purge-project',
             '--token' => TEST_STORAGE_API_TOKEN,
-            '--configurations' => true
+            '--configurations' => true,
         ]);
 
         // check stats
@@ -118,7 +118,7 @@ class PurgeProjectTest extends BaseTest
         self::assertCount(0, $components->listComponents());
     }
 
-    public function testPurgeFileUploads()
+    public function testPurgeFileUploads(): void
     {
         $client = $this->createStorageClient();
         $fileUploadOptions = new FileUploadOptions();
@@ -138,7 +138,7 @@ class PurgeProjectTest extends BaseTest
         $applicationTester->run([
             'purge-project',
             '--token' => TEST_STORAGE_API_TOKEN,
-            '--file-uploads' => true
+            '--file-uploads' => true,
         ]);
 
         // check stats
@@ -150,7 +150,7 @@ class PurgeProjectTest extends BaseTest
         self::assertCount(1, $components->listComponents());
     }
 
-    public function testPurgeData()
+    public function testPurgeData(): void
     {
         // run command
         $application = new Application();
@@ -160,7 +160,7 @@ class PurgeProjectTest extends BaseTest
         $applicationTester->run([
             'purge-project',
             '--token' => TEST_STORAGE_API_TOKEN,
-            '--data' => true
+            '--data' => true,
         ]);
 
         // check stats
@@ -172,7 +172,7 @@ class PurgeProjectTest extends BaseTest
         self::assertCount(1, $components->listComponents());
     }
 
-    public function testPurgeAliases()
+    public function testPurgeAliases(): void
     {
         // run command
         $application = new Application();
@@ -182,7 +182,7 @@ class PurgeProjectTest extends BaseTest
         $applicationTester->run([
             'purge-project',
             '--token' => TEST_STORAGE_API_TOKEN,
-            '--aliases' => true
+            '--aliases' => true,
         ]);
 
         // check stats
@@ -194,7 +194,7 @@ class PurgeProjectTest extends BaseTest
         self::assertCount(1, $components->listComponents());
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         // run command
         $application = new Application();
@@ -203,7 +203,7 @@ class PurgeProjectTest extends BaseTest
         $applicationTester = new ApplicationTester($application);
         $applicationTester->run([
             'purge-project',
-            '--token' => TEST_STORAGE_API_TOKEN
+            '--token' => TEST_STORAGE_API_TOKEN,
         ]);
     }
 }

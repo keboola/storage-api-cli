@@ -10,13 +10,13 @@ use Symfony\Component\Console\Tester\ApplicationTester;
 
 class ListEventsTest extends BaseTest
 {
-    public function setUp()
+    public function setUp(): void
     {
         $client = $this->createStorageClient();
         $client->createBucket('empty-test', 'in');
     }
 
-    public function testExecute()
+    public function testExecute(): void
     {
         $application = new Application();
         $application->setAutoExit(false);
@@ -31,7 +31,7 @@ class ListEventsTest extends BaseTest
         self::assertEquals(0, $applicationTester->getStatusCode());
     }
 
-    public function testExecuteComponent()
+    public function testExecuteComponent(): void
     {
         $application = new Application();
         $application->setAutoExit(false);
@@ -47,7 +47,7 @@ class ListEventsTest extends BaseTest
         self::assertEquals(0, $applicationTester->getStatusCode());
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         // run command
         $application = new Application();
@@ -56,7 +56,7 @@ class ListEventsTest extends BaseTest
         $applicationTester = new ApplicationTester($application);
         $applicationTester->run([
             'purge-project',
-            '--token' => TEST_STORAGE_API_TOKEN
+            '--token' => TEST_STORAGE_API_TOKEN,
         ]);
     }
 }

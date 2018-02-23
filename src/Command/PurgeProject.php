@@ -17,7 +17,7 @@ use Symfony\Component\Console\Input\InputOption;
 
 class PurgeProject extends Command
 {
-    public function configure()
+    public function configure(): void
     {
         $this
             ->setName('purge-project')
@@ -26,11 +26,11 @@ class PurgeProject extends Command
                 new InputOption('configurations', '-c', InputOption::VALUE_NONE, 'Purge configurations'),
                 new InputOption('aliases', '-a', InputOption::VALUE_NONE, 'Purge aliases'),
                 new InputOption('data', '-d', InputOption::VALUE_NONE, 'Purge tables, aliases and buckets'),
-                new InputOption('file-uploads', '-f', InputOption::VALUE_NONE, 'Purge file uploads')
+                new InputOption('file-uploads', '-f', InputOption::VALUE_NONE, 'Purge file uploads'),
             ]);
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): void
     {
         $client = $this->getSapiClient();
 
@@ -93,12 +93,12 @@ class PurgeProject extends Command
         }
     }
 
-    private function format($message)
+    private function format(string $message): string
     {
         return sprintf('%-50s', $message);
     }
 
-    private function check()
+    private function check(): string
     {
         return '<info>ok</info>';
     }

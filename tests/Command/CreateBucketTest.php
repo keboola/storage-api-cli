@@ -10,7 +10,7 @@ use Symfony\Component\Console\Tester\ApplicationTester;
 
 class CreateBucketTest extends BaseTest
 {
-    public function testExecute()
+    public function testExecute(): void
     {
         $application = new Application();
         $application->setAutoExit(false);
@@ -33,7 +33,7 @@ class CreateBucketTest extends BaseTest
         self::assertEquals('Client testing', $bucket['description']);
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         // run command
         $application = new Application();
@@ -42,7 +42,7 @@ class CreateBucketTest extends BaseTest
         $applicationTester = new ApplicationTester($application);
         $applicationTester->run([
             'purge-project',
-            '--token' => TEST_STORAGE_API_TOKEN
+            '--token' => TEST_STORAGE_API_TOKEN,
         ]);
     }
 }
