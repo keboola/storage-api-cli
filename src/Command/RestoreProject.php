@@ -292,13 +292,6 @@ class RestoreProject extends Command
                 }
                 unset($headerFile);
 
-                // indexes
-                $missingIndexes = array_diff($table["indexedColumns"], $table["primaryKey"]);
-                if (count($missingIndexes) > 0) {
-                    foreach ($missingIndexes as $missingIndex) {
-                        $client->markTableColumnAsIndexed($table["id"], $missingIndex);
-                    }
-                }
                 $output->writeln($this->check());
             }
 

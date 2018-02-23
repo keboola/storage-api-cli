@@ -94,16 +94,6 @@ class CopyTable extends Command
             $createOptions
         );
 
-        // Set indexes
-        if ($tableInfo["indexedColumns"] && count($tableInfo["indexedColumns"])) {
-            foreach ($tableInfo["indexedColumns"] as $index) {
-                if (in_array($index, $tableInfo["primaryKey"])) {
-                    continue;
-                }
-                $sapiClientDst->markTableColumnAsIndexed($destinationTable, $index);
-            }
-        }
-
         // Set attributes
         if ($tableInfo["attributes"] && count($tableInfo["attributes"])) {
             foreach ($tableInfo["attributes"] as $attribute) {
