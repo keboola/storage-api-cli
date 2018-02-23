@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "b4809aeb86f1cf74d671e03e78acc856",
+    "content-hash": "8a7629a9016f26f0b59d14342978fba4",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -349,16 +349,16 @@
         },
         {
             "name": "keboola/storage-api-client",
-            "version": "8.0.2",
+            "version": "9.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/keboola/storage-api-php-client.git",
-                "reference": "247880723cd82133da8348c45af11f3cfa8fb59e"
+                "reference": "0c2fc0993667ea21ec7f666e012cea793dbff5c1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/keboola/storage-api-php-client/zipball/247880723cd82133da8348c45af11f3cfa8fb59e",
-                "reference": "247880723cd82133da8348c45af11f3cfa8fb59e",
+                "url": "https://api.github.com/repos/keboola/storage-api-php-client/zipball/0c2fc0993667ea21ec7f666e012cea793dbff5c1",
+                "reference": "0c2fc0993667ea21ec7f666e012cea793dbff5c1",
                 "shasum": ""
             },
             "require": {
@@ -388,7 +388,7 @@
             ],
             "description": "Keboola Storage API PHP CLient",
             "homepage": "http://keboola.com",
-            "time": "2018-02-17T10:27:17+00:00"
+            "time": "2018-02-23T08:11:35+00:00"
         },
         {
             "name": "keboola/symfony-console-nested-formatter-helper",

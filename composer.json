@@ -10,7 +10,7 @@
   "license": "MIT",
   "require": {
     "keboola/php-temp": "^0.1",
-    "keboola/storage-api-client": "^8.0",
+    "keboola/storage-api-client": "^9.0",
     "keboola/symfony-console-nested-formatter-helper": "^0.1",
     "symfony/console": "^2.8",
     "symfony/filesystem": "^2.8"
