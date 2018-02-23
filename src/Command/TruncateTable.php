@@ -34,37 +34,11 @@ class TruncateTable extends Command
         if (!$sapiClient->tableExists($input->getArgument('tableId'))) {
             throw new \Exception("Table {$input->getArgument('tableId')} does not exist or is not accessible.");
         }
-
         $output->writeln("Table found ok");
 
         $output->writeln("Truncate start");
         $startTime = time();
-
-        $tmpFile = $this->getTmpDir() . "/" . $input->getArgument('tableId') . ".csv";
-
-        $exporter = new TableExporter($sapiClient);
-
-        $exporter->exportTable(
-            $input->getArgument('tableId'),
-            $tmpFile,
-            [
-                "limit" => 1,
-            ]
-        );
-
-        $csvFile = new CsvFile($tmpFile);
-        $headFile = new CsvFile($tmpFile . ".head");
-        $headFile->writeRow($csvFile->getHeader());
-
-        $sapiClient->writeTableAsync(
-            $input->getArgument('tableId'),
-            $headFile
-        );
-
-        unset($csvFile);
-        unset($headFile);
-        $this->destroyTmpDir();
-
+        $sapiClient->deleteTableRows($input->getArgument('tableId'));
         $duration = time() - $startTime;
 
         $output->writeln("Truncate done in $duration secs.");
