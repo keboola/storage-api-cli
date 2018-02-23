@@ -22,8 +22,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class Application extends BaseApplication
 {
-    private const VERSION = '1.0.0';
-
     private const DEFAULT_SAPI_URL = 'https://connection.keboola.com';
 
     /**
@@ -49,7 +47,7 @@ class Application extends BaseApplication
 
     public function __construct()
     {
-        parent::__construct('Keboola Storage API CLI', self::VERSION);
+        parent::__construct('Keboola Storage API CLI', getenv('KEBOOLA_STORAGE_API_CLI_VERSION'));
 
         $this->getDefinition()
             ->addOption(new InputOption('token', null, InputOption::VALUE_REQUIRED, "Storage API Token"));
