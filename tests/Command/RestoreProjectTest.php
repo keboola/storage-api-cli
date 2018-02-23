@@ -196,17 +196,15 @@ class RestoreProjectTest extends BaseTest
         );
     }
 
-    public function testRestoreTableIndexesAndPrimaryKeys(): void
+    public function testRestoreTablePrimaryKeys(): void
     {
         $applicationTester = $this->runCommand(self::S3_PATH . 'table-properties/');
         self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
         $client = $this->createStorageClient();
         $accountTable = $client->getTable("in.c-bucket.Account");
         $account2Table = $client->getTable("in.c-bucket.Account2");
-        self::assertEquals(["Id", "Name"], $accountTable["indexedColumns"]);
         self::assertEquals(["Id", "Name"], $accountTable["primaryKey"]);
         self::assertEquals(["Id"], $account2Table["primaryKey"]);
-        self::assertEquals(["Id", "Name"], $account2Table["indexedColumns"]);
     }
 
     public function testRestoreAlias(): void
