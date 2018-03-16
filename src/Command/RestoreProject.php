@@ -67,9 +67,9 @@ class RestoreProject extends Command
             $output->write($this->format('Downloading buckets'));
             $s3->getObject(
                 [
-                    'Bucket' => $bucket,
-                    'Key' => $basePath . 'buckets.json',
-                    'SaveAs' => $tmp->getTmpFolder() . 'buckets.json',
+                'Bucket' => $bucket,
+                'Key' => ltrim($basePath . 'buckets.json', '/'),
+                'SaveAs' => $tmp->getTmpFolder() . 'buckets.json',
                 ]
             );
             $buckets = json_decode(file_get_contents($tmp->getTmpFolder() . 'buckets.json'), true);
