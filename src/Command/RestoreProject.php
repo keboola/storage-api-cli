@@ -145,7 +145,7 @@ class RestoreProject extends Command
             $s3->getObject(
                 [
                     'Bucket' => $bucket,
-                    'Key' => $basePath . 'tables.json',
+                    'Key' => ltrim($basePath . 'tables.json', '/'),
                     'SaveAs' => $tmp->getTmpFolder() . '/tables.json',
                 ]
             );
@@ -348,7 +348,7 @@ class RestoreProject extends Command
             $s3->getObject(
                 [
                     'Bucket' => $bucket,
-                    'Key' => $basePath . 'configurations.json',
+                    'Key' => ltrim($basePath . 'configurations.json', '/'),
                     'SaveAs' => $tmp->getTmpFolder() . '/configurations.json',
                 ]
             );
@@ -366,7 +366,7 @@ class RestoreProject extends Command
                     $s3->getObject(
                         [
                             'Bucket' => $bucket,
-                            'Key' => $basePath . "configurations/{$componentWithConfigurations["id"]}/{$componentConfiguration["id"]}.json",
+                            'Key' => ltrim($basePath . "configurations/{$componentWithConfigurations["id"]}/{$componentConfiguration["id"]}.json", '/'),
                             'SaveAs' => $tmp->getTmpFolder() . "/configurations-{$componentWithConfigurations["id"]}-{$componentConfiguration["id"]}.json",
                         ]
                     );
