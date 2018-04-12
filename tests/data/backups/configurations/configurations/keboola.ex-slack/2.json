@@ -305,6 +305,9 @@
     }
   },
   "rows": [],
+  "state": {
+    "key": "value"
+  },
   "_versions": [
     {
       "version": 3,
@@ -610,9 +613,6 @@
             }
           }
         }
-      },
-      "state": {
-        "key": "value"
       }
     },
     {
@@ -631,8 +631,7 @@
             "id": "213957518"
           }
         }
-      },
-      "state": []
+      }
     },
     {
       "version": 1,
@@ -644,8 +643,7 @@
       "changeDescription": "",
       "name": "Keboola",
       "description": "",
-      "configuration": [],
-      "state": []
+      "configuration": []
     }
   ]
 }

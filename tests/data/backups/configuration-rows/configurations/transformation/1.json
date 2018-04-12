@@ -338,8 +338,7 @@
       "changeDescription": "Accounts changed to Account",
       "name": "MySQL",
       "description": "",
-      "configuration": {},
-      "state": {}
+      "configuration": {}
     },
     {
       "version": 7,
@@ -351,8 +350,7 @@
       "changeDescription": "Create output mapping in Ratings",
       "name": "MySQL",
       "description": "",
-      "configuration": {},
-      "state": {}
+      "configuration": {}
     },
     {
       "version": 6,
@@ -364,8 +362,7 @@
       "changeDescription": "Create input mapping in Ratings",
       "name": "MySQL",
       "description": "",
-      "configuration": {},
-      "state": {}
+      "configuration": {}
     },
     {
       "version": 5,
@@ -377,8 +374,7 @@
       "changeDescription": "Create transformation Ratings",
       "name": "MySQL",
       "description": "",
-      "configuration": {},
-      "state": {}
+      "configuration": {}
     },
     {
       "version": 4,
@@ -390,8 +386,7 @@
       "changeDescription": "Create output mapping in Accounts",
       "name": "MySQL",
       "description": "",
-      "configuration": {},
-      "state": {}
+      "configuration": {}
     },
     {
       "version": 3,
@@ -403,8 +398,7 @@
       "changeDescription": "Create input mapping in Accounts",
       "name": "MySQL",
       "description": "",
-      "configuration": {},
-      "state": {}
+      "configuration": {}
     },
     {
       "version": 2,
@@ -416,8 +410,7 @@
       "changeDescription": "Create transformation Accounts",
       "name": "MySQL",
       "description": "",
-      "configuration": {},
-      "state": {}
+      "configuration": {}
     },
     {
       "version": 1,
@@ -429,8 +422,7 @@
       "changeDescription": "Create transformation bucket MySQL",
       "name": "MySQL",
       "description": "",
-      "configuration": {},
-      "state": {}
+      "configuration": {}
     }
   ]
 }
