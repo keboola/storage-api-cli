@@ -247,7 +247,7 @@ class RestoreProjectTest extends BaseTest
 
         $config = $components->getConfiguration("keboola.csv-import", 1);
         self::assertEquals(1, $config["version"]);
-        self::assertEquals("", $config["changeDescription"]);
+        self::assertEquals("Configuration created", $config["changeDescription"]);
         self::assertEquals("Accounts", $config["name"]);
         self::assertEquals("Default CSV Importer", $config["description"]);
 
@@ -274,7 +274,7 @@ class RestoreProjectTest extends BaseTest
         $config = $components->getConfiguration("keboola.csv-import", 1);
 
         self::assertEquals(1, $config["version"]);
-        self::assertEquals("", $config["changeDescription"]);
+        self::assertEquals("Configuration created", $config["changeDescription"]);
         self::assertEquals("Accounts", $config["name"]);
         self::assertEquals("Default CSV Importer", $config["description"]);
 
