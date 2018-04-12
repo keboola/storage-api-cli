@@ -378,33 +378,25 @@ class RestoreProject extends Command
                         )
                     );
 
+                    // create empty configuration
                     $configuration = new Configuration();
                     $configuration->setComponentId($componentWithConfigurations["id"]);
                     $configuration->setConfigurationId($componentConfiguration["id"]);
-                    if (isset($configurationData->_versions[0])) {
-                        $lastConfigurationVersion = $configurationData->_versions[0];
-                        $configuration->setDescription($lastConfigurationVersion->description);
-                        $configuration->setName($lastConfigurationVersion->name);
-                    } else {
-                        $configuration->setDescription($configurationData->description);
-                        $configuration->setName($configurationData->name);
-                    }
+                    $configuration->setDescription($configurationData->description);
+                    $configuration->setName($configurationData->name);
                     $components->addConfiguration($configuration);
 
-                    if (isset($configurationData->_versions[0])) {
-                        $restoreVersion = $lastConfigurationVersion = $configurationData->_versions[0];
-                    } else {
-                        $restoreVersion = $configurationData;
-                    }
+                    // update configuration and state
                     $configuration->setChangeDescription(
                         "Configuration {$componentConfiguration["id"]} restored from backup"
                     );
-                    $configuration->setConfiguration($restoreVersion->configuration);
-                    if (isset($restoreVersion->state)) {
-                        $configuration->setState($restoreVersion->state);
+                    $configuration->setConfiguration($configurationData->configuration);
+                    if (isset($configurationData->state)) {
+                        $configuration->setState($configurationData->state);
                     }
                     $components->updateConfiguration($configuration);
 
+                    // create configuration rows
                     if (count($configurationData->rows)) {
                         foreach ($configurationData->rows as $row) {
                             $configurationRow = new ConfigurationRow($configuration);
