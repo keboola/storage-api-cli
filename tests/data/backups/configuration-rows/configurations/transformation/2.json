@@ -322,8 +322,7 @@
             "changeDescription": "Create output mapping in Ratings",
             "name": "Snowflake",
             "description": "",
-            "configuration": {},
-            "state": {}
+            "configuration": {}
         },
         {
             "version": 7,
@@ -335,8 +334,7 @@
             "changeDescription": "Create input mapping in Ratings",
             "name": "Snowflake",
             "description": "",
-            "configuration": {},
-            "state": {}
+            "configuration": {}
         },
         {
             "version": 6,
@@ -348,8 +346,7 @@
             "changeDescription": "Create transformation Ratings",
             "name": "Snowflake",
             "description": "",
-            "configuration": {},
-            "state": {}
+            "configuration": {}
         },
         {
             "version": 5,
@@ -361,8 +358,7 @@
             "changeDescription": "Accounts changed to Account",
             "name": "Snowflake",
             "description": "",
-            "configuration": {},
-            "state": {}
+            "configuration": {}
         },
         {
             "version": 4,
@@ -374,8 +370,7 @@
             "changeDescription": "Create output mapping in Accounts",
             "name": "Snowflake",
             "description": "",
-            "configuration": {},
-            "state": {}
+            "configuration": {}
         },
         {
             "version": 3,
@@ -387,8 +382,7 @@
             "changeDescription": "Create input mapping in Accounts",
             "name": "Snowflake",
             "description": "",
-            "configuration": {},
-            "state": {}
+            "configuration": {}
         },
         {
             "version": 2,
@@ -400,8 +394,7 @@
             "changeDescription": "Create transformation Accounts",
             "name": "Snowflake",
             "description": "",
-            "configuration": {},
-            "state": {}
+            "configuration": {}
         },
         {
             "version": 1,
@@ -413,8 +406,7 @@
             "changeDescription": "Create transformation bucket Snowflake",
             "name": "Snowflake",
             "description": "",
-            "configuration": {},
-            "state": {}
+            "configuration": {}
         }
     ]
 }
