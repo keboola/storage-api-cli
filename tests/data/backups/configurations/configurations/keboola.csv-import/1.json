@@ -11,6 +11,9 @@
   "changeDescription": "",
   "configuration": {},
   "rows": [],
+  "state": {
+    "key": "value"
+  },
   "_versions": [
     {
       "version": 1,
@@ -22,8 +25,7 @@
       "changeDescription": "",
       "name": "Accounts",
       "description": "Default CSV Importer",
-      "configuration": {},
-      "state": {}
+      "configuration": {}
     }
   ]
 }

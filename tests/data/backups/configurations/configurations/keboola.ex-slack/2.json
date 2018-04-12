@@ -305,9 +305,7 @@
     }
   },
   "rows": [],
-  "state": {
-    "key": "value"
-  },
+  "state": {},
   "_versions": [
     {
       "version": 3,
