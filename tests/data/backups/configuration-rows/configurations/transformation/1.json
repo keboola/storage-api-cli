@@ -54,6 +54,7 @@
         "description": "ondrej.hlavacek@keboola.com"
       },
       "changeDescription": "Accounts changed to Account",
+      "state": {},
       "_versions": [
         {
           "version": 4,
@@ -233,6 +234,7 @@
         "description": "ondrej.hlavacek@keboola.com"
       },
       "changeDescription": "Create output mapping in Ratings",
+      "state": {},
       "_versions": [
         {
           "version": 3,
