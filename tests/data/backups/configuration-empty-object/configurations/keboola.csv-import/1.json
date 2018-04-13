@@ -9,7 +9,10 @@
   },
   "version": 1,
   "changeDescription": "",
-  "configuration": {},
+  "configuration": {
+    "emptyObject": {},
+    "emptyArray": []
+  },
   "rows": [],
   "state": {},
   "_versions": [
