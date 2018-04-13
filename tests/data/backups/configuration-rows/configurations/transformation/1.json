@@ -54,7 +54,9 @@
         "description": "ondrej.hlavacek@keboola.com"
       },
       "changeDescription": "Accounts changed to Account",
-      "state": {},
+      "state": {
+        "rowKey": "value"
+      },
       "_versions": [
         {
           "version": 4,

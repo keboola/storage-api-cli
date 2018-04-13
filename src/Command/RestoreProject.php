@@ -399,11 +399,17 @@ class RestoreProject extends Command
                     // create configuration rows
                     if (count($configurationData->rows)) {
                         foreach ($configurationData->rows as $row) {
+                            // create empty row
                             $configurationRow = new ConfigurationRow($configuration);
                             $configurationRow->setRowId($row->id);
                             $components->addConfigurationRow($configurationRow);
+
+                            // update row configuration and state
                             $configurationRow->setConfiguration($row->configuration);
                             $configurationRow->setChangeDescription("Row {$row->id} restored from backup");
+                            if (isset($row->state)) {
+                                $configurationRow->setState($row->state);
+                            }
                             $components->updateConfigurationRow($configurationRow);
                         }
                     }

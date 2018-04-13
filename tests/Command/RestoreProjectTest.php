@@ -331,8 +331,10 @@ class RestoreProjectTest extends BaseTest
         self::assertCount(2, $config["rows"]);
         self::assertEquals(3, $config["rows"][0]["id"]);
         self::assertEquals("Account", $config["rows"][0]["configuration"]["name"]);
+        self::assertEquals(["rowKey" => "value"], $config["rows"][0]["state"]);
         self::assertEquals(4, $config["rows"][1]["id"]);
         self::assertEquals("Ratings", $config["rows"][1]["configuration"]["name"]);
+        self::assertEmpty($config["rows"][1]["state"]);
 
         $config = $components->getConfiguration("transformation", 2);
         self::assertEquals("Snowflake", $config["name"]);
@@ -340,8 +342,10 @@ class RestoreProjectTest extends BaseTest
         self::assertEquals("Row 6 restored from backup", $config["changeDescription"]);
         self::assertEquals(5, $config["rows"][0]["id"]);
         self::assertEquals("Account", $config["rows"][0]["configuration"]["name"]);
+        self::assertEmpty($config["rows"][0]["state"]);
         self::assertEquals(6, $config["rows"][1]["id"]);
         self::assertEquals("Ratings", $config["rows"][1]["configuration"]["name"]);
+        self::assertEmpty($config["rows"][1]["state"]);
     }
 
     public function testRestoreEmptyObjectInConfigurationRow(): void
