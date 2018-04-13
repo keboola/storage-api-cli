@@ -10,5 +10,8 @@
   "version": 1,
   "changeDescription": "",
   "configuration": {},
-  "rows": []
+  "rows": [],
+  "state": {
+    "key": "value"
+  }
 }
