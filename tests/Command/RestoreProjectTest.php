@@ -2,11 +2,9 @@
 
 namespace Keboola\StorageApi\Cli\Tests\Command;
 
-use Aws\S3\S3Client;
 use Keboola\StorageApi\Cli\Command\PurgeProject;
 use Keboola\StorageApi\Cli\Command\RestoreProject;
 use Keboola\StorageApi\Cli\Console\Application;
-use Keboola\StorageApi\Client;
 use Keboola\StorageApi\Components;
 use Keboola\StorageApi\TableExporter;
 use Keboola\Temp\Temp;
@@ -241,6 +239,7 @@ class RestoreProjectTest extends BaseTest
         $client = $this->createStorageClient();
         $components = new Components($client);
         $componentsList = $components->listComponents();
+
         self::assertCount(2, $componentsList);
         self::assertEquals("keboola.csv-import", $componentsList[0]["id"]);
         self::assertEquals("keboola.ex-slack", $componentsList[1]["id"]);
@@ -250,11 +249,12 @@ class RestoreProjectTest extends BaseTest
         self::assertEquals("Configuration created", $config["changeDescription"]);
         self::assertEquals("Accounts", $config["name"]);
         self::assertEquals("Default CSV Importer", $config["description"]);
+        self::assertEquals(["key" => "value"], $config["state"]);
 
         $config = $components->getConfiguration("keboola.ex-slack", 2);
         self::assertEquals(2, $config["version"]);
         self::assertEquals("Configuration 2 restored from backup", $config["changeDescription"]);
-        self::assertEquals(["key" => "value"], $config["state"]);
+        self::assertEmpty($config["state"]);
     }
 
 
@@ -277,11 +277,12 @@ class RestoreProjectTest extends BaseTest
         self::assertEquals("Configuration created", $config["changeDescription"]);
         self::assertEquals("Accounts", $config["name"]);
         self::assertEquals("Default CSV Importer", $config["description"]);
+        self::assertEquals(["key" => "value"], $config["state"]);
 
         $config = $components->getConfiguration("keboola.ex-slack", 2);
         self::assertEquals(2, $config["version"]);
         self::assertEquals("Configuration 2 restored from backup", $config["changeDescription"]);
-        self::assertEquals(["key" => "value"], $config["state"]);
+        self::assertEmpty($config["state"]);
     }
 
     public function testDoNotRestoreOrchestrationConfigurations(): void
