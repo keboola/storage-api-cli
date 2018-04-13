@@ -305,7 +305,5 @@
     }
   },
   "rows": [],
-  "state": {
-    "key": "value"
-  }
+  "state": {}
 }
