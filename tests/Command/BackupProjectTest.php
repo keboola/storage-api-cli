@@ -147,6 +147,8 @@ class BackupProjectTest extends BaseTest
         $config->setDescription('Test Configuration');
         $config->setConfigurationId('sapi-php-test');
         $config->setName('test-configuration');
+        $config->setState(['key' => 'value']);
+
         $component = new Components($client);
         $configData = $component->addConfiguration($config);
         $config->setConfigurationId($configData['id']);
@@ -163,6 +165,11 @@ class BackupProjectTest extends BaseTest
             $row = new ConfigurationRow($config);
             $row->setChangeDescription('Row 1');
             $row->setConfiguration($largeRowConfiguration);
+
+            if ($i === 0) {
+                $row->setState(['rowKey' => 'value']);
+            }
+
             $component->addConfigurationRow($row);
         }
 
@@ -201,8 +208,14 @@ class BackupProjectTest extends BaseTest
         self::assertGreaterThan(0, count($targetConfiguration));
         self::assertEquals('test-configuration', $targetConfiguration['name']);
         self::assertEquals('Test Configuration', $targetConfiguration['description']);
+        self::assertEquals(['key' => 'value'], $targetConfiguration['state']);
         self::assertArrayHasKey('rows', $targetConfiguration);
         self::assertCount($configurationRowsCount, $targetConfiguration['rows']);
+
+        $firstRow = reset($targetConfiguration['rows']);
+        $this->assertEquals(['rowKey' => 'value'], $firstRow['state']);
+        $lastRow = end($targetConfiguration['rows']);
+        $this->assertEmpty($lastRow['state']);
     }
 
     public function largeConfigurationsProvider(): array
