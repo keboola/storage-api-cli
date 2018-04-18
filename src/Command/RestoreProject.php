@@ -365,11 +365,13 @@ class RestoreProject extends Command
             $configurations = json_decode(file_get_contents($tmp->getTmpFolder() . '/configurations.json'), true);
             $output->writeln($this->check());
 
-            $output->write($this->format('Restoring configurations'));
             $components = new Components($client);
             foreach ($configurations as $componentWithConfigurations) {
+                $output->write($this->format(sprintf('Restoring %s configurations', $componentWithConfigurations["id"])));
+
                 // do not import orchestrator
                 if ($componentWithConfigurations["id"] === "orchestrator") {
+                    $output->writeln("Skipping");
                     continue;
                 }
                 foreach ($componentWithConfigurations["configurations"] as $componentConfiguration) {
@@ -424,8 +426,9 @@ class RestoreProject extends Command
                         }
                     }
                 }
+
+                $output->writeln($this->check());
             }
-            $output->writeln($this->check());
         }
 
         $output->writeln("Project successfully restored. Please note what's missing:");
