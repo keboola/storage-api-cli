@@ -106,15 +106,20 @@ class RestoreProject extends Command
                 $output->writeln($this->check());
             }
 
+            $restoredBuckets = [];
+
+            // buckets restore
             foreach ($buckets as $bucketInfo) {
                 $output->write($this->format('Restoring bucket ' . $bucketInfo["name"]));
-                // strip c-
-                if (substr($bucketInfo["name"], 0, 2) == 'c-') {
-                    $bucketName = substr($bucketInfo["name"], 2);
-                } else {
+
+                if (isset($bucketInfo['sourceBucket']) || substr($bucketInfo["name"], 0, 2) != 'c-') {
                     $output->writeln("Skipping");
                     continue;
                 }
+
+                $bucketName = substr($bucketInfo["name"], 2);
+                $restoredBuckets[] = $bucketInfo["id"];
+
                 if ($input->getOption('ignore-storage-backend')) {
                     $client->createBucket($bucketName, $bucketInfo['stage'], $bucketInfo['description']);
                 } else {
@@ -151,13 +156,15 @@ class RestoreProject extends Command
             );
             $output->writeln($this->check());
 
+            // tables restore
             $tables = json_decode(file_get_contents($tmp->getTmpFolder() . '/tables.json'), true);
             foreach ($tables as $table) {
                 if ($table["isAlias"] === true) {
                     continue;
                 }
                 $output->write($this->format('Restoring table ' . $table["id"]));
-                if (substr($table["bucket"]["name"], 0, 2) != 'c-') {
+
+                if (!in_array($table["bucket"]["id"], $restoredBuckets)) {
                     $output->writeln("Skipping");
                     continue;
                 }
@@ -295,12 +302,15 @@ class RestoreProject extends Command
                 $output->writeln($this->check());
             }
 
+            // alias restore
             foreach ($tables as $table) {
                 if ($table["isAlias"] !== true) {
                     continue;
                 }
+
                 $output->write($this->format('Restoring alias ' . $table["id"]));
-                if (substr($table["bucket"]["name"], 0, 2) != 'c-') {
+
+                if (!in_array($table["bucket"]["id"], $restoredBuckets)) {
                     $output->writeln("Skipping");
                     continue;
                 }
@@ -419,6 +429,7 @@ class RestoreProject extends Command
         }
 
         $output->writeln("Project successfully restored. Please note what's missing:");
+        $output->writeln(" - linked buckets");
         $output->writeln(" - table snapshots");
         $output->writeln(" - created/modified date of all objects");
         $output->writeln(" - encrypted data (eg. passwords)");
