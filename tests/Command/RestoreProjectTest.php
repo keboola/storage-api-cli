@@ -302,15 +302,17 @@ class RestoreProjectTest extends BaseTest
         self::assertEmpty($config["state"]);
     }
 
-    public function testDoNotRestoreOrchestrationConfigurations(): void
+    public function testDoNotRestoreObsoleteConfigurations(): void
     {
-        $applicationTester = $this->runCommand(self::S3_PATH . 'configuration-orchestration/');
+        $applicationTester = $this->runCommand(self::S3_PATH . 'configuration-obsolete/');
         self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
 
         $client = $this->createStorageClient();
         $components = new Components($client);
         $componentsList = $components->listComponents();
-        self::assertCount(0, $componentsList);
+        self::assertCount(1, $componentsList);
+        self::assertEquals("keboola.csv-import", $componentsList[0]["id"]);
+        self::assertCount(1, $componentsList[0]["configurations"]);
     }
 
     public function testRestoreEmptyObjectInConfiguration(): void
