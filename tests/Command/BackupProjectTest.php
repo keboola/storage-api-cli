@@ -28,6 +28,14 @@ class BackupProjectTest extends BaseTest
                 throw $e;
             }
         }
+
+        // drop linked buckets
+        foreach ($client->listBuckets() as $bucket) {
+            if (isset($bucket['sourceBucket'])) {
+                $client->dropBucket($bucket["id"], ["force" => true]);
+            }
+        }
+
         foreach ($client->listBuckets() as $bucket) {
             $client->dropBucket($bucket["id"], ["force" => true]);
         }
@@ -334,6 +342,70 @@ class BackupProjectTest extends BaseTest
         self::assertEquals([], $targetConfiguration->rows[0]->configuration->dummyArray);
     }
 
+    public function testExecuteLinkedBuckets(): void
+    {
+        $client = $this->createStorageClient();
+        $bucketId = $client->createBucket("main", Client::STAGE_IN);
+
+        $client->setBucketAttribute($bucketId, 'key', 'value', true);
+        $client->shareBucket($bucketId, ['sharing' => 'organization']);
+
+        $client->createTable("in.c-main", "sample", new CsvFile(__DIR__ . "/../data/sample.csv"));
+
+        $token = $client->verifyToken();
+        $projectId = $token['owner']['id'];
+
+        $client->linkBucket('linked', 'in', $projectId, $bucketId);
+
+        putenv('AWS_ACCESS_KEY_ID=' . TEST_BACKUP_AWS_ACCESS_KEY_ID);
+        putenv('AWS_SECRET_ACCESS_KEY=' . TEST_BACKUP_AWS_SECRET_ACCESS_KEY);
+        $application = new Application();
+        $application->setAutoExit(false);
+        $application->add(new BackupProject());
+        $applicationTester = new ApplicationTester($application);
+        $applicationTester->run([
+            'backup-project',
+            '--token' => TEST_STORAGE_API_TOKEN,
+            '--structure-only' => true,
+            'bucket' => TEST_BACKUP_S3_BUCKET,
+            'region' => TEST_AWS_REGION,
+            'path' => 'backup',
+        ]);
+        self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
+
+        $tmp = sys_get_temp_dir() . DIRECTORY_SEPARATOR;
+        $s3Client = new S3Client([
+            'version' => 'latest',
+            'region' => TEST_AWS_REGION,
+            'credentials' => [
+                'key' => TEST_BACKUP_AWS_ACCESS_KEY_ID,
+                'secret' => TEST_BACKUP_AWS_SECRET_ACCESS_KEY,
+            ],
+        ]);
+
+        $targetFile = $tmp . 'buckets.json';
+        $s3Client->getObject([
+            'Bucket' => TEST_BACKUP_S3_BUCKET,
+            'Key' => 'backup/buckets.json',
+            'SaveAs' => $targetFile,
+        ]);
+        $buckets = json_decode(file_get_contents($targetFile), true);
+
+        self::assertCount(2, $buckets);
+        self::assertNotEmpty($buckets[1]['sourceBucket']);
+
+        $targetFile = $tmp . 'tables.json';
+        $s3Client->getObject([
+            'Bucket' => TEST_BACKUP_S3_BUCKET,
+            'Key' => 'backup/tables.json',
+            'SaveAs' => $targetFile,
+        ]);
+
+        $tables = json_decode(file_get_contents($targetFile), true);
+
+        self::assertCount(2, $tables);
+        self::assertNotEmpty($buckets[1]['sourceTable']);
+    }
 
     public function testExecuteMetadata(): void
     {
@@ -486,6 +558,13 @@ class BackupProjectTest extends BaseTest
                     'Delete' => ['Objects' => $deleteObjects],
                 ]
             );
+        }
+
+        // drop linked buckets
+        foreach ($client->listBuckets() as $bucket) {
+            if (isset($bucket['sourceBucket'])) {
+                $client->dropBucket($bucket["id"], ["force" => true]);
+            }
         }
 
         foreach ($client->listBuckets() as $bucket) {
