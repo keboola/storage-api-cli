@@ -404,7 +404,7 @@ class BackupProjectTest extends BaseTest
         $tables = json_decode(file_get_contents($targetFile), true);
 
         self::assertCount(2, $tables);
-        self::assertNotEmpty($buckets[1]['sourceTable']);
+        self::assertNotEmpty($tables[1]['sourceTable']);
     }
 
     public function testExecuteMetadata(): void
