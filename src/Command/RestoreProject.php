@@ -495,7 +495,7 @@ class RestoreProject extends Command
             'rcp-distribution-groups', 'rcp-linear-dependency', 'rcp-linear-regression',
             'rcp-next-event', 'rcp-next-order-simple',
             'rcp-segmentation', 'rcp-var-characteristics', 'ex-sklik', 'ex-dropbox', 'wr-portal-sas', 'ag-geocoding',
-            'keboola.ex-db-pgsql', 'keboola.ex-db-db2', 'keboola.ex-db-firebird'
+            'keboola.ex-db-pgsql', 'keboola.ex-db-db2', 'keboola.ex-db-firebird',
         ];
     }
 
