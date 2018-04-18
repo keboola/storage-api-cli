@@ -450,8 +450,9 @@ class RestoreProject extends Command
         $output->writeln(" - created/modified date of all objects");
         $output->writeln(" - encrypted data (eg. passwords)");
         $output->writeln(" - oauth authorizations");
+        $output->writeln(" - configurations for non-existing components");
+        $output->writeln(" - configurations for components having custom REST API (eg. orchestrator, gooddata-writer)");
         $output->writeln(" - configuration versions");
-        $output->writeln(" - orchestrations");
         $output->writeln(" - features of the original project");
         return 0;
     }
