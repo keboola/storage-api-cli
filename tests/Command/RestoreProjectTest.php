@@ -58,6 +58,23 @@ class RestoreProjectTest extends BaseTest
         self::assertEquals("in.c-bucket2", $buckets[1]["id"]);
     }
 
+    public function testRestoreLinkedBuckets(): void
+    {
+        $applicationTester = $this->runCommand(self::S3_PATH . 'buckets-linked-bucket/');
+        self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
+        $client = $this->createStorageClient();
+        $buckets = $client->listBuckets();
+
+        self::assertCount(2, $buckets);
+        self::assertEquals("in.c-bucket1", $buckets[0]["id"]);
+        self::assertEquals("in.c-bucket2", $buckets[1]["id"]);
+
+        $tables = $client->listTables($buckets[0]["id"]);
+
+        self::assertCount(1, $tables);
+        self::assertEquals("in.c-bucket1.sample", $tables[0]["id"]);
+    }
+
     public function testRestoreBucketsIgnoreStorageBackend(): void
     {
         $applicationTester = $this->runCommand(self::S3_PATH . 'buckets-multiple-backends/');

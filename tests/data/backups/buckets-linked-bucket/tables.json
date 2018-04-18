@@ -1,0 +1,90 @@
+[
+  {
+    "uri": "https:\/\/connection.keboola.com\/v2\/storage\/tables\/in.c-bucket1.sample",
+    "id": "in.c-bucket1.sample",
+    "name": "sample",
+    "transactional": false,
+    "primaryKey": [],
+    "indexedColumns": [],
+    "created": "2016-11-07T01:57:53+0100",
+    "lastImportDate": "2016-11-07T02:12:16+0100",
+    "lastChangeDate": "2016-11-07T02:12:16+0100",
+    "rowsCount": 0,
+    "dataSizeBytes": 0,
+    "isAlias": false,
+    "attributes": [],
+    "columns": [
+      "col1"
+    ],
+    "bucket": {
+      "uri": "https:\/\/connection.keboola.com\/v2\/storage\/buckets\/in.c-bucket1",
+      "id": "in.c-bucket1",
+      "name": "c-bucket1",
+      "stage": "in",
+      "description": "",
+      "tables": "https:\/\/connection.keboola.com\/v2\/storage\/buckets\/in.c-bucket1\/tables",
+      "created": "2016-11-07T01:57:53+0100",
+      "lastChangeDate": "2016-11-07T02:12:16+0100",
+      "isReadOnly": false,
+      "dataSizeBytes": 0,
+      "rowsCount": 0,
+      "isMaintenance": false,
+      "backend": "snowflake",
+      "sharing": "organization"
+    }
+  },
+  {
+    "uri": "https:\/\/connection.keboola.com\/v2\/storage\/tables\/in.c-linked1.sample",
+    "id": "in.c-linked1.sample",
+    "name": "sample",
+    "transactional": false,
+    "primaryKey": [],
+    "indexedColumns": [],
+    "lastImportDate": "2016-11-07T02:12:50+0100",
+    "lastImportDate": "2016-11-07T02:12:16+0100",
+    "lastChangeDate": "2016-11-07T02:12:16+0100",
+    "rowsCount": 0,
+    "dataSizeBytes": 0,
+    "isAlias": true,
+    "sourceTable": {
+      "id": "in.c-bucket1.sample",
+      "uri": "https:\/\/connection.keboola.com\/v2\/storage\/tables\/in.c-bucket1.sample",
+      "project": {
+        "id": 1818,
+        "name": "Data Takeout Recovery - Master"
+      }
+    },
+    "aliasColumnsAutoSync": true,
+    "attributes": [],
+    "columns": [
+      "col1"
+    ],
+    "bucket": {
+      "uri": "https:\/\/connection.keboola.com\/v2\/storage\/buckets\/in.c-linked",
+      "id": "in.c-linked",
+      "name": "c-linked",
+      "stage": "in",
+      "description": "",
+      "tables": "https:\/\/connection.keboola.com\/v2\/storage\/buckets\/in.c-linked\/tables",
+      "created": "2016-11-07T02:12:17+0100",
+      "lastChangeDate": null,
+      "isReadOnly": true,
+      "dataSizeBytes": 0,
+      "rowsCount": 0,
+      "isMaintenance": false,
+      "backend": "snowflake",
+      "sharing": null,
+      "sourceBucket": {
+        "id": "in.c-main",
+        "name": "c-main",
+        "stage": "in",
+        "description": "",
+        "sharing": "organization",
+        "project": {
+          "id": 1818,
+          "name": "Data Takeout Recovery - Master"
+        }
+      }
+    }
+  }
+]
