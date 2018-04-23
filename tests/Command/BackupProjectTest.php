@@ -24,7 +24,7 @@ class BackupProjectTest extends BaseTest
         try {
             $component->deleteConfiguration('transformation', 'sapi-php-test');
         } catch (\Throwable $e) {
-            if ($e->getCode() != 404) {
+            if ($e->getCode() !== 404) {
                 throw $e;
             }
         }
@@ -105,7 +105,7 @@ class BackupProjectTest extends BaseTest
         $targetData = json_decode($targetContents, true);
         $targetComponent = [];
         foreach ($targetData as $component) {
-            if ($component['id'] == 'transformation') {
+            if ($component['id'] === 'transformation') {
                 $targetComponent = $component;
                 break;
             }
@@ -114,7 +114,7 @@ class BackupProjectTest extends BaseTest
 
         $targetConfiguration = [];
         foreach ($targetComponent['configurations'] as $configuration) {
-            if ($configuration['name'] == 'test-configuration') {
+            if ($configuration['name'] === 'test-configuration') {
                 $targetConfiguration = $configuration;
             }
         }
@@ -531,7 +531,7 @@ class BackupProjectTest extends BaseTest
         try {
             $component->deleteConfiguration('transformation', 'sapi-php-test');
         } catch (\Throwable $e) {
-            if ($e->getCode() != 404) {
+            if ($e->getCode() !== 404) {
                 throw $e;
             }
         }

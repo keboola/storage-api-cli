@@ -114,7 +114,7 @@ class CopyBucketTest extends BaseTest
         try {
             $client->dropBucket('in.c-destination', ['force' => true]);
         } catch (ClientException $e) {
-            if ($e->getCode() != 404) {
+            if ($e->getCode() !== 404) {
                 throw $e;
             }
         }
