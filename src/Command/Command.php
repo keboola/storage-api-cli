@@ -65,7 +65,7 @@ abstract class Command extends BaseCommand
      */
     public function getTmpDir(): string
     {
-        if ($this->tmpDir == "") {
+        if ($this->tmpDir === "") {
             $fs = new Filesystem();
             $dir = sys_get_temp_dir() . DIRECTORY_SEPARATOR . "sapi-cli-" . uniqid();
             $fs->mkdir($dir);
@@ -79,7 +79,7 @@ abstract class Command extends BaseCommand
      */
     public function destroyTmpDir(): void
     {
-        if ($this->tmpDir != "") {
+        if ($this->tmpDir !== "") {
             $fs = new Filesystem();
             $fs->remove($this->tmpDir);
         }

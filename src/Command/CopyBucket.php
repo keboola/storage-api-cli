@@ -63,7 +63,7 @@ class CopyBucket extends Command
         $dstBucketDesc = "Copy of $srcBucketId\n" . $srcBucketInfo["description"];
 
         // Remove c- prefix
-        if (substr($dstBucketName, 0, 2) == "c-") {
+        if (substr($dstBucketName, 0, 2) === "c-") {
             $dstBucketName = substr($dstBucketName, 2);
         }
 

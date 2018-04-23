@@ -40,7 +40,7 @@ class BackupProject extends Command
         ]);
         $bucket = $input->getArgument('bucket');
         $basePath = $input->getArgument('path');
-        if ($basePath == '' || $basePath == '/') {
+        if ($basePath === '' || $basePath === '/') {
             $basePath = '';
         } else {
             $basePath = rtrim($basePath, '/') . '/';
