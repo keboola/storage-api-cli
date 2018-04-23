@@ -451,7 +451,7 @@ class RestoreProject extends Command
         $output->writeln(" - encrypted data (eg. passwords)");
         $output->writeln(" - oauth authorizations");
         $output->writeln(" - configurations for non-existing components");
-        $output->writeln(" - configurations for components having custom REST API (eg. orchestrator, gooddata-writer)");
+        $output->writeln(" - configurations for components having custom API");
         $output->writeln(" - configuration versions");
         $output->writeln(" - features of the original project");
         return 0;
