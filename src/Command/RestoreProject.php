@@ -112,7 +112,7 @@ class RestoreProject extends Command
             foreach ($buckets as $bucketInfo) {
                 $output->write($this->format('Restoring bucket ' . $bucketInfo["name"]));
 
-                if (isset($bucketInfo['sourceBucket']) || substr($bucketInfo["name"], 0, 2) != 'c-') {
+                if (isset($bucketInfo['sourceBucket']) || substr($bucketInfo["name"], 0, 2) !== 'c-') {
                     $output->writeln("Skipping");
                     continue;
                 }
@@ -195,7 +195,7 @@ class RestoreProject extends Command
                     continue;
                 }
 
-                if (count($slices["Contents"]) == 1 && substr($slices["Contents"][0]["Key"], -14) != '.part_0.csv.gz') {
+                if (count($slices["Contents"]) === 1 && substr($slices["Contents"][0]["Key"], -14) !== '.part_0.csv.gz') {
                     // one file and no slices => the file has header
                     // no slices = file does not end with .part_0.csv.gz
                     $fileName = $tmp->getTmpFolder() . "/" . $table["id"] . ".csv.gz";
@@ -509,11 +509,11 @@ class RestoreProject extends Command
     private function isObsoleteComponent(array $component): bool
     {
         $componentId = $component['id'];
-        if ($componentId == 'gooddata-writer') {
+        if ($componentId === 'gooddata-writer') {
             return true;
         }
 
-        if ($componentId == 'transformation') {
+        if ($componentId === 'transformation') {
             return false;
         }
 

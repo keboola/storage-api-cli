@@ -155,12 +155,12 @@ class RestoreTableFromImports extends Command
 
     private function isImportEvent(array $event): bool
     {
-        return $event['event'] == 'storage.tableImportDone';
+        return $event['event'] === 'storage.tableImportDone';
     }
 
     private function isFullLoadEvent(array $event): bool
     {
-        return isset($event['params']['incremental']) && $event['params']['incremental'] == false;
+        return isset($event['params']['incremental']) && $event['params']['incremental'] === false;
     }
 
     private function isEventBeforeRestoreDate(array $event): bool
