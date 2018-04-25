@@ -1,2 +1,4 @@
 parameters:
 	bootstrap: tests/bootstrap.php
+	excludes_analyse:
+		- vendor
