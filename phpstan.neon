@@ -1,4 +1,4 @@
 parameters:
 	bootstrap: tests/bootstrap.php
-	excludes_analyse:
-		- vendor
+	ignoreErrors:
+		- '#Parameter \#4 \$sourceBucketId of method Keboola\\StorageApi\\Client::linkBucket\(\) expects int\, string given\.#'
