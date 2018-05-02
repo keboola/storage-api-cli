@@ -120,7 +120,7 @@ class BackupProjectTest extends BaseTest
         }
         self::assertGreaterThan(0, count($targetConfiguration));
         self::assertEquals('Test Configuration', $targetConfiguration['description']);
-        self::assertNotContains('rows', $targetConfiguration);
+        self::assertArrayNotHasKey('rows', $targetConfiguration);
 
         $configurationId = $targetConfiguration['id'];
         $targetFile = $tmp . $configurationId . 'configurations.json';
@@ -138,8 +138,8 @@ class BackupProjectTest extends BaseTest
         self::assertEquals(2, count($targetConfiguration['rows']));
         self::assertEquals('foo', $targetConfiguration['rows'][0]['configuration']['queries'][0]);
         self::assertEquals('bar', $targetConfiguration['rows'][1]['configuration']['queries'][0]);
-        self::assertNotContains('versions', $targetConfiguration);
-        self::assertNotContains('versions', $targetConfiguration['rows'][0]);
+        self::assertArrayNotHasKey('_versions', $targetConfiguration);
+        self::assertArrayNotHasKey('_versions', $targetConfiguration['rows'][0]);
     }
 
     /**
