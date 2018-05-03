@@ -142,6 +142,78 @@ class BackupProjectTest extends BaseTest
         self::assertArrayNotHasKey('_versions', $targetConfiguration['rows'][0]);
     }
 
+    public function testExportStructureWithSysTables(): void
+    {
+        $client = $this->createStorageClient();
+
+        $client->createBucket("main", Client::STAGE_SYS);
+        $client->createTable("sys.c-main", "sample", new CsvFile(__DIR__ . "/../data/sample.csv"));
+
+        $client->createBucket("main", Client::STAGE_IN);
+        $client->createTable("in.c-main", "sample", new CsvFile(__DIR__ . "/../data/sample.csv"));
+
+        putenv('AWS_ACCESS_KEY_ID=' . TEST_BACKUP_AWS_ACCESS_KEY_ID);
+        putenv('AWS_SECRET_ACCESS_KEY=' . TEST_BACKUP_AWS_SECRET_ACCESS_KEY);
+        $application = new Application();
+        $application->setAutoExit(false);
+        $application->add(new BackupProject());
+        $applicationTester = new ApplicationTester($application);
+        $applicationTester->run([
+            'backup-project',
+            '--token' => TEST_STORAGE_API_TOKEN,
+            '--structure-only' => true,
+            'bucket' => TEST_BACKUP_S3_BUCKET,
+            'region' => TEST_AWS_REGION,
+            'path' => 'backup',
+        ]);
+        $ret = $applicationTester->getDisplay();
+        self::assertContains('Exporting buckets', $ret);
+        self::assertContains('Exporting tables', $ret);
+        self::assertContains('Exporting configurations', $ret);
+
+        $tmp = sys_get_temp_dir() . DIRECTORY_SEPARATOR;
+        $s3Client = new S3Client([
+            'version' => 'latest',
+            'region' => TEST_AWS_REGION,
+            'credentials' => [
+                'key' => TEST_BACKUP_AWS_ACCESS_KEY_ID,
+                'secret' => TEST_BACKUP_AWS_SECRET_ACCESS_KEY,
+            ],
+        ]);
+
+        $targetFile = $tmp . 'buckets.json';
+        $s3Client->getObject([
+            'Bucket' => TEST_BACKUP_S3_BUCKET,
+            'Key' => 'backup/buckets.json',
+            'SaveAs' => $targetFile,
+        ]);
+        $buckets = json_decode(file_get_contents($targetFile), true);
+        self::assertCount(2, $buckets);
+
+        $targetFile = $tmp . 'tables.json';
+        $s3Client->getObject([
+            'Bucket' => TEST_BACKUP_S3_BUCKET,
+            'Key' => 'backup/tables.json',
+            'SaveAs' => $targetFile,
+        ]);
+        $tables = json_decode(file_get_contents($targetFile), true);
+        self::assertCount(2, $tables);
+
+        $keys = array_map(function ($key) {
+            return $key["Key"];
+        }, $s3Client->listObjects([
+            'Bucket' => TEST_BACKUP_S3_BUCKET,
+            'Prefix' => sprintf('backup/%s/%s/%s', Client::STAGE_SYS, 'c-main', 'sample'),
+        ])->toArray()["Contents"]);
+
+        self::assertGreaterThan(0, count($keys));
+
+        self::assertArrayNotHasKey('Contents', $s3Client->listObjects([
+            'Bucket' => TEST_BACKUP_S3_BUCKET,
+            'Prefix' => sprintf('backup/%s/%s/%s', Client::STAGE_IN, 'c-main', 'sample'),
+        ])->toArray());
+    }
+
     /**
      * @dataProvider largeConfigurationsProvider
      * @param int $configurationRowsCount
