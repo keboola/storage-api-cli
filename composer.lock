@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7e0ecae6462665f8efd019821f72d1e1",
+    "content-hash": "528d7f63fc854c101d5e22e705925896",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -300,16 +300,16 @@
         },
         {
             "name": "keboola/php-temp",
-            "version": "0.1.6",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/keboola/php-temp.git",
-                "reference": "ffe345e78ba0d35d970fc26fe2c1a36f7d20ca8c"
+                "reference": "2e3c2fc4cce8536a84cbad2a1586eb2eaebe5d3b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/keboola/php-temp/zipball/ffe345e78ba0d35d970fc26fe2c1a36f7d20ca8c",
-                "reference": "ffe345e78ba0d35d970fc26fe2c1a36f7d20ca8c",
+                "url": "https://api.github.com/repos/keboola/php-temp/zipball/2e3c2fc4cce8536a84cbad2a1586eb2eaebe5d3b",
+                "reference": "2e3c2fc4cce8536a84cbad2a1586eb2eaebe5d3b",
                 "shasum": ""
             },
             "require": {
@@ -345,7 +345,7 @@
                 "filesystem",
                 "temp"
             ],
-            "time": "2016-03-23T17:48:01+00:00"
+            "time": "2017-11-13T13:02:19+00:00"
         },
         {
             "name": "keboola/storage-api-client",
