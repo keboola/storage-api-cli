@@ -21,7 +21,7 @@
     "uri": "https:\/\/syrup.keboola.com\/docker\/keboola.csv-import",
     "configurations": [
       {
-        "id": "1",
+        "id": "213957449",
         "name": "Accounts",
         "description": "Default CSV Importer",
         "created": "2016-11-07T02:13:52+0100",
@@ -73,7 +73,7 @@
     "documentationUrl": "https:\/\/api.slack.com\/methods",
     "configurations": [
       {
-        "id": "2",
+        "id": "213957518",
         "name": "Keboola",
         "description": "",
         "created": "2016-11-07T02:14:34+0100",
