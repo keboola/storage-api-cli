@@ -1,5 +1,38 @@
 [
   {
+    "id": "gooddata-writer",
+    "type": "writer",
+    "name": "GoodData",
+    "description": "The Open Analytics Platform",
+    "longDescription": null,
+    "hasUI": true,
+    "hasRun": false,
+    "ico32": "https:\/\/assets-cdn.keboola.com\/developer-portal\/icons\/gooddata-writer\/32\/1.png",
+    "ico64": "https:\/\/assets-cdn.keboola.com\/developer-portal\/icons\/gooddata-writer\/64\/1.png",
+    "data": [],
+    "flags": [],
+    "configurationSchema": [],
+    "emptyConfiguration": [],
+    "uiOptions": [],
+    "configurationDescription": null,
+    "uri": "https:\/\/syrup.keboola.com\/gooddata-writer",
+    "configurations": [
+      {
+        "id": "48178597",
+        "name": "Main Orchestration",
+        "description": "",
+        "created": "2016-11-07T02:18:19+0100",
+        "creatorToken": {
+          "id": 63470,
+          "description": "ondrej.hlavacek@keboola.com"
+        },
+        "version": 1,
+        "changeDescription": "",
+        "configuration": []
+      }
+    ]
+  },
+  {
     "id": "keboola.csv-import",
     "type": "extractor",
     "name": "CSV Import",
@@ -25,6 +58,42 @@
         "name": "Accounts",
         "description": "Default CSV Importer",
         "created": "2016-11-07T02:13:52+0100",
+        "creatorToken": {
+          "id": 63470,
+          "description": "ondrej.hlavacek@keboola.com"
+        },
+        "version": 1,
+        "changeDescription": "",
+        "configuration": []
+      }
+    ]
+  },
+  {
+    "id": "keboola.wr-db-snowflake",
+    "type": "writer",
+    "name": "Snowflake",
+    "description": "Cloud-Native Elastic Data Warehouse Service",
+    "longDescription": "Writes data into Snowflake Data Warehouse. [https:\/\/www.snowflake.net](https:\/\/www.snowflake.net)",
+    "hasUI": false,
+    "hasRun": false,
+    "ico32": "https:\/\/assets-cdn.keboola.com\/developer-portal\/icons\/keboola.wr-db-snowflake\/32\/1.png",
+    "ico64": "https:\/\/assets-cdn.keboola.com\/developer-portal\/icons\/keboola.wr-db-snowflake\/64\/1.png",
+    "data": [],
+    "flags": [
+      "excludeRun",
+      "genericDockerUI"
+    ],
+    "configurationSchema": [],
+    "emptyConfiguration": [],
+    "uiOptions": [],
+    "configurationDescription": null,
+    "uri": "https:\/\/syrup.keboola.com\/docker\/keboola.wr-db-snowflake",
+    "configurations": [
+      {
+        "id": "48178598",
+        "name": "Main",
+        "description": "",
+        "created": "2016-11-07T02:18:19+0100",
         "creatorToken": {
           "id": 63470,
           "description": "ondrej.hlavacek@keboola.com"
@@ -133,51 +202,6 @@
               "phase": "Transformation"
             }
           ]
-        }
-      }
-    ]
-  },
-  {
-    "id": "pigeon-importer",
-    "type": "extractor",
-    "name": "Pigeon Importer (Deprecated)",
-    "description": "Import email attachments to Storage tables",
-    "longDescription": null,
-    "version": 6,
-    "hasUI": true,
-    "hasRun": true,
-    "ico32": "https:\/\/d3iz2gfan5zufq.cloudfront.net\/developer-portal\/icons\/pigeon-importer\/32\/1.png",
-    "ico64": "https:\/\/d3iz2gfan5zufq.cloudfront.net\/developer-portal\/icons\/pigeon-importer\/64\/1.png",
-    "data": {},
-    "flags": [
-      "excludeFromNewList",
-      "deprecated"
-    ],
-    "configurationSchema": {},
-    "emptyConfiguration": {},
-    "uiOptions": {},
-    "configurationDescription": null,
-    "uri": "https:\/\/syrup.keboola.com\/table-importer",
-    "configurations": [
-      {
-        "id": "daily-reports",
-        "name": "Sales Daily Reports",
-        "description": "",
-        "created": "2017-09-20T15:44:56+0200",
-        "creatorToken": {
-          "id": 63470,
-          "description": "ondrej.hlavacek@keboola.com"
-        },
-        "version": 1,
-        "changeDescription": "",
-        "isDeleted": false,
-        "currentVersion": {
-          "created": "2017-09-20T15:44:56+0200",
-          "creatorToken": {
-            "id": 63470,
-            "description": "ondrej.hlavacek@keboola.com"
-          },
-          "changeDescription": ""
         }
       }
     ]

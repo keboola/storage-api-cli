@@ -1,8 +1,8 @@
 {
-  "id": "daily-reports",
-  "name": "Sales Daily Reports",
+  "id": "48178598",
+  "name": "Main",
   "description": "",
-  "created": "2017-09-20T15:44:56+0200",
+  "created": "2016-11-07T02:18:19+0100",
   "creatorToken": {
     "id": 63470,
     "description": "ondrej.hlavacek@keboola.com"
@@ -15,15 +15,15 @@
   "_versions": [
     {
       "version": 1,
-      "created": "2017-09-20T15:44:56+0200",
+      "created": "2016-11-07T02:18:19+0100",
       "creatorToken": {
         "id": 63470,
         "description": "ondrej.hlavacek@keboola.com"
       },
       "changeDescription": "",
-      "name": "Sales Daily Reports",
+      "name": "Main",
       "description": "",
-      "configuration": {}
+      "configuration": []
     }
   ]
 }
