@@ -13,6 +13,7 @@
     "rowsCount": 0,
     "isMaintenance": false,
     "backend": "snowflake",
-    "attributes": []
+    "attributes": [],
+    "metadata": []
   }
 ]

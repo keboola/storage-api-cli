@@ -25,7 +25,8 @@
         "value": "myProtectedValue",
         "protected": true
       }
-    ]
+    ],
+    "metadata": []
   },
   {
     "uri": "https:\/\/connection.keboola.com\/\/v2\/storage\/buckets\/in.c-bucket2",
@@ -42,7 +43,8 @@
     "isMaintenance": false,
     "backend": "snowflake",
     "sharing": null,
-    "attributes": []
+    "attributes": [],
+    "metadata": []
   },
   {
     "uri": "https:\/\/connection.keboola.com\/\/v2\/storage\/buckets\/in.c-linked1",
@@ -70,6 +72,7 @@
         "name": "Data Takeout Recovery - Master"
       }
     },
-    "attributes": []
+    "attributes": [],
+    "metadata": []
   }
 ]

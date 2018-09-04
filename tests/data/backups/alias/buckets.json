@@ -13,7 +13,8 @@
     "rowsCount": 0,
     "isMaintenance": false,
     "backend": "snowflake",
-    "attributes": []
+    "attributes": [],
+    "metadata": []
   },
   {
     "uri": "https:\/\/connection.keboola.com\/\/v2\/storage\/buckets\/out.c-bucket",
@@ -29,6 +30,7 @@
     "rowsCount": 0,
     "isMaintenance": false,
     "backend": "snowflake",
-    "attributes": []
+    "attributes": [],
+    "metadata": []
   }
 ]
