@@ -22,7 +22,28 @@ $s3Client = new \Aws\S3\S3Client([
         'secret' => TEST_RESTORE_AWS_SECRET_ACCESS_KEY,
     ],
 ]);
-$s3Client->deleteMatchingObjects(TEST_RESTORE_S3_BUCKET, '*');
+
+// Clean S3 bucket
+echo "Removing existing objects from S3\n";
+$result = $s3Client->listObjects(['Bucket' => TEST_RESTORE_S3_BUCKET])->toArray();
+if (isset($result['Contents'])) {
+    if (count($result['Contents']) > 0) {
+        $result = $s3Client->deleteObjects(
+            [
+                'Bucket' => TEST_RESTORE_S3_BUCKET,
+                'Delete' => ['Objects' => $result['Contents']],
+            ]
+        );
+    }
+}
+
+// Check if all files aws deleted - prevent no delete permission
+$result = $s3Client->listObjects(['Bucket' => TEST_RESTORE_S3_BUCKET])->toArray();
+if (isset($result['Contents'])) {
+    if (count($result['Contents']) > 0) {
+        throw new \Exception('AWS S3 bucket is not empty');
+    }
+}
 
 // Where the files will be source from
 $source = $basedir . '/data/backups';
@@ -31,6 +52,7 @@ $source = $basedir . '/data/backups';
 $dest = 's3://' . TEST_RESTORE_S3_BUCKET . '/';
 
 // Create a transfer object.
+echo "Updating fixtures in S3\n";
 $manager = new \Aws\S3\Transfer($s3Client, $source, $dest, []);
 
 // Perform the transfer synchronously.
