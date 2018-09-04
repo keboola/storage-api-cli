@@ -10,6 +10,7 @@
   "license": "MIT",
   "require": {
     "keboola/kbc-project-backup": "^0.0.2",
+    "keboola/kbc-project-restore": "^1.1",
     "keboola/php-temp": "^1.0",
     "keboola/storage-api-client": "^10.1.1",
     "keboola/symfony-console-nested-formatter-helper": "^0.1",

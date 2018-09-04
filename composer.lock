@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "9963c72717a0ae2503bd2d6505a96ddb",
+    "content-hash": "d9f394bee176dd54b59d38e82b115cbd",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -341,6 +341,50 @@
                 }
             ],
             "time": "2018-05-10T00:57:51+00:00"
+        },
+        {
+            "name": "keboola/kbc-project-restore",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/keboola/php-kbc-project-restore.git",
+                "reference": "e899c4fdd4601baf6b469fc36ab715180ec339ac"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/keboola/php-kbc-project-restore/zipball/e899c4fdd4601baf6b469fc36ab715180ec339ac",
+                "reference": "e899c4fdd4601baf6b469fc36ab715180ec339ac",
+                "shasum": ""
+            },
+            "require": {
+                "keboola/php-temp": "^1.0.0",
+                "keboola/storage-api-client": "^10.1.1",
+                "monolog/monolog": "^1.23",
+                "php": "^7.1"
+            },
+            "require-dev": {
+                "jakub-onderka/php-parallel-lint": "^1.0",
+                "keboola/coding-standard": "^2.0",
+                "phpstan/phpstan-shim": "^0.9.2",
+                "phpunit/phpunit": "^5.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Keboola\\ProjectRestore\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Erik Zigo",
+                    "email": "erik.zigo@keboola.com"
+                }
+            ],
+            "time": "2018-05-24T18:17:08+00:00"
         },
         {
             "name": "keboola/php-temp",
