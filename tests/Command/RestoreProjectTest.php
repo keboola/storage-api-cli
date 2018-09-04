@@ -247,6 +247,40 @@ class RestoreProjectTest extends BaseTest
         self::assertEquals(["column" => "Name", "operator" => "eq", "values" => ["Keboola"]], $aliasTable["aliasFilter"]);
     }
 
+    public function testRestoreAliasMetadata(): void
+    {
+        $applicationTester = $this->runCommand(self::S3_PATH . 'alias-metadata');
+        self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
+        $client = $this->createStorageClient();
+        $aliasTable = $client->getTable("out.c-bucket.Account");
+        self::assertEquals("tableKey", $aliasTable["metadata"][0]["key"]);
+        self::assertEquals("tableValue", $aliasTable["metadata"][0]["value"]);
+        self::assertEquals("columnKey", $aliasTable["columnMetadata"]["Id"][0]["key"]);
+        self::assertEquals("columnValue", $aliasTable["columnMetadata"]["Id"][0]["value"]);
+    }
+
+    public function testRestoreAliasAttributes(): void
+    {
+        $applicationTester = $this->runCommand(self::S3_PATH . 'alias-properties');
+        self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
+        $client = $this->createStorageClient();
+        self::assertEquals(
+            [
+                [
+                    "name" => "myKey",
+                    "value" => "myValue",
+                    "protected" => false,
+                ],
+                [
+                    "name" => "myProtectedKey",
+                    "value" => "myProtectedValue",
+                    "protected" => true,
+                ],
+            ],
+            $client->getTable("out.c-bucket.Account")["attributes"]
+        );
+    }
+
     public function testRestoreConfigurations(): void
     {
         $applicationTester = $this->runCommand(self::S3_PATH . 'configurations/');
