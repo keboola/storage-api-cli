@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7e0ecae6462665f8efd019821f72d1e1",
+    "content-hash": "25673fda8e8ef9d910847ebc09bc76f0",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -349,32 +349,37 @@
         },
         {
             "name": "keboola/storage-api-client",
-            "version": "10.1.1",
+            "version": "10.17.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/keboola/storage-api-php-client.git",
-                "reference": "079e1b1d9575dca9c0490a4ae456387603ca5b2e"
+                "reference": "4766dff5bc04c0573cfb27f07297c9d5d011f1e2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/keboola/storage-api-php-client/zipball/079e1b1d9575dca9c0490a4ae456387603ca5b2e",
-                "reference": "079e1b1d9575dca9c0490a4ae456387603ca5b2e",
+                "url": "https://api.github.com/repos/keboola/storage-api-php-client/zipball/4766dff5bc04c0573cfb27f07297c9d5d011f1e2",
+                "reference": "4766dff5bc04c0573cfb27f07297c9d5d011f1e2",
                 "shasum": ""
             },
             "require": {
                 "aws/aws-sdk-php": "~3.2",
                 "guzzlehttp/guzzle": "~6.0",
                 "keboola/csv": "~1.1.3",
-                "symfony/filesystem": "^4.0||^3.0||~2.3",
-                "symfony/process": "^4.0||^3.0||~2.3"
+                "microsoft/azure-storage-blob": "^1.4",
+                "php": ">=5.6",
+                "psr/log": "~1.0",
+                "symfony/filesystem": "^5.0||^4.0||^3.0||~2.3",
+                "symfony/process": "^5.0||^4.0||^3.0||~2.3"
             },
             "require-dev": {
                 "apigen/apigen": "4.0.0-RC4",
                 "ext-pdo_pgsql": "*",
                 "keboola/php-csv-db-import": "^2.2",
+                "keboola/table-backend-utils": "^0.5",
+                "phpcompatibility/php-compatibility": "*",
+                "phpstan/phpstan-shim": "^0.9.2",
                 "phpunit/phpunit": "^5.6",
-                "psr/log": "~1.0",
-                "squizlabs/php_codesniffer": "^2.7"
+                "squizlabs/php_codesniffer": "^3"
             },
             "type": "library",
             "autoload": {
@@ -391,7 +396,7 @@
             ],
             "description": "Keboola Storage API PHP CLient",
             "homepage": "http://keboola.com",
-            "time": "2018-03-29T19:18:32+00:00"
+            "time": "2020-08-12T06:22:20+00:00"
         },
         {
             "name": "keboola/symfony-console-nested-formatter-helper",
@@ -431,6 +436,94 @@
             ],
             "description": "Nested array formatter helper for Symfony Console",
             "time": "2016-05-10T06:48:58+00:00"
+        },
+        {
+            "name": "microsoft/azure-storage-blob",
+            "version": "1.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Azure/azure-storage-blob-php.git",
+                "reference": "6a333cd28a3742c3e99e79042dc6510f9f917919"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Azure/azure-storage-blob-php/zipball/6a333cd28a3742c3e99e79042dc6510f9f917919",
+                "reference": "6a333cd28a3742c3e99e79042dc6510f9f917919",
+                "shasum": ""
+            },
+            "require": {
+                "microsoft/azure-storage-common": "~1.4",
+                "php": ">=5.6.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "MicrosoftAzure\\Storage\\Blob\\": "src/Blob"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Azure Storage PHP Client Library",
+                    "email": "dmsh@microsoft.com"
+                }
+            ],
+            "description": "This project provides a set of PHP client libraries that make it easy to access Microsoft Azure Storage Blob APIs.",
+            "keywords": [
+                "azure",
+                "blob",
+                "php",
+                "sdk",
+                "storage"
+            ],
+            "time": "2020-01-02T07:18:59+00:00"
+        },
+        {
+            "name": "microsoft/azure-storage-common",
+            "version": "1.4.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Azure/azure-storage-common-php.git",
+                "reference": "be4df800761d0d0fa91a9460c7f42517197d57a0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Azure/azure-storage-common-php/zipball/be4df800761d0d0fa91a9460c7f42517197d57a0",
+                "reference": "be4df800761d0d0fa91a9460c7f42517197d57a0",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "~6.0",
+                "php": ">=5.6.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "MicrosoftAzure\\Storage\\Common\\": "src/Common"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Azure Storage PHP Client Library",
+                    "email": "dmsh@microsoft.com"
+                }
+            ],
+            "description": "This project provides a set of common code shared by Azure Storage Blob, Table, Queue and File PHP client libraries.",
+            "keywords": [
+                "azure",
+                "common",
+                "php",
+                "sdk",
+                "storage"
+            ],
+            "time": "2020-01-02T07:15:54+00:00"
         },
         {
             "name": "mtdowling/jmespath.php",
@@ -1210,6 +1303,7 @@
                 "MIT"
             ],
             "description": "PHPStan Phar distribution",
+            "abandoned": "phpstan/phpstan",
             "time": "2018-01-28T14:29:27+00:00"
         },
         {
@@ -1600,6 +1694,7 @@
                 "mock",
                 "xunit"
             ],
+            "abandoned": true,
             "time": "2017-06-30T09:13:00+00:00"
         },
         {
@@ -2318,5 +2413,6 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],
-    "platform-dev": []
+    "platform-dev": [],
+    "plugin-api-version": "1.1.0"
 }
