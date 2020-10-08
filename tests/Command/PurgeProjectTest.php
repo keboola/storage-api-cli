@@ -127,7 +127,7 @@ class PurgeProjectTest extends BaseTest
         $fileUploadOptions = new FileUploadOptions();
         $fileUploadOptions->setFileName("test");
         $fs = new Filesystem();
-        for ($i = 0; $i <= 100; $i++) {
+        for ($i = 0; $i <= 90; $i++) {
             $fileName = $this->temp->getTmpFolder() . DIRECTORY_SEPARATOR . 'tmp-' . $i;
             $fs->dumpFile($fileName, 'content' . $i);
             $client->uploadFile($fileName, $fileUploadOptions);
