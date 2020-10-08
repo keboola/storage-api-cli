@@ -70,9 +70,10 @@ class PurgeProjectTest extends BaseTest
         // check stats
         self::assertCount(2, $client->listTables());
         self::assertCount(2, $client->listBuckets());
-        self::assertCount(1, $client->listFiles());
         $components = new Components($client);
         self::assertCount(1, $components->listComponents());
+        sleep(5);
+        self::assertCount(1, $client->listFiles());
     }
 
     public function testExecuteFull(): void
@@ -92,8 +93,9 @@ class PurgeProjectTest extends BaseTest
         $components = new Components($client);
         self::assertCount(0, $client->listTables());
         self::assertCount(0, $client->listBuckets());
-        self::assertCount(0, $client->listFiles());
         self::assertCount(0, $components->listComponents());
+        sleep(5);
+        self::assertCount(0, $client->listFiles());
     }
 
     public function testPurgeConfigurations(): void
@@ -114,8 +116,9 @@ class PurgeProjectTest extends BaseTest
         $components = new Components($client);
         self::assertCount(2, $client->listTables());
         self::assertCount(2, $client->listBuckets());
-        self::assertCount(1, $client->listFiles());
         self::assertCount(0, $components->listComponents());
+        sleep(5);
+        self::assertCount(1, $client->listFiles());
     }
 
     public function testPurgeFileUploads(): void
@@ -124,7 +127,7 @@ class PurgeProjectTest extends BaseTest
         $fileUploadOptions = new FileUploadOptions();
         $fileUploadOptions->setFileName("test");
         $fs = new Filesystem();
-        for ($i = 0; $i <= 100; $i++) {
+        for ($i = 0; $i <= 90; $i++) {
             $fileName = $this->temp->getTmpFolder() . DIRECTORY_SEPARATOR . 'tmp-' . $i;
             $fs->dumpFile($fileName, 'content' . $i);
             $client->uploadFile($fileName, $fileUploadOptions);
@@ -146,8 +149,9 @@ class PurgeProjectTest extends BaseTest
         $components = new Components($client);
         self::assertCount(2, $client->listTables());
         self::assertCount(2, $client->listBuckets());
-        self::assertCount(0, $client->listFiles());
         self::assertCount(1, $components->listComponents());
+        sleep(5);
+        self::assertCount(0, $client->listFiles());
     }
 
     public function testPurgeData(): void
@@ -168,8 +172,9 @@ class PurgeProjectTest extends BaseTest
         $components = new Components($client);
         self::assertCount(0, $client->listTables());
         self::assertCount(0, $client->listBuckets());
-        self::assertCount(1, $client->listFiles());
         self::assertCount(1, $components->listComponents());
+        sleep(5);
+        self::assertCount(1, $client->listFiles());
     }
 
     public function testPurgeAliases(): void
@@ -190,8 +195,9 @@ class PurgeProjectTest extends BaseTest
         $components = new Components($client);
         self::assertCount(1, $client->listTables());
         self::assertCount(2, $client->listBuckets());
-        self::assertCount(1, $client->listFiles());
         self::assertCount(1, $components->listComponents());
+        sleep(5);
+        self::assertCount(1, $client->listFiles());
     }
 
     public function tearDown(): void
