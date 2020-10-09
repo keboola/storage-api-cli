@@ -4,6 +4,7 @@ namespace Keboola\StorageApi\Cli\Command;
 
 use Aws\S3\S3Client;
 use Keboola\StorageApi\Client;
+use Keboola\StorageApi\Downloader\DownloaderFactory;
 use Keboola\StorageApi\HandlerStack;
 use Keboola\StorageApi\Options\GetFileOptions;
 use Keboola\Temp\Temp;
@@ -162,16 +163,8 @@ class BackupProject extends Command
         ]);
         $fileInfo = $client->getFile($fileId["file"]["id"], (new GetFileOptions())->setFederationToken(true));
 
-        // Initialize S3Client with credentials from Storage API
-        $s3Client = new S3Client([
-            "version" => "latest",
-            "region" => $fileInfo["region"],
-            "credentials" => [
-                "key" => $fileInfo["credentials"]["AccessKeyId"],
-                "secret" => $fileInfo["credentials"]["SecretAccessKey"],
-                "token" => $fileInfo["credentials"]["SessionToken"],
-            ],
-        ]);
+        // Initialize Downloader with credentials from Storage API
+        $downloader = DownloaderFactory::createDownloaderForFileResponse($fileInfo);
 
         $fs = new Filesystem();
         if ($fileInfo['isSliced'] === true) {
@@ -186,13 +179,8 @@ class BackupProject extends Command
             // Download all slices
             $tmpFilePath = $this->getTmpDir() . DIRECTORY_SEPARATOR . uniqid('sapi-export-');
             foreach ($manifest["entries"] as $i => $part) {
-                $fileKey = substr($part["url"], strpos($part["url"], '/', 5) + 1);
-                $filePath = $tmpFilePath . '_' . md5(str_replace('/', '_', $fileKey));
-                $s3Client->getObject(array(
-                    'Bucket' => $fileInfo["s3Path"]["bucket"],
-                    'Key' => $fileKey,
-                    'SaveAs' => $filePath
-                ));
+                $filePath = $downloader->downloadManifestEntry($fileInfo, $part, $tmpFilePath);
+
                 $fh = fopen($filePath, 'r');
                 $targetS3->putObject([
                     'Bucket' => $targetBucket,
@@ -204,11 +192,7 @@ class BackupProject extends Command
             }
         } else {
             $tmpFilePath = $this->getTmpDir() . DIRECTORY_SEPARATOR . uniqid('table');
-            $s3Client->getObject(array(
-                'Bucket' => $fileInfo["s3Path"]["bucket"],
-                'Key' => $fileInfo["s3Path"]["key"],
-                'SaveAs' => $tmpFilePath
-            ));
+            $downloader->downloadFileFromFileResponse($fileInfo, $tmpFilePath);
 
             $fh = fopen($tmpFilePath, 'r');
             $targetS3->putObject([
