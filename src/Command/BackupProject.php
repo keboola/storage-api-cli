@@ -50,7 +50,7 @@ class BackupProject extends Command
         $sapiClient = $this->getSapiClient();
 
         $tables = $sapiClient->listTables(null, [
-            'include' => 'attributes,columns,buckets,metadata,columnMetadata',
+            'include' => 'columns,buckets,metadata,columnMetadata',
         ]);
         $output->write("Exporting tables\n");
         $s3->putObject([
@@ -63,7 +63,7 @@ class BackupProject extends Command
         $s3->putObject([
             'Bucket' => $bucket,
             'Key' => $basePath . 'buckets.json',
-            'Body' => json_encode($sapiClient->listBuckets(["include" => "attributes,metadata"])),
+            'Body' => json_encode($sapiClient->listBuckets(["include" => "metadata"])),
         ]);
 
         $output->write("Exporting configurations\n");

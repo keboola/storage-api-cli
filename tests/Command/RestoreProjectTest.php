@@ -95,28 +95,6 @@ class RestoreProjectTest extends BaseTest
         self::assertContains('Missing', $ret);
     }
 
-    public function testRestoreBucketAttributes(): void
-    {
-        $applicationTester = $this->runCommand(self::S3_PATH . 'buckets/');
-        self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
-        $client = $this->createStorageClient();
-        self::assertEquals(
-            [
-                [
-                    "name" => "myKey",
-                    "value" => "myValue",
-                    "protected" => false,
-                ],
-                [
-                    "name" => "myProtectedKey",
-                    "value" => "myProtectedValue",
-                    "protected" => true,
-                ],
-            ],
-            $client->getBucket("in.c-bucket1")["attributes"]
-        );
-    }
-
     public function testRestoreTableWithHeader(): void
     {
         $applicationTester = $this->runCommand(self::S3_PATH . 'table-with-header/');
@@ -187,28 +165,6 @@ class RestoreProjectTest extends BaseTest
         self::assertContains('"001C000000xYbhhIAC","Keboola"', $fileContents);
         self::assertContains('"001C000000xYbhhIAD","Keboola 2"', $fileContents);
         self::assertCount(4, explode("\n", $fileContents));
-    }
-
-    public function testRestoreTableAttributes(): void
-    {
-        $applicationTester = $this->runCommand(self::S3_PATH . 'table-properties');
-        self::assertEquals(0, $applicationTester->getStatusCode(), print_r($applicationTester->getDisplay(), 1));
-        $client = $this->createStorageClient();
-        self::assertEquals(
-            [
-                [
-                    "name" => "myKey",
-                    "value" => "myValue",
-                    "protected" => false,
-                ],
-                [
-                    "name" => "myProtectedKey",
-                    "value" => "myProtectedValue",
-                    "protected" => true,
-                ],
-            ],
-            $client->getTable("in.c-bucket.Account")["attributes"]
-        );
     }
 
     public function testRestoreTablePrimaryKeys(): void

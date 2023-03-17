@@ -12,7 +12,6 @@
     "dataSizeBytes": 0,
     "rowsCount": 0,
     "isMaintenance": false,
-    "backend": "snowflake",
-    "attributes": []
+    "backend": "snowflake"
   }
 ]
