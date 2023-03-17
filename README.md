@@ -195,3 +195,7 @@ docker-compose run --rm dev php tests/loadToS3.php
 ``` 
 docker-compose run dev composer tests
 ```
+
+## License
+
+MIT licensed, see [LICENSE](./LICENSE) file.
