@@ -22,7 +22,7 @@ class CopyTable extends Command
     {
         $this
             ->setName('copy-table')
-            ->setDescription('Copy table with PK, indexes and attributes (transferring nongzipped data)')
+            ->setDescription('Copy table with PK and indexes (transferring nongzipped data)')
             ->setDefinition(array(
                 new InputArgument('sourceTableId', InputArgument::REQUIRED, "source table"),
                 new InputArgument('destinationTableId', InputArgument::REQUIRED, "destination table"),
@@ -93,13 +93,6 @@ class CopyTable extends Command
             $csvFile,
             $createOptions
         );
-
-        // Set attributes
-        if ($tableInfo["attributes"] && count($tableInfo["attributes"])) {
-            foreach ($tableInfo["attributes"] as $attribute) {
-                $sapiClientDst->setTableAttribute($destinationTable, $attribute["name"], $attribute["value"], $attribute["protected"]);
-            }
-        }
 
         // All done, cleanup
         $this->destroyTmpDir();

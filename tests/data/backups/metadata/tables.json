@@ -16,7 +16,6 @@
     "rowsCount": 1570,
     "dataSizeBytes": 29696,
     "isAlias": false,
-    "attributes": [],
     "bucket": {
       "uri": "https:\/\/connection.keboola.com\/\/v2\/storage\/buckets\/in.c-bucket",
       "id": "in.c-bucket",

@@ -70,11 +70,6 @@ class CopyBucket extends Command
         // Create bucket
         $sapiClientDst->createBucket($dstBucketName, $dstBucketStage, $dstBucketDesc, $input->getArgument('destinationBucketBackend'));
 
-        // Copy attributes
-        foreach ($srcBucketInfo["attributes"] as $attribute) {
-            $sapiClientDst->setBucketAttribute($dstBucketId, $attribute["name"], $attribute["value"], $attribute["protected"]);
-        }
-
         // Copy tables
         foreach ($srcBucketInfo["tables"] as $srcTable) {
             $command = $this->getApplication()->find('copy-table');

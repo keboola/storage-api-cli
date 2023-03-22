@@ -12,7 +12,6 @@
     "rowsCount": 0,
     "dataSizeBytes": 0,
     "isAlias": false,
-    "attributes": [],
     "columns": [
       "col1"
     ],
@@ -55,7 +54,6 @@
       }
     },
     "aliasColumnsAutoSync": true,
-    "attributes": [],
     "columns": [
       "col1"
     ],

@@ -12,8 +12,7 @@
     "dataSizeBytes": 0,
     "rowsCount": 0,
     "isMaintenance": false,
-    "backend": "snowflake",
-    "attributes": []
+    "backend": "snowflake"
   },
   {
     "uri": "https:\/\/connection.keboola.com\/\/v2\/storage\/buckets\/in.c-redshift",
@@ -28,8 +27,7 @@
     "dataSizeBytes": 0,
     "rowsCount": 0,
     "isMaintenance": false,
-    "backend": "redshift",
-    "attributes": []
+    "backend": "redshift"
   },
   {
     "uri": "https:\/\/connection.keboola.com\/\/v2\/storage\/buckets\/in.c-mysql",
@@ -44,7 +42,6 @@
     "dataSizeBytes": 0,
     "rowsCount": 0,
     "isMaintenance": false,
-    "backend": "mysql",
-    "attributes": []
+    "backend": "mysql"
   }
 ]

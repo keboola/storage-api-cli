@@ -40,7 +40,7 @@ Options:
 Available commands:
   backup-project              Backup whole project to AWS S3
   copy-bucket                 Copy bucket with all tables in it
-  copy-table                  Copy table with PK, indexes and attributes (transferring nongzipped data)
+  copy-table                  Copy table with PK and indexes (transferring nongzipped data)
   create-bucket               Create bucket
   create-table                Create table in bucket
   delete-bucket               Delete bucket

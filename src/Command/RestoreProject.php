@@ -131,10 +131,7 @@ class RestoreProject extends Command
                     );
                 }
 
-                // bucket attributes
-                if (count($bucketInfo["attributes"])) {
-                    $client->replaceBucketAttributes($bucketInfo["id"], $bucketInfo["attributes"]);
-                }
+                // bucket metadata
                 if (isset($bucketInfo["metadata"]) && count($bucketInfo["metadata"])) {
                     foreach ($this->prepareMetadata($bucketInfo["metadata"]) as $provider => $metadata) {
                         $metadataClient->postBucketMetadata($bucketInfo["id"], $provider, $metadata);
@@ -332,11 +329,8 @@ class RestoreProject extends Command
                 $output->writeln($this->check());
             }
 
-            $output->write($this->format('Restoring table attributes'));
+            $output->write($this->format('Restoring table metadata'));
             foreach ($tables as $table) {
-                if (isset($table["attributes"]) && count($table["attributes"])) {
-                    $client->replaceTableAttributes($table["id"], $table["attributes"]);
-                }
                 if (isset($table["metadata"]) && count($table["metadata"])) {
                     foreach ($this->prepareMetadata($table["metadata"]) as $provider => $metadata) {
                         $metadataClient->postTableMetadata($table["id"], $provider, $metadata);
